@@ -22,7 +22,7 @@ export const FoodRecordsList = ({
 }: FoodRecordsListProps) => {
   if (loading) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 w-full">
         <h2 className="text-lg font-semibold text-gray-800 mb-4">{title}</h2>
         <LoadingSpinner message="기록을 불러오는 중..." />
       </div>
@@ -30,7 +30,7 @@ export const FoodRecordsList = ({
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 w-full">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
         {records.length > 0 && (

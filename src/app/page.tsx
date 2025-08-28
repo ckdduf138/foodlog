@@ -35,21 +35,20 @@ export default function Home() {
   };
 
   return (
-    <MainLayout activeTab={activeTab} onTabChange={changeTab}>
+    <MainLayout
+      activeTab={activeTab}
+      onTabChange={changeTab}
+      onAddRecord={handleAddRecord}
+    >
       {/* 헤더 */}
       <Header
         title="FoodLog"
         subtitle="나만의 음식 기록"
         icon={<UtensilsCrossed className="w-8 h-8" />}
-        action={{
-          label: "기록 추가",
-          onClick: handleAddRecord,
-          icon: <Plus className="w-4 h-4" />,
-        }}
       />
 
       {/* 메인 컨텐츠 */}
-      <div className="px-4 py-6 space-y-6">
+      <div className="px-0 sm:px-0 py-2 sm:py-4 space-y-3 sm:space-y-6 w-full flex flex-col items-stretch">
         {/* 통계 대시보드 */}
         <DashboardStats
           totalRecords={stats.totalRecords}
@@ -59,11 +58,7 @@ export default function Home() {
         />
 
         {/* 빠른 실행 */}
-        <QuickActions
-          onAddRecord={handleAddRecord}
-          onSearch={handleSearch}
-          onViewStats={handleViewStats}
-        />
+        <QuickActions onSearch={handleSearch} onViewStats={handleViewStats} />
 
         {/* 최근 기록 */}
         <FoodRecordsList

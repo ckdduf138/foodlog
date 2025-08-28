@@ -45,17 +45,23 @@ export const DashboardStats = ({
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4 mb-6">
+    <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6 w-full mt-6 sm:mt-8">
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200"
+          className="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-gray-600">{stat.title}</h3>
-            {stat.icon && <div className="text-gray-400">{stat.icon}</div>}
+            <h3 className="text-xs sm:text-sm font-medium text-gray-600 truncate">
+              {stat.title}
+            </h3>
+            {stat.icon && (
+              <div className="text-gray-400 flex-shrink-0">{stat.icon}</div>
+            )}
           </div>
-          <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
+          <p className="text-lg sm:text-2xl font-bold text-gray-800 truncate">
+            {stat.value}
+          </p>
           {stat.trend && (
             <div
               className={`text-xs mt-1 ${

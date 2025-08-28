@@ -1,7 +1,7 @@
 import { Plus, Search, BarChart3 } from "lucide-react";
 
 interface QuickActionsProps {
-  onAddRecord: () => void;
+  onAddRecord?: () => void;
   onSearch: () => void;
   onViewStats: () => void;
 }
@@ -12,12 +12,16 @@ export const QuickActions = ({
   onViewStats,
 }: QuickActionsProps) => {
   const actions = [
-    {
-      label: "기록 추가",
-      icon: <Plus className="w-5 h-5" />,
-      onClick: onAddRecord,
-      primary: true,
-    },
+    ...(onAddRecord
+      ? [
+          {
+            label: "기록 추가",
+            icon: <Plus className="w-5 h-5" />,
+            onClick: onAddRecord,
+            primary: true,
+          },
+        ]
+      : []),
     {
       label: "검색",
       icon: <Search className="w-5 h-5" />,
@@ -33,21 +37,25 @@ export const QuickActions = ({
   ];
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
-      <h3 className="text-lg font-semibold text-gray-800 mb-3">빠른 실행</h3>
-      <div className="grid grid-cols-3 gap-3">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 sm:p-4 mb-4 sm:mb-6">
+      <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3">
+        빠른 실행
+      </h3>
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
         {actions.map((action, index) => (
           <button
             key={index}
             onClick={action.onClick}
-            className={`p-3 rounded-lg font-medium transition-all duration-200 flex flex-col items-center gap-2 ${
+            className={`p-2 sm:p-3 rounded-lg font-medium transition-all duration-200 flex flex-col items-center gap-1 sm:gap-2 ${
               action.primary
                 ? "bg-green-500 hover:bg-green-600 text-white shadow-sm hover:shadow-md"
                 : "bg-gray-50 hover:bg-gray-100 text-gray-700"
             }`}
           >
-            {action.icon}
-            <span className="text-xs">{action.label}</span>
+            <div className="w-4 h-4 sm:w-5 sm:h-5">{action.icon}</div>
+            <span className="text-xs sm:text-sm font-medium">
+              {action.label}
+            </span>
           </button>
         ))}
       </div>
