@@ -3,7 +3,8 @@
 import { UtensilsCrossed } from "lucide-react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Header } from "@/components/ui/molecules";
-import { useFoodRecords, useNavigation } from "@/hooks";
+import { useFoodRecords } from "@/hooks";
+import { useNavigation } from "@/hooks/useNavigation";
 import { FoodRecord } from "@/lib/db";
 import { DashboardStats, FoodRecordsList } from "@/components/ui/organisms";
 

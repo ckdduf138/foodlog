@@ -1,7 +1,7 @@
 "use client";
 
 import { MainLayout } from "@/components/layout/MainLayout";
-import { useNavigation } from "@/hooks";
+import { useNavigation } from "@/hooks/useNavigation";
 import { Header } from "@/components/ui/molecules";
 import { BarChart3 } from "lucide-react";
 

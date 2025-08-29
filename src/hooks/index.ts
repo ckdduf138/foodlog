@@ -142,47 +142,8 @@ export const useFoodRecords = () => {
   };
 };
 
-// 네비게이션 상태 관리 훅
-export const useNavigation = (initialTab = "home") => {
-  const [activeTab, setActiveTab] = useState(initialTab);
-
-  // This implementation avoids calling next/navigation hooks conditionally
-  // to satisfy the hooks rules and linters. It uses the browser pathname
-  // and history APIs for client-side sync. It's safe in both server and
-  // client environments because hooks are invoked unconditionally.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const pathname = window.location.pathname || "/";
-    if (pathname.startsWith("/records")) setActiveTab("records");
-    else if (pathname.startsWith("/stats")) setActiveTab("stats");
-    else if (pathname.startsWith("/settings")) setActiveTab("settings");
-    else setActiveTab("home");
-  }, []);
-
-  const changeTab = (tabId: string) => {
-    setActiveTab(tabId);
-    const routeMap: Record<string, string> = {
-      home: "/home",
-      records: "/records",
-      stats: "/stats",
-      settings: "/settings",
-    };
-    const to = routeMap[tabId] || "/home";
-    if (typeof window !== "undefined") {
-      try {
-        // prefer history API to avoid full page reloads
-        window.history.pushState({}, "", to);
-      } catch {
-        window.location.assign(to);
-      }
-    }
-  };
-
-  return {
-    activeTab,
-    changeTab,
-  };
-};
+// Note: client-only navigation hook lives in src/hooks/useNavigation.tsx
+// Do not re-export it here to avoid importing a client module from a server module.
 
 // 로컬 스토리지 훅 (설정 등)
 export const useLocalStorage = <T>(key: string, initialValue: T) => {

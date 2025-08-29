@@ -26,7 +26,7 @@ export const DashboardStats = ({
     },
     {
       title: "평균 평점",
-      value: totalRecords > 0 ? `${averageRating.toFixed(1)}⭐` : "-",
+      value: totalRecords > 0 ? `${averageRating.toFixed(1)}` : "-",
       icon: <Star className="w-5 h-5" />,
     },
     {
@@ -47,9 +47,13 @@ export const DashboardStats = ({
             <h3 className="text-xs sm:text-sm font-medium text-gray-600 truncate">
               {stat.title}
             </h3>
-            {stat.icon && <div className="text-gray-400 flex-shrink-0">{stat.icon}</div>}
+            {stat.icon && (
+              <div className="text-gray-400 flex-shrink-0">{stat.icon}</div>
+            )}
           </div>
-          <p className="text-lg sm:text-2xl font-bold text-gray-800 truncate">{stat.value}</p>
+          <p className="text-lg sm:text-2xl font-bold text-gray-800 truncate">
+            {stat.value}
+          </p>
         </div>
       ))}
     </div>

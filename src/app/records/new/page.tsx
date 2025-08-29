@@ -4,7 +4,8 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Header } from "@/components/ui/molecules";
-import { useNavigation, useFoodRecords } from "@/hooks";
+import { useFoodRecords } from "@/hooks";
+import { useNavigation } from "@/hooks/useNavigation";
 import { FilePlus } from "lucide-react";
 import PlaceSearch from "@/components/places/PlaceSearch";
 
@@ -64,8 +65,8 @@ export default function NewRecordPage() {
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
-  setSubmitting(true);
-  setRecordError(null);
+      setSubmitting(true);
+      setRecordError(null);
 
       try {
         await actions.addRecord({

@@ -37,7 +37,11 @@ export default function PlaceSearch({
   const key =
     apiKey ||
     (typeof window !== "undefined"
-      ? (window as unknown as Window & { NEXT_PUBLIC_KAKAO_REST_API_KEY?: string }).NEXT_PUBLIC_KAKAO_REST_API_KEY
+      ? (
+          window as unknown as Window & {
+            NEXT_PUBLIC_KAKAO_REST_API_KEY?: string;
+          }
+        ).NEXT_PUBLIC_KAKAO_REST_API_KEY
       : undefined) ||
     (process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY as string | undefined);
 

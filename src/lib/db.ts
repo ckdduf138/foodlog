@@ -70,7 +70,7 @@ export class FoodLogDB extends Dexie {
     });
 
     // 데이터 변환 훅 (필요시 확장)
-     
+
     this.foodRecords.hook("creating", (_primKey, obj, _trans) => {
       // mark unused params to satisfy linters
       void _primKey;
@@ -79,15 +79,17 @@ export class FoodLogDB extends Dexie {
       obj.updatedAt = new Date();
     });
 
-     
-    this.foodRecords.hook("updating", (modifications, _primKey, _obj, _trans) => {
-      // mark unused params to satisfy linters
-      void _primKey;
-      void _obj;
-      void _trans;
-      const mods = modifications as Partial<FoodRecord>;
-      mods.updatedAt = new Date();
-    });
+    this.foodRecords.hook(
+      "updating",
+      (modifications, _primKey, _obj, _trans) => {
+        // mark unused params to satisfy linters
+        void _primKey;
+        void _obj;
+        void _trans;
+        const mods = modifications as Partial<FoodRecord>;
+        mods.updatedAt = new Date();
+      }
+    );
   }
 }
 
