@@ -1,14 +1,10 @@
 "use client";
 
-import { UtensilsCrossed, Plus } from "lucide-react";
+import { UtensilsCrossed } from "lucide-react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Header } from "@/components/ui/molecules";
-import {
-  DashboardStats,
-  FoodRecordsList,
-  QuickActions,
-} from "@/components/ui/organisms";
 import { useFoodRecords, useNavigation } from "@/hooks";
+import { DashboardStats, FoodRecordsList } from "../components/ui/organisms";
 
 export default function Home() {
   const { records, loading, stats } = useFoodRecords();
@@ -22,16 +18,6 @@ export default function Home() {
   const handleRecordClick = (record: any) => {
     // TODO: 기록 상세 페이지로 이동
     console.log("기록 상세:", record);
-  };
-
-  const handleSearch = () => {
-    // TODO: 검색 페이지로 이동
-    console.log("검색 페이지로 이동");
-  };
-
-  const handleViewStats = () => {
-    // TODO: 통계 페이지로 이동
-    changeTab("stats");
   };
 
   return (
@@ -52,13 +38,10 @@ export default function Home() {
         {/* 통계 대시보드 */}
         <DashboardStats
           totalRecords={stats.totalRecords}
-          monthlyRecords={stats.monthlyRecords}
+          weeklyRecords={stats.weeklyRecords}
           averageRating={stats.averageRating}
-          favoriteCategory={stats.favoriteRestaurant}
+          streakDays={stats.streakDays}
         />
-
-        {/* 빠른 실행 */}
-        <QuickActions onSearch={handleSearch} onViewStats={handleViewStats} />
 
         {/* 최근 기록 */}
         <FoodRecordsList

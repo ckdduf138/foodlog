@@ -1,46 +1,38 @@
-import { UtensilsCrossed, Plus } from "lucide-react";
+import { UtensilsCrossed, Calendar, TrendingUp, Star } from "lucide-react";
 
 interface DashboardStatsProps {
   totalRecords: number;
-  monthlyRecords: number;
+  weeklyRecords: number;
   averageRating: number;
-  favoriteCategory?: string;
+  streakDays: number;
 }
 
 export const DashboardStats = ({
   totalRecords,
-  monthlyRecords,
+  weeklyRecords,
   averageRating,
-  favoriteCategory,
+  streakDays,
 }: DashboardStatsProps) => {
   const stats = [
     {
       title: "총 기록",
       value: totalRecords,
       icon: <UtensilsCrossed className="w-5 h-5" />,
-      trend:
-        monthlyRecords > 0
-          ? {
-              value: Math.round(
-                (monthlyRecords / Math.max(totalRecords - monthlyRecords, 1)) *
-                  100
-              ),
-              isPositive: true,
-            }
-          : undefined,
     },
     {
-      title: "이번 달",
-      value: monthlyRecords,
-      icon: <Plus className="w-5 h-5" />,
+      title: "이번 주",
+      value: weeklyRecords,
+      icon: <Calendar className="w-5 h-5" />,
     },
     {
       title: "평균 별점",
       value: totalRecords > 0 ? `${averageRating.toFixed(1)}⭐` : "-",
+      icon: <Star className="w-5 h-5" />,
     },
     {
-      title: "선호 카테고리",
-      value: favoriteCategory || "없음",
+      title: "연속 기록",
+      value: `${streakDays}일`,
+      icon: <TrendingUp className="w-5 h-5" />,
     },
   ];
 
@@ -62,15 +54,6 @@ export const DashboardStats = ({
           <p className="text-lg sm:text-2xl font-bold text-gray-800 truncate">
             {stat.value}
           </p>
-          {stat.trend && (
-            <div
-              className={`text-xs mt-1 ${
-                stat.trend.isPositive ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              {stat.trend.isPositive ? "↗" : "↘"} {Math.abs(stat.trend.value)}%
-            </div>
-          )}
         </div>
       ))}
     </div>

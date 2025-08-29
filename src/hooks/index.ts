@@ -100,8 +100,31 @@ export const useFoodRecords = () => {
     return {
       totalRecords: records.length,
       monthlyRecords: monthlyRecords.length,
+      weeklyRecords: records.filter((record) => {
+        const recordDate = new Date(record.date);
+        const diff =
+          (Date.now() - recordDate.getTime()) / (1000 * 60 * 60 * 24);
+        return diff <= 7;
+      }).length,
       averageRating,
       favoriteRestaurant,
+      streakDays: (() => {
+        // 연속 기록 계산 (오늘 포함)
+        const dateSet = new Set(records.map((r) => r.date));
+        const format = (d: Date) => d.toISOString().slice(0, 10);
+        let count = 0;
+        let cursor = new Date();
+        while (true) {
+          const key = format(cursor);
+          if (dateSet.has(key)) {
+            count += 1;
+            cursor.setDate(cursor.getDate() - 1);
+          } else {
+            break;
+          }
+        }
+        return count;
+      })(),
     };
   }, [records]);
 
