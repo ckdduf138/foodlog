@@ -1,7 +1,7 @@
-// 메인 레이아웃 컴포넌트
 "use client";
 
 import { ReactNode } from "react";
+import { Plus } from "lucide-react";
 import { BottomNavigation } from "./BottomNavigation";
 
 interface MainLayoutProps {
@@ -36,18 +36,7 @@ export const MainLayout = ({
           aria-label="기록 추가"
           className="fixed bottom-20 right-4 sm:right-8 z-50 bg-green-500 hover:bg-green-600 text-white rounded-full p-3 shadow-lg flex items-center justify-center"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-              clipRule="evenodd"
-            />
-          </svg>
+          <Plus className="h-5 w-5" />
         </button>
       )}
 

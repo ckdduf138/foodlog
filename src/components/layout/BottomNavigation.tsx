@@ -1,4 +1,3 @@
-// 하단 네비게이션 컴포넌트
 "use client";
 
 import { Home, FileText, BarChart3, Settings } from "lucide-react";
@@ -28,7 +27,7 @@ export const BottomNavigation = ({
     },
     {
       id: "records",
-      label: "전체 기록",
+      label: "기록",
       icon: <FileText className="w-4 h-4 sm:w-5 sm:h-5" />,
     },
     {

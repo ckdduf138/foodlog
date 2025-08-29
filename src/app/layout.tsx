@@ -17,20 +17,22 @@ export const metadata: Metadata = {
   description:
     "개인 음식 기록 앱 - 날짜, 위치, 음식, 사진, 별점, 한줄평을 기록하세요",
   manifest: "/manifest.json",
-  themeColor: "#10b981",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-    viewportFit: "cover",
-  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "FoodLog",
   },
 };
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+};
+
+export const themeColor = "#10b981";
 
 export default function RootLayout({
   children,
