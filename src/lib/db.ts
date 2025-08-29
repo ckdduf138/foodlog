@@ -20,7 +20,6 @@ export interface FoodRecord {
   photo?: string; // base64 이미지 데이터 또는 URL
   tags?: string[]; // 태그 배열
   price?: number; // 가격 정보
-  companions?: string[]; // 함께한 사람들
   createdAt: Date;
   updatedAt: Date;
 }
@@ -71,13 +70,23 @@ export class FoodLogDB extends Dexie {
     });
 
     // 데이터 변환 훅 (필요시 확장)
-    this.foodRecords.hook("creating", (primKey, obj, trans) => {
+     
+    this.foodRecords.hook("creating", (_primKey, obj, _trans) => {
+      // mark unused params to satisfy linters
+      void _primKey;
+      void _trans;
       obj.createdAt = new Date();
       obj.updatedAt = new Date();
     });
 
-    this.foodRecords.hook("updating", (modifications, primKey, obj, trans) => {
-      (modifications as any).updatedAt = new Date();
+     
+    this.foodRecords.hook("updating", (modifications, _primKey, _obj, _trans) => {
+      // mark unused params to satisfy linters
+      void _primKey;
+      void _obj;
+      void _trans;
+      const mods = modifications as Partial<FoodRecord>;
+      mods.updatedAt = new Date();
     });
   }
 }

@@ -114,15 +114,30 @@ export const highlightSearchTerm = (
   return text.replace(regex, "<mark>$1</mark>");
 };
 
-export const createSearchIndex = (records: any[]): Map<string, any[]> => {
-  const index = new Map<string, any[]>();
+export type SearchableRecord = {
+  foodName?: string;
+  restaurantName?: string;
+  location?: { address?: string } | string;
+  review?: string;
+  tags?: string[];
+};
+
+export const createSearchIndex = (
+  records: SearchableRecord[]
+): Map<string, SearchableRecord[]> => {
+  const index = new Map<string, SearchableRecord[]>();
 
   records.forEach((record) => {
+    const locationAddress =
+      typeof record.location === "string"
+        ? record.location
+        : record.location?.address || "";
+
     const searchableText = [
-      record.foodName,
-      record.restaurantName,
-      record.location.address,
-      record.review,
+      record.foodName || "",
+      record.restaurantName || "",
+      locationAddress,
+      record.review || "",
       ...(record.tags || []),
     ]
       .join(" ")
@@ -176,24 +191,24 @@ export const storage = {
 };
 
 // 디바운스 함수
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout;
-  return function (this: any, ...args: Parameters<T>) {
-    clearTimeout(timeout);
+  let timeout: ReturnType<typeof setTimeout>;
+  return function (this: unknown, ...args: Parameters<T>) {
+    clearTimeout(timeout as unknown as number);
     timeout = setTimeout(() => func.apply(this, args), wait);
   };
 }
 
 // 쓰로틀 함수
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
-  let inThrottle: boolean;
-  return function (this: any, ...args: Parameters<T>) {
+  let inThrottle = false;
+  return function (this: unknown, ...args: Parameters<T>) {
     if (!inThrottle) {
       func.apply(this, args);
       inThrottle = true;
@@ -203,7 +218,7 @@ export function throttle<T extends (...args: any[]) => any>(
 }
 
 // 배열 유틸리티
-export const groupBy = <T, K extends keyof any>(
+export const groupBy = <T, K extends PropertyKey>(
   array: T[],
   key: (item: T) => K
 ): Record<K, T[]> => {
