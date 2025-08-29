@@ -26,7 +26,6 @@ export interface FoodRecord extends BaseEntity {
   photo?: string; // base64 이미지 데이터 또는 URL
   tags?: string[]; // 태그 배열
   price?: number; // 가격 정보
-  companions?: string[]; // 함께한 사람들
 }
 
 // 검색 키워드 타입
@@ -86,7 +85,7 @@ export interface FoodRecordFormData {
   photo?: File | string;
   tags: string[];
   price?: number;
-  companions: string[];
+  // companions removed
 }
 
 // 필터/검색 관련 타입들

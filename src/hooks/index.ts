@@ -113,7 +113,7 @@ export const useFoodRecords = () => {
         const dateSet = new Set(records.map((r) => r.date));
         const format = (d: Date) => d.toISOString().slice(0, 10);
         let count = 0;
-        let cursor = new Date();
+        const cursor = new Date();
         while (true) {
           const key = format(cursor);
           if (dateSet.has(key)) {
@@ -142,55 +142,8 @@ export const useFoodRecords = () => {
   };
 };
 
-// 네비게이션 상태 관리 훅
-export const useNavigation = (initialTab = "home") => {
-  const [activeTab, setActiveTab] = useState(initialTab);
-  // next/navigation hooks (client-side routing)
-  // note: this hook is intended to be used from client components
-  // which is the case for our pages that call it.
-  try {
-    // dynamic import-ish pattern to avoid server-side issues
-    // (usePathname/useRouter must run in client runtime)
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { useRouter, usePathname } = require("next/navigation");
-    const router = useRouter();
-    const pathname = usePathname();
-
-    // sync activeTab with current pathname on mount
-    useEffect(() => {
-      if (!pathname) return;
-      if (pathname.startsWith("/records")) setActiveTab("records");
-      else if (pathname.startsWith("/stats")) setActiveTab("stats");
-      else if (pathname.startsWith("/settings")) setActiveTab("settings");
-      else setActiveTab("home");
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pathname]);
-
-    const changeTab = (tabId: string) => {
-      setActiveTab(tabId);
-      const routeMap: Record<string, string> = {
-        home: "/home",
-        records: "/records",
-        stats: "/stats",
-        settings: "/settings",
-      };
-      const to = routeMap[tabId] || "/home";
-      router.push(to);
-    };
-
-    return {
-      activeTab,
-      changeTab,
-    };
-  } catch (e) {
-    // fallback for environments where next/navigation hooks aren't available
-    const changeTab = (tabId: string) => setActiveTab(tabId);
-    return {
-      activeTab,
-      changeTab,
-    };
-  }
-};
+// Note: client-only navigation hook lives in src/hooks/useNavigation.tsx
+// Do not re-export it here to avoid importing a client module from a server module.
 
 // 로컬 스토리지 훅 (설정 등)
 export const useLocalStorage = <T>(key: string, initialValue: T) => {

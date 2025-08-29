@@ -3,7 +3,9 @@
 import { UtensilsCrossed } from "lucide-react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Header } from "@/components/ui/molecules";
-import { useFoodRecords, useNavigation } from "@/hooks";
+import { useFoodRecords } from "@/hooks";
+import { useNavigation } from "@/hooks/useNavigation";
+import { FoodRecord } from "@/lib/db";
 import { DashboardStats, FoodRecordsList } from "@/components/ui/organisms";
 
 export default function HomePage() {
@@ -15,17 +17,13 @@ export default function HomePage() {
     console.log("기록 추가 페이지로 이동");
   };
 
-  const handleRecordClick = (record: any) => {
+  const handleRecordClick = (record: FoodRecord) => {
     // TODO: 기록 상세 페이지로 이동
     console.log("기록 상세:", record);
   };
 
   return (
-    <MainLayout
-      activeTab={activeTab}
-      onTabChange={changeTab}
-      onAddRecord={handleAddRecord}
-    >
+    <MainLayout activeTab={activeTab} onTabChange={changeTab}>
       {/* 헤더 */}
       <Header
         title="FoodLog"
