@@ -5,7 +5,7 @@ import { useNavigation } from "@/hooks/useNavigation";
 import { Header } from "@/components/ui/common/molecules/Header";
 import { BarChart3 } from "lucide-react";
 
-export default function StatsPage() {
+const StatsPage = () => {
   const { activeTab, changeTab } = useNavigation("stats");
 
   return (
@@ -24,4 +24,6 @@ export default function StatsPage() {
       </div>
     </MainLayout>
   );
-}
+};
+
+export default StatsPage;

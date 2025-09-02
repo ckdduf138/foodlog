@@ -2,6 +2,7 @@ interface HeaderProps {
   title: string;
   subtitle?: string;
   icon?: React.ReactNode;
+  children?: React.ReactNode; // children 속성 추가
   action?: {
     label: string;
     onClick: () => void;
@@ -9,7 +10,13 @@ interface HeaderProps {
   };
 }
 
-export const Header = ({ title, subtitle, icon, action }: HeaderProps) => {
+export const Header = ({
+  title,
+  subtitle,
+  icon,
+  children, // children prop 받기
+  action,
+}: HeaderProps) => {
   return (
     <header className="bg-white shadow-sm border-b border-gray-100 w-full self-stretch">
       <div className="px-4 py-2 w-full">
@@ -34,18 +41,21 @@ export const Header = ({ title, subtitle, icon, action }: HeaderProps) => {
               )}
             </div>
           </div>
-          {action && (
-            <button
-              onClick={action.onClick}
-              className="bg-green-500 hover:bg-green-600 text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-1 sm:gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs sm:text-base flex-shrink-0"
-              style={{ maxWidth: "100%" }}
-            >
-              {action.icon}
-              <span className="hidden xs:inline sm:inline max-w-full truncate">
-                {action.label}
-              </span>
-            </button>
-          )}
+          <div className="flex items-center gap-2">
+            {children}
+            {action && (
+              <button
+                onClick={action.onClick}
+                className="bg-green-500 hover:bg-green-600 text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-1 sm:gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs sm:text-base flex-shrink-0"
+                style={{ maxWidth: "100%" }}
+              >
+                {action.icon}
+                <span className="hidden xs:inline sm:inline max-w-full truncate">
+                  {action.label}
+                </span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </header>

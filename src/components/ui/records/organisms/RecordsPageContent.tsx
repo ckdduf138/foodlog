@@ -1,6 +1,5 @@
 "use client";
 
-import { FoodRecord } from "@/types";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/lib/db";
 import { LoadingSpinner } from "@/components/ui/common/atoms/LoadingSpinner";

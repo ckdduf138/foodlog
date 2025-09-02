@@ -10,7 +10,7 @@ import { FoodRecordsList } from "@/components/ui/records/organisms";
 import { DashboardStats } from "@/components/ui/home/organisms";
 import { useRouter } from "next/navigation";
 
-export default function HomePage() {
+const HomePage = () => {
   const { records, loading, stats } = useFoodRecords();
   const { activeTab, changeTab } = useNavigation("home");
   const router = useRouter();
@@ -53,4 +53,6 @@ export default function HomePage() {
       </div>
     </MainLayout>
   );
-}
+};
+
+export default HomePage;

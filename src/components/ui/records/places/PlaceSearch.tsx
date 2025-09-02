@@ -19,7 +19,7 @@ export type PlaceSelect = {
   longitude?: number;
 };
 
-export default function PlaceSearch({
+const PlaceSearch = ({
   onSelect,
   apiKey,
   placeholder = "가게명이나 주소로 검색",
@@ -27,7 +27,7 @@ export default function PlaceSearch({
   onSelect: (p: PlaceSelect) => void;
   apiKey?: string;
   placeholder?: string;
-}) {
+}) => {
   const [q, setQ] = useState("");
   const [results, setResults] = useState<KakaoPlace[]>([]);
   const [loading, setLoading] = useState(false);
@@ -147,4 +147,4 @@ export default function PlaceSearch({
       </div>
     </div>
   );
-}
+};

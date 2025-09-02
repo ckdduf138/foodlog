@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-export default function SplashPage() {
+const SplashPage = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -19,4 +19,6 @@ export default function SplashPage() {
       </div>
     </div>
   );
-}
+};
+
+export default SplashPage;

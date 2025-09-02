@@ -4,12 +4,11 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { useNavigation } from "@/hooks/useNavigation";
 import { Header } from "@/components/ui/common/molecules/Header";
 import { Settings } from "lucide-react";
-import useTheme, { Theme } from "@/hooks/useTheme";
+import { useTheme } from "next-themes";
+import { Sun, Moon } from "lucide-react";
 
-function ThemeSelector() {
+const ThemeSelector = () => {
   const { theme, setTheme } = useTheme();
-
-  const onChange = (value: Theme) => () => setTheme(value);
 
   return (
     <div
@@ -23,27 +22,29 @@ function ThemeSelector() {
         라이트/다크/시스템 설정을 선택하세요.
       </p>
 
-      <div className="mt-3 grid grid-cols-3 gap-2">
-        {(["light", "dark", "system"] as Theme[]).map((t) => (
-          <button
-            key={t}
-            onClick={onChange(t)}
-            className={`py-2 px-3 rounded-md border transition-colors text-sm font-medium focus-visible:outline-none ${
-              theme === t
-                ? "bg-green-50 border-green-300 text-green-700"
-                : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
-            }`}
-            aria-pressed={theme === t}
-          >
-            {t === "light" ? "라이트" : t === "dark" ? "다크" : "시스템"}
-          </button>
-        ))}
+      <div className="mt-3 flex justify-center gap-2">
+        <button
+          onClick={() => setTheme("light")}
+          className={`p-2 rounded-full ${
+            theme === "light" ? "bg-green-200" : ""
+          }`}
+        >
+          <Sun className="w-5 h-5" />
+        </button>
+        <button
+          onClick={() => setTheme("dark")}
+          className={`p-2 rounded-full ${
+            theme === "dark" ? "bg-gray-700" : ""
+          }`}
+        >
+          <Moon className="w-5 h-5" />
+        </button>
       </div>
     </div>
   );
-}
+};
 
-export default function SettingsPage() {
+const SettingsPage = () => {
   const { activeTab, changeTab } = useNavigation("settings");
 
   return (
@@ -64,4 +65,6 @@ export default function SettingsPage() {
       </div>
     </MainLayout>
   );
-}
+};
+
+export default SettingsPage;

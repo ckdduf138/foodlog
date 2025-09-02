@@ -6,7 +6,7 @@ export type Theme = "light" | "dark" | "system";
 
 const STORAGE_KEY = "foodlog.theme";
 
-export default function useTheme(initial?: Theme) {
+const useTheme = (initial?: Theme) => {
   const [theme, setTheme] = useState<Theme>(() => {
     try {
       if (typeof window === "undefined") return (initial as Theme) || "system";
@@ -42,4 +42,4 @@ export default function useTheme(initial?: Theme) {
   }, [theme]);
 
   return { theme, setTheme } as const;
-}
+};

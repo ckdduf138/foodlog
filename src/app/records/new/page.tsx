@@ -1,34 +1,31 @@
 "use client";
 
 import React, {
-  useCallback,
-  useMemo,
-  useRef,
   useState,
   useEffect,
+  useCallback,
+  useMemo,
   Suspense,
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { MainLayout } from "@/components/layout/MainLayout";
-import { Header } from "@/components/ui/common/molecules/Header";
-import { useFoodRecords } from "@/hooks";
-import { useNavigation } from "@/hooks/useNavigation";
-import { FilePlus, Edit } from "lucide-react";
-import PlaceSearch from "@/components/ui/records/places/PlaceSearch";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/lib/db";
+import { FoodRecordFormData } from "@/types";
+import { MainLayout } from "@/components/layout/MainLayout";
+import { Header } from "@/components/ui/common/molecules/Header";
+import { useNavigation } from "@/hooks/useNavigation";
+import { FilePlus, Edit } from "lucide-react";
+import { RecordForm } from "@/components/ui/records/organisms/RecordForm";
+import { PlaceSelect } from "@/components/ui/records/places/PlaceSearch";
 
-function NewRecordPageContent() {
+const NewRecordPageContent = () => {
   const { activeTab, changeTab } = useNavigation("records");
-  const { actions } = useFoodRecords();
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // 편집 모드 확인
   const isEditMode = searchParams.get("edit") === "true";
   const editRecordId = searchParams.get("id");
 
-  // 편집할 기록 데이터 불러오기
   const editRecord = useLiveQuery(
     () =>
       editRecordId ? db.foodRecords.get(parseInt(editRecordId)) : undefined,
@@ -37,112 +34,104 @@ function NewRecordPageContent() {
 
   const today = useMemo(() => new Date(), []);
   const pad = (n: number) => String(n).padStart(2, "0");
-  const defaultDate = `${today.getFullYear()}-${pad(
-    today.getMonth() + 1
-  )}-${pad(today.getDate())}`;
-  const defaultTime = `${pad(today.getHours())}:${pad(today.getMinutes())}`;
 
-  // minimal state to avoid re-renders; group form state in a ref where possible
-  const [date, setDate] = useState(defaultDate);
-  const [time, setTime] = useState(defaultTime);
-  const [restaurantName, setRestaurantName] = useState("");
-  const [foodName, setFoodName] = useState("");
-  const [category, setCategory] = useState("");
-  const [rating, setRating] = useState(4);
-  const [review, setReview] = useState("");
-  const [price, setPrice] = useState<number | "">("");
+  const [formData, setFormData] = useState<FoodRecordFormData>({
+    date: `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(
+      today.getDate()
+    )}`,
+    time: `${pad(today.getHours())}:${pad(today.getMinutes())}`,
+    restaurantName: "",
+    location: {},
+    foodName: "",
+    category: "",
+    rating: 4,
+    review: "",
+    price: undefined,
+    tags: [],
+  });
 
-  // 편집 모드일 때 기존 데이터로 폼 초기화
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     if (isEditMode && editRecord) {
-      setDate(editRecord.date);
-      setTime(editRecord.time);
-      setRestaurantName(editRecord.restaurantName);
-      setFoodName(editRecord.foodName);
-      setCategory(editRecord.category || "");
-      setRating(editRecord.rating);
-      setReview(editRecord.review);
-      setPrice(editRecord.price || "");
-
-      // 위치 정보 설정
-      locationRef.current = {
-        address: editRecord.location.address,
-        latitude: editRecord.location.latitude,
-        longitude: editRecord.location.longitude,
-        placeId: editRecord.location.placeId,
-        placeName: editRecord.location.placeName,
-      };
+      setFormData({
+        date: editRecord.date,
+        time: editRecord.time,
+        restaurantName: editRecord.restaurantName,
+        location: editRecord.location,
+        foodName: editRecord.foodName,
+        category: editRecord.category || "",
+        rating: editRecord.rating,
+        review: editRecord.review,
+        price: editRecord.price,
+        tags: editRecord.tags || [],
+      });
     }
   }, [isEditMode, editRecord]);
 
-  const locationRef = useRef<{
-    address?: string;
-    latitude?: number;
-    longitude?: number;
-    placeId?: string;
-    placeName?: string;
-  }>({});
-
-  const [submitting, setSubmitting] = useState(false);
-  const [recordError, setRecordError] = useState<string | null>(null);
-
-  const onPlaceSelect = useCallback(
-    (place: {
-      placeId?: string;
-      placeName?: string;
-      address?: string;
-      latitude?: number;
-      longitude?: number;
-    }) => {
-      locationRef.current = {
-        placeId: place.placeId,
-        placeName: place.placeName,
-        address: place.address,
-        latitude: place.latitude,
-        longitude: place.longitude,
-      };
-      if (place.placeName) setRestaurantName(place.placeName);
+  const handleFormChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
+      setFormData((prev) => ({
+        ...prev,
+        [name]:
+          name === "price" ? (value === "" ? undefined : Number(value)) : value,
+      }));
     },
     []
   );
+
+  const handleRatingChange = useCallback((rating: number) => {
+    setFormData((prev) => ({ ...prev, rating }));
+  }, []);
+
+  const handlePlaceSelect = useCallback((place: PlaceSelect) => {
+    setFormData((prev) => ({
+      ...prev,
+      restaurantName: place.placeName || prev.restaurantName,
+      location: {
+        address: place.address,
+        latitude: place.latitude,
+        longitude: place.longitude,
+        placeId: place.placeId,
+        placeName: place.placeName,
+      },
+    }));
+  }, []);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
       setSubmitting(true);
-      setRecordError(null);
+      setError(null);
 
       try {
+        const { photo, ...restOfFormData } = formData;
+
         const recordData = {
-          date,
-          time,
-          restaurantName: restaurantName || "",
+          ...restOfFormData,
           location: {
-            address: locationRef.current.address || "",
-            latitude: locationRef.current.latitude ?? 0,
-            longitude: locationRef.current.longitude ?? 0,
-            placeId: locationRef.current.placeId,
-            placeName: locationRef.current.placeName,
+            address: formData.location.address || "",
+            latitude: formData.location.latitude ?? 0,
+            longitude: formData.location.longitude ?? 0,
+            placeId: formData.location.placeId,
+            placeName: formData.location.placeName,
           },
-          foodName: foodName || "",
-          category: category || "",
-          rating: Number(rating) || 0,
-          review: review || "",
-          price: price === "" ? undefined : Number(price),
         };
 
+        // TODO: Handle photo upload if 'photo' is a File object
+
         if (isEditMode && editRecordId) {
-          // 편집 모드: 기존 기록 업데이트
           await db.foodRecords.update(parseInt(editRecordId), recordData);
         } else {
-          // 새로 추가 모드
-          await actions.addRecord(recordData);
+          await db.foodRecords.add(recordData as any);
         }
 
         router.push("/records");
       } catch (err) {
         console.error(err);
-        setRecordError(
+        setError(
           isEditMode
             ? "기록 수정 중 오류가 발생했습니다."
             : "기록 저장 중 오류가 발생했습니다."
@@ -151,20 +140,7 @@ function NewRecordPageContent() {
         setSubmitting(false);
       }
     },
-    [
-      actions,
-      date,
-      time,
-      restaurantName,
-      foodName,
-      category,
-      rating,
-      review,
-      price,
-      router,
-      isEditMode,
-      editRecordId,
-    ]
+    [formData, router, isEditMode, editRecordId]
   );
 
   return (
@@ -184,126 +160,28 @@ function NewRecordPageContent() {
       />
 
       <div className="w-full px-4 py-6">
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
-          <div className="grid grid-cols-2 gap-2">
-            <label className="flex flex-col text-sm">
-              날짜
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="mt-1 p-2 border rounded"
-                required
-              />
-            </label>
-            <label className="flex flex-col text-sm">
-              시간
-              <input
-                type="time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                className="mt-1 p-2 border rounded"
-                required
-              />
-            </label>
-          </div>
-
-          {/* PlaceSearch moved to separate component */}
-          <PlaceSearch onSelect={onPlaceSelect} />
-
-          <label className="flex flex-col text-sm">
-            가게명
-            <input
-              value={restaurantName}
-              onChange={(e) => setRestaurantName(e.target.value)}
-              placeholder="가게명을 직접 입력하거나 검색에서 선택하세요"
-              className="mt-1 p-2 border rounded"
-            />
-          </label>
-
-          <label className="flex flex-col text-sm">
-            음식명
-            <input
-              value={foodName}
-              onChange={(e) => setFoodName(e.target.value)}
-              className="mt-1 p-2 border rounded"
-            />
-          </label>
-
-          <label className="flex flex-col text-sm">
-            카테고리
-            <input
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="mt-1 p-2 border rounded"
-            />
-          </label>
-
-          <div className="grid grid-cols-2 gap-2">
-            <label className="flex flex-col text-sm">
-              평점 (0-5)
-              <input
-                type="number"
-                min={0}
-                max={5}
-                value={rating}
-                onChange={(e) => setRating(Number(e.target.value))}
-                className="mt-1 p-2 border rounded"
-              />
-            </label>
-            <label className="flex flex-col text-sm">
-              가격
-              <input
-                type="number"
-                value={price === "" ? "" : price}
-                onChange={(e) =>
-                  setPrice(e.target.value === "" ? "" : Number(e.target.value))
-                }
-                className="mt-1 p-2 border rounded"
-              />
-            </label>
-          </div>
-
-          <label className="flex flex-col text-sm">
-            리뷰
-            <textarea
-              value={review}
-              onChange={(e) => setReview(e.target.value)}
-              className="mt-1 p-2 border rounded"
-              rows={4}
-            />
-          </label>
-
-          {recordError ? (
-            <div className="text-sm text-red-600">{recordError}</div>
-          ) : null}
-
-          <div className="flex justify-between">
-            <button
-              type="button"
-              onClick={() => router.back()}
-              className="px-4 py-2 rounded border"
-            >
-              취소
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 rounded bg-green-600 text-white"
-              disabled={submitting}
-            >
-              {submitting ? "저장중..." : "저장"}
-            </button>
-          </div>
-        </form>
+        <RecordForm
+          formData={formData}
+          onFormChange={handleFormChange}
+          onRatingChange={handleRatingChange}
+          onPlaceSelect={handlePlaceSelect}
+          onSubmit={handleSubmit}
+          onCancel={() => router.back()}
+          isSubmitting={submitting}
+          error={error}
+          isEditMode={isEditMode}
+        />
       </div>
     </MainLayout>
   );
-}
+};
 
-export default function NewRecordPage() {
+const NewRecordPage = () => {
   return (
     <Suspense fallback={<div>로딩 중...</div>}>
       <NewRecordPageContent />
     </Suspense>
   );
-}
+};
+
+export default NewRecordPage;
