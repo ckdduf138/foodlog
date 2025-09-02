@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Star } from "lucide-react";
 
 interface ProgressStarRatingProps {
@@ -16,6 +16,7 @@ export const ProgressStarRating: React.FC<ProgressStarRatingProps> = ({
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
 
   const calculateRatingFromPosition = useCallback(
     (clientX: number, rect: DOMRect) => {
@@ -30,19 +31,31 @@ export const ProgressStarRating: React.FC<ProgressStarRatingProps> = ({
 
   const updateRating = useCallback(
     (clientX: number) => {
-      if (sliderRef.current) {
-        const rect = sliderRef.current.getBoundingClientRect();
-        const newRating = calculateRatingFromPosition(clientX, rect);
-        onChange(newRating);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
       }
+      animationFrameRef.current = requestAnimationFrame(() => {
+        if (sliderRef.current) {
+          const rect = sliderRef.current.getBoundingClientRect();
+          const newRating = calculateRatingFromPosition(clientX, rect);
+          onChange(newRating);
+        }
+      });
     },
     [calculateRatingFromPosition, onChange]
   );
 
+  useEffect(() => {
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, []);
+
   // 마우스 이벤트
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
-      e.preventDefault();
       setIsDragging(true);
       updateRating(e.clientX);
 
@@ -64,7 +77,6 @@ export const ProgressStarRating: React.FC<ProgressStarRatingProps> = ({
 
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
-      e.preventDefault();
       updateRating(e.clientX);
     },
     [updateRating]
@@ -73,13 +85,11 @@ export const ProgressStarRating: React.FC<ProgressStarRatingProps> = ({
   // 터치 이벤트
   const handleTouchStart = useCallback(
     (e: React.TouchEvent) => {
-      e.preventDefault();
       setIsDragging(true);
       const touch = e.touches[0];
       updateRating(touch.clientX);
 
       const handleTouchMove = (e: TouchEvent) => {
-        e.preventDefault();
         const touch = e.touches[0];
         updateRating(touch.clientX);
       };
@@ -90,9 +100,7 @@ export const ProgressStarRating: React.FC<ProgressStarRatingProps> = ({
         document.removeEventListener("touchend", handleTouchEnd);
       };
 
-      document.addEventListener("touchmove", handleTouchMove, {
-        passive: false,
-      });
+      document.addEventListener("touchmove", handleTouchMove);
       document.addEventListener("touchend", handleTouchEnd);
     },
     [updateRating]
@@ -106,32 +114,35 @@ export const ProgressStarRating: React.FC<ProgressStarRatingProps> = ({
         <div
           ref={sliderRef}
           className="relative h-3 bg-gray-200 rounded-full cursor-pointer select-none touch-none"
+          onMouseDown={handleMouseDown}
           onClick={handleClick}
           onTouchStart={handleTouchStart}
         >
           {/* 채워진 트랙 - 연한 노란색에서 진한 노란색 그라데이션 */}
           <div
-            className="h-full bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-full transition-all duration-200"
+            className="h-full bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-full"
             style={{ width: `${(rating / maxRating) * 100}%` }}
           />
         </div>
 
         {/* 별 모양 썸 (커서) */}
         <div
-          className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 z-10 transition-all duration-150 cursor-grab active:cursor-grabbing touch-none"
+          className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 z-10 ${
+            isDragging ? "" : "transition-transform duration-150"
+          } cursor-grab active:cursor-grabbing touch-none`}
           style={{
-            left: `${Math.max(4, Math.min(96, (rating / maxRating) * 100))}%`,
+            left: `${(rating / maxRating) * 100}%`,
           }}
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
         >
           <div
-            className={`transition-all duration-200 ${
+            className={`transition-transform duration-200 ${
               isDragging ? "scale-110" : "hover:scale-105"
             }`}
           >
             <Star
-              className={`w-8 h-8 text-yellow-500 fill-current drop-shadow-md ${
+              className={`w-8 h-8 text-yellow-500 fill-current drop-shadow-md transition-colors duration-200 ${
                 isDragging ? "text-yellow-600" : ""
               }`}
             />

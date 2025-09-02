@@ -41,7 +41,7 @@ export const Step2FoodInfo: React.FC<Step2FoodInfoProps> = ({
         <label className="block text-base font-semibold text-gray-900">
           평점을 남겨주세요
         </label>
-        <div className=" rounded-2xl p-6">
+        <div className=" rounded-2xl p-2">
           <ProgressStarRating
             rating={formData.rating}
             onChange={onRatingChange}
