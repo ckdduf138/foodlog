@@ -7,5 +7,9 @@ export * from "./atoms";
 // Molecules
 export * from "./molecules";
 
-// Organisms
-export * from "./organisms";
+// Home Feature Components
+export * from "./home/organisms";
+
+// Records Feature Components
+export * from "./records/organisms";
+export * from "./records/molecules";

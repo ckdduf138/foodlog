@@ -3,7 +3,7 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { Header } from "@/components/ui/molecules";
+import { Header } from "@/components/ui/molecules/Header";
 import { useFoodRecords } from "@/hooks";
 import { useNavigation } from "@/hooks/useNavigation";
 import { FilePlus } from "lucide-react";

@@ -2,11 +2,12 @@
 
 import { UtensilsCrossed } from "lucide-react";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { Header } from "@/components/ui/molecules";
+import { Header } from "@/components/ui/molecules/Header";
 import { useFoodRecords } from "@/hooks";
 import { useNavigation } from "@/hooks/useNavigation";
-import { FoodRecord } from "@/lib/db";
-import { DashboardStats, FoodRecordsList } from "@/components/ui/organisms";
+import { FoodRecord } from "@/types";
+import { FoodRecordsList } from "@/components/ui/records/organisms";
+import { DashboardStats } from "@/components/ui/home/organisms";
 
 export default function HomePage() {
   const { records, loading, stats } = useFoodRecords();

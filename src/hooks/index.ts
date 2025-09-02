@@ -1,6 +1,7 @@
 // 커스텀 훅들 (비즈니스 로직 분리)
 import { useState, useEffect, useMemo } from "react";
-import { db, FoodRecord } from "@/lib/db";
+import { db } from "@/lib/db";
+import { FoodRecord } from "@/types";
 
 // 음식 기록 관리 훅
 export const useFoodRecords = () => {
