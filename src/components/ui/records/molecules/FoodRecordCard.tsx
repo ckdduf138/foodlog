@@ -1,5 +1,5 @@
-import { MapPin, Calendar, Clock } from "lucide-react";
-import { StarRating, Badge } from "@/components/ui/common/atoms";
+import { MapPin } from "lucide-react";
+import { StarRating } from "@/components/ui/common/atoms";
 import { FoodRecord } from "@/types";
 import { useRouter } from "next/navigation";
 
@@ -27,83 +27,67 @@ export const FoodRecordCard = ({
 
   return (
     <div
-      className={`bg-white border border-gray-100 rounded-xl hover:shadow-md transition-all duration-200 cursor-pointer hover:border-green-200 ${
-        isCompact ? "p-3" : "p-3 sm:p-4"
+      className={`bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer ${
+        isCompact ? "p-3" : "p-4"
       }`}
       onClick={handleClick}
     >
-      <div className="flex justify-between items-start mb-2 sm:mb-3">
-        <div className="flex-1 min-w-0">
+      {/* 상단: 음식명, 식당명 + 우측 별점, 사진 */}
+      <div className="flex justify-between items-start mb-3">
+        <div className="flex-1 min-w-0 pr-3">
           <h3
-            className={`font-semibold text-gray-900 mb-1 truncate ${
-              isCompact ? "text-sm" : "text-sm sm:text-base"
+            className={`font-bold text-gray-900 leading-tight mb-1 ${
+              isCompact ? "text-sm" : "text-base"
             }`}
           >
             {record.foodName}
           </h3>
           <p
-            className={`text-gray-600 truncate ${
-              isCompact ? "text-xs" : "text-xs sm:text-sm"
+            className={`text-gray-500 font-medium ${
+              isCompact ? "text-xs" : "text-sm"
             }`}
           >
             {record.restaurantName}
           </p>
         </div>
-        <div className="flex-shrink-0 ml-2">
-          <StarRating rating={record.rating} size={isCompact ? "sm" : "sm"} />
+
+        {/* 우측: 별점 + 사진 */}
+        <div className="flex flex-col items-end gap-2 flex-shrink-0">
+          <StarRating rating={record.rating} size="sm" />
+          {record.photo && (
+            <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm border border-gray-100">
+              <img
+                src={record.photo}
+                alt="Food preview"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="space-y-1 mb-2 sm:mb-3">
-        <div className="flex items-center gap-1.5 text-gray-500 min-w-0">
-          <MapPin className={isCompact ? "w-3 h-3" : "w-3 h-3 sm:w-4 sm:h-4"} />
+      {/* 하단: 위치 & 가격 */}
+      <div className="flex items-center justify-between pt-2 border-t border-gray-50">
+        <div className="flex items-center gap-1.5 text-gray-400 min-w-0 flex-1 mr-3">
+          <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
           <span
-            className={`truncate ${
-              isCompact ? "text-xs" : "text-xs sm:text-sm"
+            className={`truncate font-medium ${
+              isCompact ? "text-xs" : "text-xs"
             }`}
           >
             {record.location.address}
           </span>
         </div>
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="flex items-center gap-1.5 text-gray-500">
-            <Calendar
-              className={isCompact ? "w-3 h-3" : "w-3 h-3 sm:w-4 sm:h-4"}
-            />
-            <span className={isCompact ? "text-xs" : "text-xs sm:text-sm"}>
-              {record.date}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 text-gray-500">
-            <Clock
-              className={isCompact ? "w-3 h-3" : "w-3 h-3 sm:w-4 sm:h-4"}
-            />
-            <span className={isCompact ? "text-xs" : "text-xs sm:text-sm"}>
-              {record.time}
-            </span>
-          </div>
+        <div
+          className={`text-right flex-shrink-0 ${
+            isCompact ? "text-sm" : "text-base"
+          }`}
+        >
+          <span className="text-green-600 font-bold">
+            ₩{record.price?.toLocaleString() || "0"}
+          </span>
         </div>
       </div>
-
-      {record.review && (
-        <div className="bg-gray-50 rounded-lg p-2 sm:p-3 mt-2 sm:mt-3">
-          <p
-            className={`text-gray-700 italic line-clamp-2 ${
-              isCompact ? "text-xs" : "text-xs sm:text-sm"
-            }`}
-          >
-            {record.review}
-          </p>
-        </div>
-      )}
-
-      {record.photo && (
-        <div className="mt-2 sm:mt-3">
-          <Badge variant="success" size="sm">
-            사진 있음
-          </Badge>
-        </div>
-      )}
     </div>
   );
 };

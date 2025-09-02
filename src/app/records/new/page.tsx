@@ -64,6 +64,7 @@ const NewRecordPageContent = () => {
         category: editRecord.category || "",
         rating: editRecord.rating,
         review: editRecord.review,
+        photo: editRecord.photo,
         price: editRecord.price,
         tags: editRecord.tags || [],
       });
@@ -73,11 +74,28 @@ const NewRecordPageContent = () => {
   const handleFormChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target;
-      setFormData((prev) => ({
-        ...prev,
-        [name]:
-          name === "price" ? (value === "" ? undefined : Number(value)) : value,
-      }));
+
+      if (
+        name === "photo" &&
+        e.target instanceof HTMLInputElement &&
+        e.target.files
+      ) {
+        const file = e.target.files[0];
+        setFormData((prev) => ({
+          ...prev,
+          photo: file,
+        }));
+      } else {
+        setFormData((prev) => ({
+          ...prev,
+          [name]:
+            name === "price"
+              ? value === ""
+                ? undefined
+                : Number(value)
+              : value,
+        }));
+      }
     },
     []
   );
@@ -111,10 +129,27 @@ const NewRecordPageContent = () => {
       setError(null);
 
       try {
-        const { photo, ...restOfFormData } = formData;
+        let photoData: string | undefined = undefined;
+
+        // 사진이 File 객체인 경우 base64로 변환하여 저장
+        if (formData.photo && typeof formData.photo !== "string") {
+          console.log("Converting File to base64:", formData.photo);
+          const reader = new FileReader();
+          photoData = await new Promise<string>((resolve) => {
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.readAsDataURL(formData.photo as File);
+          });
+          console.log("Photo converted to base64, length:", photoData.length);
+        } else if (typeof formData.photo === "string") {
+          photoData = formData.photo;
+          console.log("Using existing photo string, length:", photoData.length);
+        } else {
+          console.log("No photo to save");
+        }
 
         const recordData = {
-          ...restOfFormData,
+          ...formData,
+          photo: photoData,
           location: {
             address: formData.location.address || "",
             latitude: formData.location.latitude ?? 0,
@@ -124,7 +159,7 @@ const NewRecordPageContent = () => {
           },
         };
 
-        // TODO: Handle photo upload if 'photo' is a File object
+        console.log("Saving record with photo:", !!recordData.photo);
 
         if (isEditMode && editRecordId) {
           await db.foodRecords.update(parseInt(editRecordId), recordData);

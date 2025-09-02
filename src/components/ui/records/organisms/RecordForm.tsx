@@ -108,15 +108,71 @@ export const RecordForm = ({
     }
   };
 
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const resizeImage = (
+    file: File,
+    maxWidth: number = 1080,
+    maxHeight: number = 1080,
+    quality: number = 0.8
+  ): Promise<string> => {
+    return new Promise((resolve) => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      const img = new Image();
+
+      img.onload = () => {
+        // 원본 비율 유지하면서 최대 크기 제한
+        let { width, height } = img;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = (width * maxHeight) / height;
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx?.drawImage(img, 0, 0, width, height);
+
+        // JPEG로 압축하여 용량 최적화
+        const dataUrl = canvas.toDataURL("image/jpeg", quality);
+        resolve(dataUrl);
+      };
+
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
+  const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     onFormChange(e);
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhotoPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+
+      // 파일 크기 체크 (10MB 제한)
+      if (file.size > 10 * 1024 * 1024) {
+        alert("사진 크기가 너무 큽니다. 10MB 이하의 사진을 선택해주세요.");
+        return;
+      }
+
+      try {
+        // 모바일 최적화된 해상도로 리사이즈
+        const resizedDataUrl = await resizeImage(file, 1080, 1080, 0.8);
+        setPhotoPreview(resizedDataUrl);
+      } catch (error) {
+        console.error("이미지 처리 중 오류:", error);
+        // 오류 시 원본 이미지 사용
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPhotoPreview(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
     } else {
       setPhotoPreview(null);
     }
@@ -147,7 +203,13 @@ export const RecordForm = ({
           />
         );
       case 5:
-        return <Step5Confirm formData={formData} error={error} />;
+        return (
+          <Step5Confirm
+            formData={formData}
+            error={error}
+            photoPreview={photoPreview}
+          />
+        );
       default:
         return null;
     }

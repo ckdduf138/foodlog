@@ -18,17 +18,31 @@ export const Step4Photo: React.FC<Step4PhotoProps> = ({
         </label>
 
         <div className="relative group">
-          <div className="border-2 border-dashed border-gray-300 rounded-3xl p-8 text-center hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-300 group-hover:scale-[1.02]">
-            <input
-              type="file"
-              name="photo"
-              accept="image/*"
-              onChange={onFormChange}
-              className="hidden"
-              id="photo-upload"
-            />
-            <label htmlFor="photo-upload" className="cursor-pointer">
-              <div className="space-y-3">
+          <input
+            type="file"
+            name="photo"
+            accept="image/*"
+            onChange={onFormChange}
+            className="hidden"
+            id="photo-upload"
+          />
+          <label
+            htmlFor="photo-upload"
+            className="cursor-pointer block border-2 border-dashed border-gray-300 rounded-3xl text-center hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-300 group-hover:scale-[1.02] overflow-hidden"
+          >
+            {photoPreview ? (
+              <div className="relative w-full aspect-square max-h-64">
+                <img
+                  src={photoPreview}
+                  alt="Selected food"
+                  className="w-full h-full object-cover rounded-2xl"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl">
+                  <p className="text-white font-semibold">사진 변경하기</p>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3 py-8">
                 <div className="w-10 h-10 mx-auto bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <UploadCloud className="w-5 h-5 text-white" />
                 </div>
@@ -41,8 +55,8 @@ export const Step4Photo: React.FC<Step4PhotoProps> = ({
                   </p>
                 </div>
               </div>
-            </label>
-          </div>
+            )}
+          </label>
         </div>
       </div>
 
