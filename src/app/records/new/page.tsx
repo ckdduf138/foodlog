@@ -1,18 +1,39 @@
 "use client";
 
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import React, {
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+  Suspense,
+} from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { Header } from "@/components/ui/molecules/Header";
+import { Header } from "@/components/ui/common/molecules/Header";
 import { useFoodRecords } from "@/hooks";
 import { useNavigation } from "@/hooks/useNavigation";
-import { FilePlus } from "lucide-react";
-import PlaceSearch from "@/components/places/PlaceSearch";
+import { FilePlus, Edit } from "lucide-react";
+import PlaceSearch from "@/components/ui/records/places/PlaceSearch";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/lib/db";
 
-export default function NewRecordPage() {
+function NewRecordPageContent() {
   const { activeTab, changeTab } = useNavigation("records");
   const { actions } = useFoodRecords();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // 편집 모드 확인
+  const isEditMode = searchParams.get("edit") === "true";
+  const editRecordId = searchParams.get("id");
+
+  // 편집할 기록 데이터 불러오기
+  const editRecord = useLiveQuery(
+    () =>
+      editRecordId ? db.foodRecords.get(parseInt(editRecordId)) : undefined,
+    [editRecordId]
+  );
 
   const today = useMemo(() => new Date(), []);
   const pad = (n: number) => String(n).padStart(2, "0");
@@ -30,6 +51,29 @@ export default function NewRecordPage() {
   const [rating, setRating] = useState(4);
   const [review, setReview] = useState("");
   const [price, setPrice] = useState<number | "">("");
+
+  // 편집 모드일 때 기존 데이터로 폼 초기화
+  useEffect(() => {
+    if (isEditMode && editRecord) {
+      setDate(editRecord.date);
+      setTime(editRecord.time);
+      setRestaurantName(editRecord.restaurantName);
+      setFoodName(editRecord.foodName);
+      setCategory(editRecord.category || "");
+      setRating(editRecord.rating);
+      setReview(editRecord.review);
+      setPrice(editRecord.price || "");
+
+      // 위치 정보 설정
+      locationRef.current = {
+        address: editRecord.location.address,
+        latitude: editRecord.location.latitude,
+        longitude: editRecord.location.longitude,
+        placeId: editRecord.location.placeId,
+        placeName: editRecord.location.placeName,
+      };
+    }
+  }, [isEditMode, editRecord]);
 
   const locationRef = useRef<{
     address?: string;
@@ -69,7 +113,7 @@ export default function NewRecordPage() {
       setRecordError(null);
 
       try {
-        await actions.addRecord({
+        const recordData = {
           date,
           time,
           restaurantName: restaurantName || "",
@@ -85,12 +129,24 @@ export default function NewRecordPage() {
           rating: Number(rating) || 0,
           review: review || "",
           price: price === "" ? undefined : Number(price),
-        });
+        };
+
+        if (isEditMode && editRecordId) {
+          // 편집 모드: 기존 기록 업데이트
+          await db.foodRecords.update(parseInt(editRecordId), recordData);
+        } else {
+          // 새로 추가 모드
+          await actions.addRecord(recordData);
+        }
 
         router.push("/records");
       } catch (err) {
         console.error(err);
-        setRecordError("기록 저장 중 오류가 발생했습니다.");
+        setRecordError(
+          isEditMode
+            ? "기록 수정 중 오류가 발생했습니다."
+            : "기록 저장 중 오류가 발생했습니다."
+        );
       } finally {
         setSubmitting(false);
       }
@@ -106,15 +162,25 @@ export default function NewRecordPage() {
       review,
       price,
       router,
+      isEditMode,
+      editRecordId,
     ]
   );
 
   return (
     <MainLayout activeTab={activeTab} onTabChange={changeTab}>
       <Header
-        title="기록 추가"
-        subtitle="새로운 음식 기록을 추가하세요"
-        icon={<FilePlus className="w-6 h-6" />}
+        title={isEditMode ? "기록 수정" : "기록 추가"}
+        subtitle={
+          isEditMode ? "기록을 수정하세요" : "새로운 음식 기록을 추가하세요"
+        }
+        icon={
+          isEditMode ? (
+            <Edit className="w-6 h-6" />
+          ) : (
+            <FilePlus className="w-6 h-6" />
+          )
+        }
       />
 
       <div className="w-full px-4 py-6">
@@ -231,5 +297,13 @@ export default function NewRecordPage() {
         </form>
       </div>
     </MainLayout>
+  );
+}
+
+export default function NewRecordPage() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <NewRecordPageContent />
+    </Suspense>
   );
 }

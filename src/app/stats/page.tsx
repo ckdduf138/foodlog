@@ -2,7 +2,7 @@
 
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useNavigation } from "@/hooks/useNavigation";
-import { Header } from "@/components/ui/molecules/Header";
+import { Header } from "@/components/ui/common/molecules/Header";
 import { BarChart3 } from "lucide-react";
 
 export default function StatsPage() {

@@ -11,8 +11,8 @@ interface HeaderProps {
 
 export const Header = ({ title, subtitle, icon, action }: HeaderProps) => {
   return (
-    <header className="bg-white shadow-sm border-b border-gray-100 w-full self-stretch h-16 sm:h-20">
-      <div className="px-4 py-2 sm:py-4 w-full h-full flex items-center">
+    <header className="bg-white shadow-sm border-b border-gray-100 w-full self-stretch">
+      <div className="px-4 py-2 w-full">
         <div className="flex items-center justify-between w-full gap-2 min-w-0">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 max-w-full">
             {icon && (

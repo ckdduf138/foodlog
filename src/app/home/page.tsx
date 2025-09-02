@@ -2,25 +2,25 @@
 
 import { UtensilsCrossed } from "lucide-react";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { Header } from "@/components/ui/molecules/Header";
+import { Header } from "@/components/ui/common/molecules/Header";
 import { useFoodRecords } from "@/hooks";
 import { useNavigation } from "@/hooks/useNavigation";
 import { FoodRecord } from "@/types";
 import { FoodRecordsList } from "@/components/ui/records/organisms";
 import { DashboardStats } from "@/components/ui/home/organisms";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
   const { records, loading, stats } = useFoodRecords();
   const { activeTab, changeTab } = useNavigation("home");
+  const router = useRouter();
 
   const handleAddRecord = () => {
-    // TODO: 기록 추가 페이지로 이동
-    console.log("기록 추가 페이지로 이동");
+    router.push("/records/new");
   };
 
   const handleRecordClick = (record: FoodRecord) => {
-    // TODO: 기록 상세 페이지로 이동
-    console.log("기록 상세:", record);
+    router.push(`/records/${record.id}`);
   };
 
   return (
@@ -33,7 +33,7 @@ export default function HomePage() {
       />
 
       {/* 메인 컨텐츠 */}
-      <div className="px-0 sm:px-0 py-2 sm:py-4 space-y-3 sm:space-y-6 w-full flex flex-col items-stretch">
+      <div className="px-0 py-4 space-y-3 sm:space-y-6 w-full flex flex-col items-stretch">
         {/* 통계 대시보드 */}
         <DashboardStats
           totalRecords={stats.totalRecords}

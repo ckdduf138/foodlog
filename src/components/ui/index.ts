@@ -2,10 +2,10 @@
 // Atomic Design Pattern을 따라 계층별로 export
 
 // Atoms
-export * from "./atoms";
+export * from "./common/atoms";
 
 // Molecules
-export * from "./molecules";
+export * from "./common/molecules";
 
 // Home Feature Components
 export * from "./home/organisms";

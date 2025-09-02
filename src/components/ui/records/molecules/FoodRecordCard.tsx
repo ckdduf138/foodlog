@@ -1,6 +1,7 @@
 import { MapPin, Calendar, Clock } from "lucide-react";
-import { StarRating, Badge } from "@/components/ui/atoms";
+import { StarRating, Badge } from "@/components/ui/common/atoms";
 import { FoodRecord } from "@/types";
+import { useRouter } from "next/navigation";
 
 interface FoodRecordCardProps {
   record: FoodRecord;
@@ -13,14 +14,23 @@ export const FoodRecordCard = ({
   onClick,
   variant = "default",
 }: FoodRecordCardProps) => {
+  const router = useRouter();
   const isCompact = variant === "compact";
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick(record);
+    } else {
+      router.push(`/records/${record.id}`);
+    }
+  };
 
   return (
     <div
       className={`bg-white border border-gray-100 rounded-xl hover:shadow-md transition-all duration-200 cursor-pointer hover:border-green-200 ${
         isCompact ? "p-3" : "p-3 sm:p-4"
       }`}
-      onClick={() => onClick?.(record)}
+      onClick={handleClick}
     >
       <div className="flex justify-between items-start mb-2 sm:mb-3">
         <div className="flex-1 min-w-0">
