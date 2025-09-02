@@ -1,0 +1,46 @@
+import React from "react";
+import { FoodRecordFormData } from "@/types";
+import { Info } from "lucide-react";
+
+interface Step3ReviewProps {
+  formData: FoodRecordFormData;
+  onFormChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+}
+
+export const Step3Review: React.FC<Step3ReviewProps> = ({
+  formData,
+  onFormChange,
+}) => {
+  return (
+    <div className="space-y-4">
+      <div className="space-y-3">
+        <label className="block text-base font-semibold text-gray-900">
+          음식에 대한 솔직한 후기를 남겨주세요
+        </label>
+        <div className="relative">
+          <textarea
+            name="review"
+            value={formData.review}
+            onChange={onFormChange}
+            placeholder="맛있었던 점, 아쉬웠던 점 등을 자유롭게 적어보세요..."
+            className="w-full p-4 text-base bg-white border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all duration-200 resize-none placeholder-gray-400"
+            rows={5}
+          />
+        </div>
+      </div>
+
+      <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-3 border border-purple-100">
+        <div className="flex items-center space-x-3">
+          <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+            <Info className="w-3 h-3 text-white" />
+          </div>
+          <p className="text-sm text-purple-700 font-medium">
+            리뷰는 나중에 추가하거나 수정할 수도 있어요
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};

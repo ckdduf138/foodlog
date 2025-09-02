@@ -190,23 +190,23 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
         strategy="afterInteractive"
         onLoad={onLoadKakaoMap}
       />
-      <div className="relative mb-4">
+      <div className="relative mb-3">
         <input
           type="text"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="음식점, 카페 등 장소를 검색하세요"
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-200"
           onFocus={() => {
             if (places.length > 0) setShowDropdown(true);
           }}
         />
         {showDropdown && places.length > 0 && (
-          <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-b shadow-lg z-10 max-h-60 overflow-y-auto">
+          <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-b-xl shadow-lg z-10 max-h-48 overflow-y-auto">
             {places.map((place, index) => (
               <div
                 key={place.id}
-                className="p-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0"
+                className="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"
                 onClick={() => {
                   handlePlaceClick(place, index);
                   handlePlaceSelect(place);
@@ -232,7 +232,7 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
           </div>
         )}
       </div>
-      <div ref={mapContainer} style={{ width: "100%", height: "400px" }} />
+      <div ref={mapContainer} className="w-full h-[40vh] rounded-xl" />
     </div>
   );
 };

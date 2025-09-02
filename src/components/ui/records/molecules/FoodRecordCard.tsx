@@ -92,7 +92,7 @@ export const FoodRecordCard = ({
               isCompact ? "text-xs" : "text-xs sm:text-sm"
             }`}
           >
-            &quot;{record.review}&quot;
+            {record.review}
           </p>
         </div>
       )}
@@ -100,7 +100,7 @@ export const FoodRecordCard = ({
       {record.photo && (
         <div className="mt-2 sm:mt-3">
           <Badge variant="success" size="sm">
-            📷 사진 있음
+            사진 있음
           </Badge>
         </div>
       )}
