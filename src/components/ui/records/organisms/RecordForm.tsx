@@ -18,6 +18,7 @@ interface RecordFormProps {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   onRatingChange: (rating: number) => void;
+  onPriceChange: (price: number | undefined) => void;
   onPlaceSelect: (place: PlaceSelect) => void;
   onSubmit: (e: React.FormEvent) => void;
   onCancel: () => void;
@@ -58,6 +59,7 @@ export const RecordForm = ({
   formData,
   onFormChange,
   onRatingChange,
+  onPriceChange,
   onPlaceSelect,
   onSubmit,
   onCancel,
@@ -132,6 +134,7 @@ export const RecordForm = ({
             formData={formData}
             onFormChange={onFormChange}
             onRatingChange={onRatingChange}
+            onPriceChange={onPriceChange}
           />
         );
       case 3:
@@ -174,55 +177,52 @@ export const RecordForm = ({
       </div>
 
       {/* Content Container */}
-      <div className="px-4 py-2">
-        {/* Step Header */}
-        <div className="text-center mb-4">
-          <h1 className="text-lg font-bold text-gray-900 mb-1">
-            {STEPS[currentStep - 1].title}
-          </h1>
-          <p className="text-gray-600 text-sm">
-            {STEPS[currentStep - 1].subtitle}
-          </p>
-        </div>
+      <div className="text-center mb-4">
+        <h1 className="text-lg font-bold text-gray-900 mb-1">
+          {STEPS[currentStep - 1].title}
+        </h1>
+        <p className="text-gray-600 text-sm">
+          {STEPS[currentStep - 1].subtitle}
+        </p>
+      </div>
 
-        {/* Step Content */}
-        <div
-          className={`${
-            currentStep === 1 ? "min-h-[50vh]" : "min-h-[400px]"
-          } flex items-start`}
-        >
-          <div className="w-full">{renderStepContent()}</div>
-        </div>
+      {/* Step Content */}
+      <div
+        className={`${
+          currentStep === 1 ? "min-h-[50vh]" : "min-h-[400px]"
+        } flex items-start`}
+      >
+        <div className="w-full">{renderStepContent()}</div>
+      </div>
 
-        {/* Navigation */}
-        <div className="mt-3">
-          {currentStep < STEPS.length ? (
-            <button
-              type="button"
-              onClick={nextStep}
-              disabled={!canProceedFromCurrentStep()}
-              className="w-full py-3 px-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-            >
-              다음
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={onSubmit}
-              disabled={isSubmitting}
-              className="w-full py-3 px-6 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl disabled:from-gray-300 disabled:to-gray-400 transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-            >
-              {isSubmitting ? (
-                <div className="flex items-center justify-center">
-                  <Loader2 className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
-                  저장 중...
-                </div>
-              ) : (
-                "완료"
-              )}
-            </button>
-          )}
-        </div>
+      {/* Navigation */}
+      <div className="mt-3">
+        {currentStep < STEPS.length ? (
+          <button
+            type="button"
+            onClick={nextStep}
+            disabled={!canProceedFromCurrentStep()}
+            className="w-full py-3 px-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+          >
+            다음
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={onSubmit}
+            disabled={isSubmitting}
+            className="w-full py-3 px-6 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl disabled:from-gray-300 disabled:to-gray-400 transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+          >
+            {isSubmitting ? (
+              <div className="flex items-center justify-center">
+                <Loader2 className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
+                저장 중...
+              </div>
+            ) : (
+              "완료"
+            )}
+          </button>
+        )}
       </div>
     </div>
   );

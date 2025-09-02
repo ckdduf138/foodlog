@@ -16,9 +16,6 @@ export const Step3Review: React.FC<Step3ReviewProps> = ({
   return (
     <div className="space-y-4">
       <div className="space-y-3">
-        <label className="block text-base font-semibold text-gray-900">
-          음식에 대한 솔직한 후기를 남겨주세요
-        </label>
         <div className="relative">
           <textarea
             name="review"
@@ -33,8 +30,8 @@ export const Step3Review: React.FC<Step3ReviewProps> = ({
 
       <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-3 border border-purple-100">
         <div className="flex items-center space-x-3">
-          <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
-            <Info className="w-3 h-3 text-white" />
+          <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+            <Info className="w-4 h-4 text-white" />
           </div>
           <p className="text-sm text-purple-700 font-medium">
             리뷰는 나중에 추가하거나 수정할 수도 있어요

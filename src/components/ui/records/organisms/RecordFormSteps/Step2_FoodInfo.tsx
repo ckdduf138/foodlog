@@ -1,6 +1,6 @@
 import React from "react";
 import { FoodRecordFormData } from "@/types";
-import { StarRating } from "@/components/ui/common/atoms";
+import { ProgressStarRating, PriceInput } from "@/components/ui/common/atoms";
 
 interface Step2FoodInfoProps {
   formData: FoodRecordFormData;
@@ -8,12 +8,14 @@ interface Step2FoodInfoProps {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   onRatingChange: (rating: number) => void;
+  onPriceChange: (price: number | undefined) => void;
 }
 
 export const Step2FoodInfo: React.FC<Step2FoodInfoProps> = ({
   formData,
   onFormChange,
   onRatingChange,
+  onPriceChange,
 }) => {
   return (
     <div className="space-y-6">
@@ -39,20 +41,11 @@ export const Step2FoodInfo: React.FC<Step2FoodInfoProps> = ({
         <label className="block text-base font-semibold text-gray-900">
           평점을 남겨주세요
         </label>
-        <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-4 border border-yellow-100">
-          <div className="flex justify-center py-1">
-            <StarRating
-              rating={formData.rating}
-              onChange={onRatingChange}
-              size="lg"
-              readonly={false}
-            />
-          </div>
-          <div className="text-center mt-2">
-            <span className="text-xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
-              {formData.rating}/5
-            </span>
-          </div>
+        <div className=" rounded-2xl p-6">
+          <ProgressStarRating
+            rating={formData.rating}
+            onChange={onRatingChange}
+          />
         </div>
       </div>
 
@@ -62,19 +55,11 @@ export const Step2FoodInfo: React.FC<Step2FoodInfoProps> = ({
           가격{" "}
           <span className="text-sm font-normal text-gray-500">(선택사항)</span>
         </label>
-        <div className="relative">
-          <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-base font-semibold">
-            ₩
-          </div>
-          <input
-            type="number"
-            name="price"
-            value={formData.price ?? ""}
-            onChange={onFormChange}
-            placeholder="15,000"
-            className="w-full pl-10 pr-4 py-4 text-base bg-white border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all duration-200 placeholder-gray-400"
-          />
-        </div>
+        <PriceInput
+          value={formData.price}
+          onChange={onPriceChange}
+          placeholder="15,000"
+        />
       </div>
     </div>
   );

@@ -59,14 +59,18 @@ export const Step5Confirm: React.FC<Step5ConfirmProps> = ({
             </div>
             <div className="flex items-center space-x-2">
               <span className="font-semibold text-gray-900">
-                {formData.rating}/5
+                {formData.rating.toFixed(1)}/5.0
               </span>
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
                     className={`w-4 h-4 ${
-                      i < formData.rating ? "text-yellow-400" : "text-gray-300"
+                      i < Math.floor(formData.rating)
+                        ? "text-yellow-400"
+                        : i < formData.rating
+                        ? "text-yellow-400 opacity-50"
+                        : "text-gray-300"
                     }`}
                     fill="currentColor"
                   />

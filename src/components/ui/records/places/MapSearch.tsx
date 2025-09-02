@@ -24,10 +24,11 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
   const [places, setPlaces] = useState<any[]>([]);
   const [keyword, setKeyword] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   const initializeMap = (lat: number, lng: number) => {
-    if (!mapContainer.current) {
-      console.log("Map container not found");
+    if (!mapContainer.current || isMapLoaded) {
       return;
     }
 
@@ -44,16 +45,21 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
       );
       console.log("Map instance created successfully");
       setMap(mapInstance);
+      setIsMapLoaded(true);
     } catch (error) {
       console.error("Error creating map instance:", error);
     }
   };
 
-  const onLoadKakaoMap = () => {
-    console.log("Script loaded, checking kakao object:", !!window.kakao);
-
+  const loadMap = () => {
     if (!window.kakao || !window.kakao.maps) {
       console.error("Kakao maps not available");
+      return;
+    }
+
+    // 이미 맵이 초기화되어 있다면 중복 초기화 방지
+    if (isMapLoaded && map) {
+      console.log("Map already loaded");
       return;
     }
 
@@ -77,6 +83,37 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
       }
     });
   };
+
+  const onLoadKakaoMap = () => {
+    console.log("Script loaded, checking kakao object:", !!window.kakao);
+    setScriptLoaded(true);
+    loadMap();
+  };
+
+  // 컴포넌트 마운트 시 스크립트가 이미 로드되어 있는지 확인
+  useEffect(() => {
+    // 클라이언트 사이드에서만 체크
+    if (typeof window !== "undefined") {
+      if (window.kakao && window.kakao.maps && !scriptLoaded) {
+        console.log("Kakao script already loaded, initializing map");
+        setScriptLoaded(true);
+        loadMap();
+      }
+    }
+  }, []);
+
+  // 컴포넌트 언마운트 시 정리
+  useEffect(() => {
+    return () => {
+      // 마커와 인포윈도우 정리
+      if (markers.length > 0) {
+        markers.forEach((marker) => marker.setMap(null));
+      }
+      if (infowindows.length > 0) {
+        infowindows.forEach((infowindow) => infowindow.close());
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const debounce = setTimeout(() => {
@@ -185,11 +222,13 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
 
   return (
     <div>
-      <Script
-        src={KAKAO_SDK_URL}
-        strategy="afterInteractive"
-        onLoad={onLoadKakaoMap}
-      />
+      {!scriptLoaded && (
+        <Script
+          src={KAKAO_SDK_URL}
+          strategy="afterInteractive"
+          onLoad={onLoadKakaoMap}
+        />
+      )}
       <div className="relative mb-3">
         <input
           type="text"
@@ -232,7 +271,7 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
           </div>
         )}
       </div>
-      <div ref={mapContainer} className="w-full h-[40vh] rounded-xl" />
+      <div ref={mapContainer} className="w-full h-[50vh] rounded-xl" />
     </div>
   );
 };

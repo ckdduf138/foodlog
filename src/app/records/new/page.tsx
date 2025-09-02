@@ -86,6 +86,10 @@ const NewRecordPageContent = () => {
     setFormData((prev) => ({ ...prev, rating }));
   }, []);
 
+  const handlePriceChange = useCallback((price: number | undefined) => {
+    setFormData((prev) => ({ ...prev, price }));
+  }, []);
+
   const handlePlaceSelect = useCallback((place: PlaceSelect) => {
     setFormData((prev) => ({
       ...prev,
@@ -164,6 +168,7 @@ const NewRecordPageContent = () => {
           formData={formData}
           onFormChange={handleFormChange}
           onRatingChange={handleRatingChange}
+          onPriceChange={handlePriceChange}
           onPlaceSelect={handlePlaceSelect}
           onSubmit={handleSubmit}
           onCancel={() => router.back()}
