@@ -41,17 +41,19 @@ export const DashboardStats = ({
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200"
+          className="bg-[var(--color-background)] p-3 sm:p-4 rounded-xl shadow-sm border border-[var(--color-border)] hover:shadow-md transition-all duration-200"
         >
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs sm:text-sm font-medium text-gray-600 truncate">
+            <h3 className="text-xs sm:text-sm font-medium text-[var(--color-muted-foreground)] truncate">
               {stat.title}
             </h3>
             {stat.icon && (
-              <div className="text-gray-400 flex-shrink-0">{stat.icon}</div>
+              <div className="text-[var(--color-green-500)] flex-shrink-0">
+                {stat.icon}
+              </div>
             )}
           </div>
-          <p className="text-lg sm:text-2xl font-bold text-gray-800 truncate">
+          <p className="text-lg sm:text-2xl font-bold text-[var(--color-foreground)] truncate">
             {stat.value}
           </p>
         </div>

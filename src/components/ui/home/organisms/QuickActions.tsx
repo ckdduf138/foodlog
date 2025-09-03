@@ -6,7 +6,11 @@ interface QuickActionsProps {
   onViewStats: () => void;
 }
 
-export const QuickActions = ({ onAddRecord, onSearch, onViewStats }: QuickActionsProps) => {
+export const QuickActions = ({
+  onAddRecord,
+  onSearch,
+  onViewStats,
+}: QuickActionsProps) => {
   const actions = [
     ...(onAddRecord
       ? [
@@ -33,19 +37,61 @@ export const QuickActions = ({ onAddRecord, onSearch, onViewStats }: QuickAction
   ];
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 sm:p-4 mb-4 sm:mb-6">
-      <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3">빠른 실행</h3>
+    <div
+      className="rounded-xl shadow-sm border p-3 sm:p-4 mb-4 sm:mb-6"
+      style={{
+        backgroundColor: "var(--color-background)",
+        borderColor: "var(--color-border)",
+      }}
+    >
+      <h3
+        className="text-base sm:text-lg font-semibold mb-3"
+        style={{ color: "var(--color-foreground)" }}
+      >
+        빠른 실행
+      </h3>
       <div className="grid grid-cols-3 gap-2 sm:gap-3">
         {actions.map((action, index) => (
           <button
             key={index}
             onClick={action.onClick}
             className={`p-2 sm:p-3 rounded-lg font-medium transition-all duration-200 flex flex-col items-center gap-1 sm:gap-2 ${
-              action.primary ? "bg-green-500 hover:bg-green-600 text-white shadow-sm hover:shadow-md" : "bg-gray-50 hover:bg-gray-100 text-gray-700"
+              action.primary
+                ? "text-white shadow-sm hover:shadow-md"
+                : "shadow-sm"
             }`}
+            style={
+              action.primary
+                ? {
+                    backgroundColor: "var(--color-green-500)",
+                    color: "white",
+                  }
+                : {
+                    backgroundColor: "var(--color-muted)",
+                    color: "var(--color-muted-foreground)",
+                  }
+            }
+            onMouseEnter={(e) => {
+              if (action.primary) {
+                e.currentTarget.style.backgroundColor =
+                  "var(--color-green-600)";
+              } else {
+                e.currentTarget.style.backgroundColor = "var(--color-accent)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (action.primary) {
+                e.currentTarget.style.backgroundColor =
+                  "var(--color-green-500)";
+              } else {
+                e.currentTarget.style.backgroundColor = "var(--color-muted)";
+              }
+            }}
           >
             <div className="w-4 h-4 sm:w-5 sm:h-5">{action.icon}</div>
-            <span className="text-xs sm:text-sm font-medium">{action.label}</span>
+            <span className="text-xs sm:text-sm font-medium">
+              {action.label}
+            </span>
           </button>
         ))}
       </div>

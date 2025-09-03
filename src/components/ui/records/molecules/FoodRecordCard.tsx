@@ -27,7 +27,7 @@ export const FoodRecordCard = ({
 
   return (
     <div
-      className={`bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer ${
+      className={`bg-[var(--color-background)] rounded-2xl shadow-sm border border-[var(--color-border)] hover:shadow-lg transition-all duration-300 cursor-pointer ${
         isCompact ? "p-3" : "p-4"
       }`}
       onClick={handleClick}
@@ -36,14 +36,14 @@ export const FoodRecordCard = ({
       <div className="flex justify-between items-start mb-3">
         <div className="flex-1 min-w-0 pr-3">
           <h3
-            className={`font-bold text-gray-900 leading-tight mb-1 ${
+            className={`font-bold text-[var(--color-foreground)] leading-tight mb-1 ${
               isCompact ? "text-sm" : "text-base"
             }`}
           >
             {record.foodName}
           </h3>
           <p
-            className={`text-gray-500 font-medium ${
+            className={`text-[var(--color-muted-foreground)] font-medium ${
               isCompact ? "text-xs" : "text-sm"
             }`}
           >
@@ -67,8 +67,14 @@ export const FoodRecordCard = ({
       </div>
 
       {/* 하단: 위치 & 가격 */}
-      <div className="flex items-center justify-between pt-2 border-t border-gray-50">
-        <div className="flex items-center gap-1.5 text-gray-400 min-w-0 flex-1 mr-3">
+      <div
+        className="flex items-center justify-between pt-2 border-t"
+        style={{ borderColor: "var(--color-border)" }}
+      >
+        <div
+          className="flex items-center gap-1.5 min-w-0 flex-1 mr-3"
+          style={{ color: "var(--color-muted-foreground)" }}
+        >
           <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
           <span
             className={`truncate font-medium ${
@@ -83,7 +89,10 @@ export const FoodRecordCard = ({
             isCompact ? "text-sm" : "text-base"
           }`}
         >
-          <span className="text-green-600 font-bold">
+          <span
+            className="font-bold"
+            style={{ color: "var(--color-green-600)" }}
+          >
             ₩{record.price?.toLocaleString() || "0"}
           </span>
         </div>

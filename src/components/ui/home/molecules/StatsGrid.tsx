@@ -16,15 +16,40 @@ export const StatsGrid = ({ stats }: StatsGridProps) => {
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+          className="p-4 rounded-xl shadow-sm border hover:shadow-md transition-shadow"
+          style={{
+            backgroundColor: "var(--color-background)",
+            borderColor: "var(--color-border)",
+          }}
         >
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-gray-600">{stat.title}</h3>
-            {stat.icon && <div className="text-gray-400">{stat.icon}</div>}
+            <h3
+              className="text-sm font-medium"
+              style={{ color: "var(--color-muted-foreground)" }}
+            >
+              {stat.title}
+            </h3>
+            {stat.icon && (
+              <div style={{ color: "var(--color-muted-foreground)" }}>
+                {stat.icon}
+              </div>
+            )}
           </div>
-          <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
+          <p
+            className="text-2xl font-bold"
+            style={{ color: "var(--color-foreground)" }}
+          >
+            {stat.value}
+          </p>
           {stat.trend && (
-            <div className={`text-xs mt-1 ${stat.trend.isPositive ? "text-green-600" : "text-red-600"}`}>
+            <div
+              className="text-xs mt-1"
+              style={{
+                color: stat.trend.isPositive
+                  ? "var(--color-green-600)"
+                  : "#ef4444",
+              }}
+            >
               {stat.trend.isPositive ? "↗" : "↘"} {Math.abs(stat.trend.value)}%
             </div>
           )}

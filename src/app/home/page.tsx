@@ -33,7 +33,7 @@ const HomePage = () => {
       />
 
       {/* 메인 컨텐츠 */}
-      <div className="px-0 py-4 space-y-3 sm:space-y-6 w-full flex flex-col items-stretch">
+      <div className="px-4 py-6 space-y-3 sm:space-y-6 w-full flex flex-col items-stretch">
         {/* 통계 대시보드 */}
         <DashboardStats
           totalRecords={stats.totalRecords}

@@ -36,8 +36,10 @@ export const FoodRecordsList = ({
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 w-full">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">{title}</h2>
+      <div className="bg-[var(--color-background)] rounded-xl shadow-sm border border-[var(--color-border)] p-6 w-full">
+        <h2 className="text-lg font-semibold text-[var(--color-foreground)] mb-4">
+          {title}
+        </h2>
         <div className="flex justify-center items-center py-10">
           <LoadingSpinner message="기록을 불러오는 중..." />
         </div>
@@ -46,13 +48,15 @@ export const FoodRecordsList = ({
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 w-full">
+    <div className="bg-[var(--color-background)] rounded-xl shadow-sm border border-[var(--color-border)] p-6 w-full">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
+        <h2 className="text-lg font-semibold text-[var(--color-foreground)]">
+          {title}
+        </h2>
         {records.length > 0 && (
           <button
             onClick={handleViewAll}
-            className="text-sm text-green-600 hover:text-green-700 font-medium"
+            className="text-sm text-[var(--color-green-600)] hover:text-[var(--color-green-700)] font-medium"
           >
             전체 보기
           </button>
