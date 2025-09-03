@@ -25,7 +25,7 @@ export const MainLayout = ({
 
   const showFab = !(pathname && pathname.startsWith("/records/new"));
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-green-50 via-blue-50 to-indigo-50 overflow-x-hidden flex flex-col items-center">
+    <div className="min-h-screen w-full bg-[var(--color-background)] overflow-x-hidden flex flex-col items-center">
       <div className="w-full fixed top-0 left-0 right-0 z-40">
         {Array.isArray(children) ? children[0] : null}
       </div>
@@ -39,7 +39,7 @@ export const MainLayout = ({
         <button
           onClick={handleAddRecord}
           aria-label="기록 추가"
-          className="fixed bottom-20 right-4 sm:right-8 z-50 bg-green-500 hover:bg-green-600 text-white rounded-full p-3 shadow-lg flex items-center justify-center"
+          className="fixed bottom-20 right-4 sm:right-8 z-50 bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-[var(--color-primary-foreground)] rounded-full p-3 shadow-lg flex items-center justify-center transition-colors"
         >
           <Plus className="h-5 w-5" />
         </button>

@@ -4,45 +4,7 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { useNavigation } from "@/hooks/useNavigation";
 import { Header } from "@/components/ui/common/molecules/Header";
 import { Settings } from "lucide-react";
-import { useTheme } from "next-themes";
-import { Sun, Moon } from "lucide-react";
-
-const ThemeSelector = () => {
-  const { theme, setTheme } = useTheme();
-
-  return (
-    <div
-      className="max-w-md mx-auto p-4 bg-white dark:bg-gray-900 rounded-lg shadow-sm border"
-      aria-label="테마 설정"
-    >
-      <h3 className="text-lg font-medium text-gray-800 dark:text-gray-100">
-        테마
-      </h3>
-      <p className="text-sm text-gray-500 dark:text-gray-400">
-        라이트/다크/시스템 설정을 선택하세요.
-      </p>
-
-      <div className="mt-3 flex justify-center gap-2">
-        <button
-          onClick={() => setTheme("light")}
-          className={`p-2 rounded-full ${
-            theme === "light" ? "bg-green-200" : ""
-          }`}
-        >
-          <Sun className="w-5 h-5" />
-        </button>
-        <button
-          onClick={() => setTheme("dark")}
-          className={`p-2 rounded-full ${
-            theme === "dark" ? "bg-gray-700" : ""
-          }`}
-        >
-          <Moon className="w-5 h-5" />
-        </button>
-      </div>
-    </div>
-  );
-};
+import { ThemeSelector } from "@/components/ui/settings";
 
 const SettingsPage = () => {
   const { activeTab, changeTab } = useNavigation("settings");
@@ -57,11 +19,46 @@ const SettingsPage = () => {
 
       <div className="w-full px-4 py-6 space-y-6">
         <div className="max-w-md mx-auto text-center">
-          <h2 className="text-xl font-semibold">설정</h2>
-          <p className="mt-2 text-sm text-gray-500">앱 설정을 조정하세요.</p>
+          <h2 className="text-xl font-semibold text-[var(--color-foreground)]">
+            설정
+          </h2>
+          <p className="mt-2 text-sm text-[var(--color-muted-foreground)]">
+            앱 설정을 조정하세요.
+          </p>
         </div>
 
         <ThemeSelector />
+
+        {/* 추가 설정 섹션들을 위한 공간 */}
+        <div className="max-w-md mx-auto space-y-4">
+          <div className="p-4 bg-[var(--color-background)] border border-[var(--color-border)] rounded-xl shadow-sm">
+            <h3 className="text-lg font-semibold text-[var(--color-foreground)] mb-3">
+              앱 정보
+            </h3>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between items-center">
+                <span className="text-[var(--color-muted-foreground)]">
+                  버전
+                </span>
+                <span className="text-[var(--color-green-600)] font-medium bg-[var(--color-green-100)] px-3 py-1 rounded-full">
+                  1.0.0
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-4 bg-[var(--color-background)] border border-[var(--color-border)] rounded-xl shadow-sm">
+            <h3 className="text-lg font-semibold text-[var(--color-foreground)] mb-2">
+              피드백
+            </h3>
+            <p className="text-sm text-[var(--color-muted-foreground)] mb-4">
+              앱을 개선하는데 도움을 주세요!
+            </p>
+            <button className="w-full py-3 px-4 bg-[var(--color-green-600)] text-white rounded-lg font-medium hover:bg-[var(--color-green-700)] transition-colors shadow-sm">
+              피드백 보내기
+            </button>
+          </div>
+        </div>
       </div>
     </MainLayout>
   );
