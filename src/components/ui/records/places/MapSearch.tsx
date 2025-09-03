@@ -219,6 +219,7 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
   };
 
   const handlePlaceSelect = (place: any) => {
+    console.log("Place selected:", place);
     const placeInfo = {
       placeId: place.id,
       placeName: place.place_name,
@@ -226,6 +227,7 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
       latitude: Number(place.y),
       longitude: Number(place.x),
     };
+    console.log("Place info processed:", placeInfo);
     setKeyword(place.place_name); // 선택된 장소명으로 검색창 업데이트
     setShowDropdown(false); // 드롭다운 숨기기
     onPlaceSelect(placeInfo);

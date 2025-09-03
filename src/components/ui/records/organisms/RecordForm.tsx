@@ -96,7 +96,14 @@ export const RecordForm = ({
   const canProceedFromCurrentStep = () => {
     switch (currentStep) {
       case 1:
-        return formData.location.placeName && formData.location.address;
+        const hasLocation =
+          formData.location.placeName &&
+          formData.location.address &&
+          formData.location.latitude &&
+          formData.location.longitude;
+        console.log("Step 1 validation - Location data:", formData.location);
+        console.log("Can proceed from step 1:", hasLocation);
+        return hasLocation;
       case 2:
         return formData.foodName.trim() !== "" && formData.rating > 0;
       case 3:

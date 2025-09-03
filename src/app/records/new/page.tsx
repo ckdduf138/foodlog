@@ -109,17 +109,22 @@ const NewRecordPageContent = () => {
   }, []);
 
   const handlePlaceSelect = useCallback((place: PlaceSelect) => {
-    setFormData((prev) => ({
-      ...prev,
-      restaurantName: place.placeName || prev.restaurantName,
-      location: {
-        address: place.address,
-        latitude: place.latitude,
-        longitude: place.longitude,
-        placeId: place.placeId,
-        placeName: place.placeName,
-      },
-    }));
+    console.log("handlePlaceSelect called with:", place);
+    setFormData((prev) => {
+      const newFormData = {
+        ...prev,
+        restaurantName: place.placeName || prev.restaurantName,
+        location: {
+          address: place.address,
+          latitude: place.latitude,
+          longitude: place.longitude,
+          placeId: place.placeId,
+          placeName: place.placeName,
+        },
+      };
+      console.log("Updated formData.location:", newFormData.location);
+      return newFormData;
+    });
   }, []);
 
   const handleSubmit = useCallback(
@@ -152,10 +157,10 @@ const NewRecordPageContent = () => {
           photo: photoData,
           location: {
             address: formData.location.address || "",
-            latitude: formData.location.latitude ?? 0,
-            longitude: formData.location.longitude ?? 0,
-            placeId: formData.location.placeId,
-            placeName: formData.location.placeName,
+            latitude: formData.location.latitude || 0,
+            longitude: formData.location.longitude || 0,
+            placeId: formData.location.placeId || "",
+            placeName: formData.location.placeName || "",
           },
         };
 
