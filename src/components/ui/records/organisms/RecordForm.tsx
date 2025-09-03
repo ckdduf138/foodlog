@@ -217,35 +217,88 @@ export const RecordForm = ({
 
   return (
     <div className="max-w-md mx-auto relative">
-      <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
-        <div
-          className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-500 ease-out"
-          style={{ width: `${(currentStep / STEPS.length) * 100}%` }}
-        />
-      </div>
-
-      <div className="sticky top-0 z-10 py-2 border-b border-gray-100">
-        <div className="flex items-center justify-between">
+      {/* Step Progress with Navigation */}
+      <div className="mb-4">
+        <div className="flex items-center justify-between mb-3">
           <button
             onClick={currentStep === 1 ? onCancel : prevStep}
-            className="p-2 -m-2 text-gray-600 hover:text-gray-800"
+            className="flex items-center gap-1 py-1 rounded-lg transition-colors"
+            style={{ color: "var(--color-muted-foreground)" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "var(--color-accent)";
+              e.currentTarget.style.color = "var(--color-accent-foreground)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.color = "var(--color-muted-foreground)";
+            }}
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-4 h-4" />
+            <span className="text-sm">
+              {currentStep === 1 ? "취소" : "이전"}
+            </span>
           </button>
-          <span className="text-sm font-medium text-gray-600">
-            {currentStep} / {STEPS.length}
-          </span>
-        </div>
-      </div>
 
-      {/* Content Container */}
-      <div className="text-center mb-4">
-        <h1 className="text-lg font-bold text-gray-900 mb-1">
-          {STEPS[currentStep - 1].title}
-        </h1>
-        <p className="text-gray-600 text-sm">
-          {STEPS[currentStep - 1].subtitle}
-        </p>
+          <div
+            className="text-sm font-medium"
+            style={{ color: "var(--color-green-600)" }}
+          >
+            {currentStep} / {STEPS.length}
+          </div>
+        </div>
+
+        <div className="flex justify-between items-center mb-2">
+          {STEPS.map((step, index) => (
+            <div key={step.id} className="flex flex-col items-center">
+              <div
+                className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300`}
+                style={{
+                  backgroundColor:
+                    index + 1 <= currentStep
+                      ? "var(--color-green-500)"
+                      : "var(--color-border)",
+                  color:
+                    index + 1 <= currentStep
+                      ? "white"
+                      : "var(--color-foreground)",
+                  border:
+                    index + 1 <= currentStep
+                      ? "none"
+                      : "1px solid var(--color-border)",
+                }}
+              >
+                {index + 1 < currentStep ? "✓" : step.id}
+              </div>
+              <span
+                className="text-xs mt-1 text-center"
+                style={{
+                  color:
+                    index + 1 === currentStep
+                      ? "var(--color-green-600)"
+                      : "var(--color-muted-foreground)",
+                }}
+              >
+                {step.title}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Progress Line */}
+        <div className="relative">
+          <div
+            className="w-full h-1 rounded-full"
+            style={{ backgroundColor: "var(--color-muted)" }}
+          >
+            <div
+              className="h-full rounded-full transition-all duration-500 ease-out"
+              style={{
+                backgroundColor: "var(--color-green-500)",
+                width: `${((currentStep - 1) / (STEPS.length - 1)) * 100}%`,
+              }}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Step Content */}
@@ -264,7 +317,35 @@ export const RecordForm = ({
             type="button"
             onClick={nextStep}
             disabled={!canProceedFromCurrentStep()}
-            className="w-full py-3 px-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full py-3 px-6 rounded-xl font-semibold shadow-lg transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+            style={{
+              backgroundColor: canProceedFromCurrentStep()
+                ? "var(--color-green-500)"
+                : "var(--color-accent)",
+              color: canProceedFromCurrentStep()
+                ? "white"
+                : "var(--color-accent-foreground)",
+              opacity: !canProceedFromCurrentStep() ? 0.7 : 1,
+              border: !canProceedFromCurrentStep()
+                ? "1px solid var(--color-border)"
+                : "none",
+            }}
+            onMouseEnter={(e) => {
+              if (canProceedFromCurrentStep()) {
+                e.currentTarget.style.backgroundColor =
+                  "var(--color-green-600)";
+                e.currentTarget.style.boxShadow =
+                  "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (canProceedFromCurrentStep()) {
+                e.currentTarget.style.backgroundColor =
+                  "var(--color-green-500)";
+                e.currentTarget.style.boxShadow =
+                  "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)";
+              }
+            }}
           >
             다음
           </button>
@@ -273,7 +354,31 @@ export const RecordForm = ({
             type="button"
             onClick={onSubmit}
             disabled={isSubmitting}
-            className="w-full py-3 px-6 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl disabled:from-gray-300 disabled:to-gray-400 transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full py-3 px-6 rounded-xl font-semibold shadow-lg transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+            style={{
+              backgroundColor: !isSubmitting
+                ? "var(--color-green-500)"
+                : "var(--color-accent)",
+              color: !isSubmitting ? "white" : "var(--color-accent-foreground)",
+              opacity: isSubmitting ? 0.7 : 1,
+              border: isSubmitting ? "1px solid var(--color-border)" : "none",
+            }}
+            onMouseEnter={(e) => {
+              if (!isSubmitting) {
+                e.currentTarget.style.backgroundColor =
+                  "var(--color-green-600)";
+                e.currentTarget.style.boxShadow =
+                  "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isSubmitting) {
+                e.currentTarget.style.backgroundColor =
+                  "var(--color-green-500)";
+                e.currentTarget.style.boxShadow =
+                  "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)";
+              }
+            }}
           >
             {isSubmitting ? (
               <div className="flex items-center justify-center">

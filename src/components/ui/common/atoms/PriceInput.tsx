@@ -34,7 +34,10 @@ export const PriceInput: React.FC<PriceInputProps> = ({
 
   return (
     <div className="relative">
-      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-base font-semibold z-10">
+      <div
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 text-base font-semibold z-10"
+        style={{ color: "var(--color-muted-foreground)" }}
+      >
         ₩
       </div>
       <input
@@ -42,7 +45,20 @@ export const PriceInput: React.FC<PriceInputProps> = ({
         value={displayValue}
         onChange={handleChange}
         placeholder={placeholder}
-        className={`w-full pl-10 pr-4 py-4 text-base bg-white border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all duration-200 placeholder-gray-400 ${className}`}
+        className={`w-full pl-10 pr-4 py-4 text-base border-2 rounded-2xl transition-all duration-200 focus:outline-none focus:ring-2 ${className}`}
+        style={{
+          backgroundColor: "var(--color-background)",
+          borderColor: "var(--color-border)",
+          color: "var(--color-foreground)",
+        }}
+        onFocus={(e) => {
+          e.target.style.borderColor = "var(--color-green-500)";
+          e.target.style.boxShadow = "0 0 0 3px rgba(34, 197, 94, 0.1)";
+        }}
+        onBlur={(e) => {
+          e.target.style.borderColor = "var(--color-border)";
+          e.target.style.boxShadow = "none";
+        }}
       />
     </div>
   );

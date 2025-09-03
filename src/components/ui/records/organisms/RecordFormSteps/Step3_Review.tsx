@@ -22,7 +22,20 @@ export const Step3Review: React.FC<Step3ReviewProps> = ({
             value={formData.review}
             onChange={onFormChange}
             placeholder="맛있었던 점, 아쉬웠던 점 등을 자유롭게 적어보세요..."
-            className="w-full p-4 text-base bg-white border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all duration-200 resize-none placeholder-gray-400"
+            className="w-full p-4 text-base border-2 rounded-2xl transition-all duration-200 resize-none focus:outline-none focus:ring-2"
+            style={{
+              backgroundColor: "var(--color-background)",
+              borderColor: "var(--color-border)",
+              color: "var(--color-foreground)",
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = "var(--color-green-500)";
+              e.target.style.boxShadow = "0 0 0 3px rgba(34, 197, 94, 0.1)";
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = "var(--color-border)";
+              e.target.style.boxShadow = "none";
+            }}
             rows={5}
           />
         </div>

@@ -113,7 +113,8 @@ export const ProgressStarRating: React.FC<ProgressStarRatingProps> = ({
         {/* 슬라이더 트랙 */}
         <div
           ref={sliderRef}
-          className="relative h-3 bg-gray-200 rounded-full cursor-pointer select-none touch-none"
+          className="relative h-3 rounded-full cursor-pointer select-none touch-none"
+          style={{ backgroundColor: "var(--color-muted)" }}
           onMouseDown={handleMouseDown}
           onClick={handleClick}
           onTouchStart={handleTouchStart}
@@ -163,7 +164,10 @@ export const ProgressStarRating: React.FC<ProgressStarRatingProps> = ({
             return (
               <div key={i} className="relative">
                 {/* 배경 별 */}
-                <Star className="w-3 h-3 text-gray-300" />
+                <Star
+                  className="w-3 h-3"
+                  style={{ color: "var(--color-muted-foreground)" }}
+                />
 
                 {/* 채워진 별 */}
                 {fillPercentage > 0 && (
@@ -181,10 +185,18 @@ export const ProgressStarRating: React.FC<ProgressStarRatingProps> = ({
 
         {/* 숫자 표시 */}
         <div className="flex items-center space-x-0.5">
-          <span className="text-sm font-medium text-gray-700">
+          <span
+            className="text-sm font-medium"
+            style={{ color: "var(--color-foreground)" }}
+          >
             {rating.toFixed(1)}
           </span>
-          <span className="text-xs text-gray-500">/ 5.0</span>
+          <span
+            className="text-xs"
+            style={{ color: "var(--color-muted-foreground)" }}
+          >
+            / 5.0
+          </span>
         </div>
       </div>
     </div>

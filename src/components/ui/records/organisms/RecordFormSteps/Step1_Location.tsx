@@ -20,16 +20,31 @@ export const Step1Location: React.FC<Step1LocationProps> = ({
       </div>
 
       {formData.location.placeName && (
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-3 border border-blue-100">
+        <div
+          className="rounded-2xl p-3 border"
+          style={{
+            backgroundColor: "var(--color-background)",
+            borderColor: "var(--color-green-200)",
+          }}
+        >
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-              <MapPin className="w-4 h-4 text-white" />
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: "var(--color-green-500)" }}
+            >
+              <MapPin className="w-4 h-4 text-black" />
             </div>
             <div className="flex-1">
-              <p className="font-semibold text-gray-900">
+              <p
+                className="font-semibold"
+                style={{ color: "var(--color-foreground)" }}
+              >
                 {formData.location.placeName}
               </p>
-              <p className="text-sm text-gray-600">
+              <p
+                className="text-sm"
+                style={{ color: "var(--color-muted-foreground)" }}
+              >
                 {formData.location.address}
               </p>
             </div>

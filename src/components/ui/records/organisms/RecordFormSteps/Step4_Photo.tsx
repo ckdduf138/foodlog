@@ -13,7 +13,10 @@ export const Step4Photo: React.FC<Step4PhotoProps> = ({
   return (
     <div className="space-y-4">
       <div className="space-y-3">
-        <label className="block text-base font-semibold text-gray-900">
+        <label
+          className="block text-base font-semibold"
+          style={{ color: "var(--color-foreground)" }}
+        >
           음식 사진을 추가해보세요
         </label>
 
@@ -28,7 +31,16 @@ export const Step4Photo: React.FC<Step4PhotoProps> = ({
           />
           <label
             htmlFor="photo-upload"
-            className="cursor-pointer block border-2 border-dashed border-gray-300 rounded-3xl text-center hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-300 group-hover:scale-[1.02] overflow-hidden"
+            className="cursor-pointer block border-2 border-dashed rounded-3xl text-center transition-all duration-300 group-hover:scale-[1.02] overflow-hidden"
+            style={{ borderColor: "var(--color-border)" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "var(--color-green-500)";
+              e.currentTarget.style.backgroundColor = "rgba(34, 197, 94, 0.05)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "var(--color-border)";
+              e.currentTarget.style.backgroundColor = "transparent";
+            }}
           >
             {photoPreview ? (
               <div className="relative w-full aspect-square max-h-64">
@@ -43,14 +55,23 @@ export const Step4Photo: React.FC<Step4PhotoProps> = ({
               </div>
             ) : (
               <div className="space-y-3 py-8">
-                <div className="w-10 h-10 mx-auto bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <div
+                  className="w-10 h-10 mx-auto rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                  style={{ backgroundColor: "var(--color-green-500)" }}
+                >
                   <UploadCloud className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-700 group-hover:text-blue-600 transition-colors">
+                  <p
+                    className="text-sm font-semibold transition-colors"
+                    style={{ color: "var(--color-foreground)" }}
+                  >
                     사진 추가하기
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p
+                    className="text-xs mt-1"
+                    style={{ color: "var(--color-muted-foreground)" }}
+                  >
                     클릭하여 갤러리에서 선택하세요
                   </p>
                 </div>
@@ -60,12 +81,24 @@ export const Step4Photo: React.FC<Step4PhotoProps> = ({
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-3 border border-green-100">
+      <div
+        className="rounded-2xl p-3"
+        style={{
+          backgroundColor: "var(--color-green-100)",
+          border: "1px solid var(--color-green-200)",
+        }}
+      >
         <div className="flex items-center space-x-3">
-          <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+          <div
+            className="w-6 h-6 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: "var(--color-green-500)" }}
+          >
             <CheckCircle2 className="w-3 h-3 text-white" />
           </div>
-          <p className="text-sm text-green-700 font-medium">
+          <p
+            className="text-sm font-medium"
+            style={{ color: "var(--color-green-700)" }}
+          >
             사진은 나중에 추가하거나 변경할 수도 있어요
           </p>
         </div>

@@ -235,26 +235,56 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="음식점, 카페 등 장소를 검색하세요"
-          className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-200"
-          onFocus={() => {
+          className="w-full p-4 border-2 rounded-2xl transition-all duration-200 focus:outline-none focus:ring-2"
+          style={{
+            backgroundColor: "var(--color-background)",
+            borderColor: "var(--color-border)",
+            color: "var(--color-foreground)",
+          }}
+          onFocus={(e) => {
             if (places.length > 0) setShowDropdown(true);
+            e.target.style.borderColor = "var(--color-green-500)";
+            e.target.style.boxShadow = "0 0 0 3px rgba(34, 197, 94, 0.1)";
+          }}
+          onBlur={(e) => {
+            e.target.style.borderColor = "var(--color-border)";
+            e.target.style.boxShadow = "none";
           }}
         />
         {showDropdown && places.length > 0 && (
-          <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-b-xl shadow-lg z-10 max-h-48 overflow-y-auto">
+          <div
+            className="absolute top-full left-0 right-0 border rounded-b-xl shadow-lg z-10 max-h-48 overflow-y-auto"
+            style={{
+              backgroundColor: "var(--color-background)",
+              borderColor: "var(--color-border)",
+            }}
+          >
             {places.map((place, index) => (
               <div
                 key={place.id}
-                className="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"
+                className="p-3 cursor-pointer border-b last:border-b-0 transition-colors"
+                style={{
+                  color: "var(--color-foreground)",
+                  borderColor: "var(--color-border)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "var(--color-accent)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                }}
                 onClick={() => {
                   handlePlaceClick(place, index);
                   handlePlaceSelect(place);
                 }}
               >
                 <div className="font-medium text-sm">{place.place_name}</div>
-                <div className="text-xs text-gray-500 mt-1">
+                <div
+                  className="text-xs mt-1"
+                  style={{ color: "var(--color-muted-foreground)" }}
+                >
                   {place.category_group_name && (
-                    <span className="text-blue-600">
+                    <span style={{ color: "var(--color-green-600)" }}>
                       {place.category_group_name}
                     </span>
                   )}
@@ -262,7 +292,10 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
                   {place.road_address_name || place.address_name}
                 </div>
                 {place.distance && (
-                  <div className="text-xs text-gray-400 mt-1">
+                  <div
+                    className="text-xs mt-1"
+                    style={{ color: "var(--color-muted-foreground)" }}
+                  >
                     거리: {place.distance}m
                   </div>
                 )}

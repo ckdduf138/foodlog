@@ -43,30 +43,59 @@ export const RecordDetailContent = ({
             <Utensils className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h2 className="font-semibold text-gray-900 text-sm">
+            <h2
+              className="font-semibold text-sm"
+              style={{ color: "var(--color-foreground)" }}
+            >
               {record.restaurantName}
             </h2>
-            <p className="text-xs text-gray-500">{record.location.address}</p>
+            <p
+              className="text-xs"
+              style={{ color: "var(--color-muted-foreground)" }}
+            >
+              {record.location.address}
+            </p>
           </div>
         </div>
 
         <div className="relative">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-1 rounded-full transition-colors"
+            style={{ color: "var(--color-muted-foreground)" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "var(--color-accent)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+            }}
           >
-            <MoreHorizontal className="w-5 h-5 text-gray-600" />
+            <MoreHorizontal className="w-5 h-5" />
           </button>
 
           {isMenuOpen && (
-            <div className="absolute right-0 mt-1 w-32 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+            <div
+              className="absolute right-0 mt-1 w-32 rounded-lg shadow-lg border z-10"
+              style={{
+                backgroundColor: "var(--color-background)",
+                borderColor: "var(--color-border)",
+              }}
+            >
               <div className="py-1">
                 <button
                   onClick={() => {
                     onEdit();
                     setIsMenuOpen(false);
                   }}
-                  className="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  className="flex items-center w-full px-3 py-2 text-sm transition-colors"
+                  style={{ color: "var(--color-foreground)" }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor =
+                      "var(--color-accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "transparent";
+                  }}
                 >
                   <Edit className="w-4 h-4 mr-2" />
                   수정
@@ -97,10 +126,21 @@ export const RecordDetailContent = ({
           />
         </div>
       ) : (
-        <div className="aspect-square bg-gray-100 flex items-center justify-center rounded-lg">
+        <div
+          className="aspect-square flex items-center justify-center rounded-lg"
+          style={{ backgroundColor: "var(--color-muted)" }}
+        >
           <div className="text-center">
-            <Utensils className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-            <p className="text-gray-500 text-sm">사진이 없습니다</p>
+            <Utensils
+              className="w-12 h-12 mx-auto mb-2"
+              style={{ color: "var(--color-muted-foreground)" }}
+            />
+            <p
+              className="text-sm"
+              style={{ color: "var(--color-muted-foreground)" }}
+            >
+              사진이 없습니다
+            </p>
           </div>
         </div>
       )}
@@ -109,7 +149,10 @@ export const RecordDetailContent = ({
       <div className="p-4">
         {/* 음식명과 별점 */}
         <div className="mb-3">
-          <h1 className="font-bold text-xl text-gray-900 mb-2">
+          <h1
+            className="font-bold text-xl mb-2"
+            style={{ color: "var(--color-foreground)" }}
+          >
             {record.foodName}
           </h1>
           <div className="flex items-center justify-between">
@@ -122,18 +165,29 @@ export const RecordDetailContent = ({
                       ? "text-yellow-400 fill-current"
                       : i < record.rating
                       ? "text-yellow-400 fill-current opacity-50"
-                      : "text-gray-300"
+                      : ""
                   }`}
+                  style={
+                    i >= Math.floor(record.rating) && i >= record.rating
+                      ? { color: "var(--color-muted-foreground)" }
+                      : {}
+                  }
                 />
               ))}
-              <span className="text-sm font-medium text-gray-600 ml-2">
+              <span
+                className="text-sm font-medium ml-2"
+                style={{ color: "var(--color-muted-foreground)" }}
+              >
                 {record.rating.toFixed(1)}
               </span>
             </div>
 
             {/* 가격 */}
             {record.price && (
-              <span className="text-lg font-bold text-gray-900">
+              <span
+                className="text-lg font-bold"
+                style={{ color: "var(--color-foreground)" }}
+              >
                 ₩{record.price.toLocaleString()}
               </span>
             )}
@@ -143,12 +197,20 @@ export const RecordDetailContent = ({
         {/* 후기 */}
         {record.review && (
           <div className="mb-4">
-            <p className="text-gray-700 leading-relaxed">{record.review}</p>
+            <p
+              className="leading-relaxed"
+              style={{ color: "var(--color-foreground)" }}
+            >
+              {record.review}
+            </p>
           </div>
         )}
 
         {/* 방문 날짜 */}
-        <div className="flex items-center text-sm text-gray-500 mb-3">
+        <div
+          className="flex items-center text-sm mb-3"
+          style={{ color: "var(--color-muted-foreground)" }}
+        >
           <Calendar className="w-4 h-4 mr-2" />
           <span>
             {new Date(record.date).toLocaleDateString("ko-KR", {
@@ -167,7 +229,11 @@ export const RecordDetailContent = ({
             {record.tags.map((tag, index) => (
               <span
                 key={index}
-                className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
+                className="px-2 py-1 rounded-full text-xs"
+                style={{
+                  backgroundColor: "var(--color-muted)",
+                  color: "var(--color-muted-foreground)",
+                }}
               >
                 #{tag}
               </span>

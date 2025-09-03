@@ -65,7 +65,9 @@ export const RecordDetailContainer = ({
   if (record === null) {
     return (
       <div className="flex justify-center items-center py-20">
-        <p className="text-gray-500">해당 기록을 찾을 수 없습니다.</p>
+        <p style={{ color: "var(--color-muted-foreground)" }}>
+          해당 기록을 찾을 수 없습니다.
+        </p>
       </div>
     );
   }

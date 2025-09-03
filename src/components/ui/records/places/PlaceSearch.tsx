@@ -116,28 +116,67 @@ const PlaceSearch = ({
 
   return (
     <div>
-      <label className="flex flex-col text-sm">
+      <label
+        className="flex flex-col text-sm"
+        style={{ color: "var(--color-foreground)" }}
+      >
         위치 검색 (카카오)
         <input
           value={q}
           onChange={onChange}
           placeholder={placeholder}
-          className="mt-1 p-2 border rounded"
+          className="mt-1 p-3 border rounded-xl transition-all duration-200 focus:outline-none focus:ring-2"
+          style={{
+            backgroundColor: "var(--color-background)",
+            borderColor: "var(--color-border)",
+            color: "var(--color-foreground)",
+          }}
+          onFocus={(e) => {
+            e.target.style.borderColor = "var(--color-green-500)";
+            e.target.style.boxShadow = "0 0 0 3px rgba(34, 197, 94, 0.1)";
+          }}
+          onBlur={(e) => {
+            e.target.style.borderColor = "var(--color-border)";
+            e.target.style.boxShadow = "none";
+          }}
         />
       </label>
 
       <div className="mt-2">
-        {loading && <div className="text-sm text-gray-500">검색 중...</div>}
+        {loading && (
+          <div
+            className="text-sm"
+            style={{ color: "var(--color-muted-foreground)" }}
+          >
+            검색 중...
+          </div>
+        )}
         {!loading && results.length > 0 && (
-          <ul className="mt-2 bg-white dark:bg-gray-800 border rounded max-h-56 overflow-auto">
+          <ul
+            className="mt-2 border rounded max-h-56 overflow-auto"
+            style={{
+              backgroundColor: "var(--color-background)",
+              borderColor: "var(--color-border)",
+            }}
+          >
             {results.map((r) => (
               <li
                 key={r.id}
-                className="p-2 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
+                className="p-2 cursor-pointer transition-colors"
+                style={{ color: "var(--color-foreground)" }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "var(--color-accent)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                }}
                 onClick={() => handleSelect(r)}
               >
                 <div className="font-medium text-sm">{r.place_name}</div>
-                <div className="text-xs text-gray-500">
+                <div
+                  className="text-xs"
+                  style={{ color: "var(--color-muted-foreground)" }}
+                >
                   {r.road_address_name || r.address_name}
                 </div>
               </li>

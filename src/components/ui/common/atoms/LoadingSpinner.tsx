@@ -16,9 +16,20 @@ export const LoadingSpinner = ({
   return (
     <div className="text-center py-8">
       <div
-        className={`${sizeClasses[size]} border-2 border-green-500 border-t-transparent rounded-full animate-spin mx-auto`}
+        className={`${sizeClasses[size]} border-2 border-t-transparent rounded-full animate-spin mx-auto`}
+        style={{
+          borderColor: "var(--color-green-500)",
+          borderTopColor: "transparent",
+        }}
       />
-      {message && <p className="text-gray-500 mt-2 text-sm">{message}</p>}
+      {message && (
+        <p
+          className="mt-2 text-sm"
+          style={{ color: "var(--color-muted-foreground)" }}
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 };

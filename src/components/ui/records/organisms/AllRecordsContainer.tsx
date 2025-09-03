@@ -29,17 +29,36 @@ export const AllRecordsContainer = ({ records }: AllRecordsContainerProps) => {
   return (
     <div className="w-full space-y-4">
       {/* 검색 및 필터 바 */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-center gap-2">
-        <Search className="w-5 h-5 text-gray-400" />
+      <div
+        className="rounded-xl shadow-sm border p-4 flex items-center gap-2"
+        style={{
+          backgroundColor: "var(--color-background)",
+          borderColor: "var(--color-border)",
+        }}
+      >
+        <Search
+          className="w-5 h-5"
+          style={{ color: "var(--color-muted-foreground)" }}
+        />
         <input
           type="text"
           placeholder="음식 이름, 식당 이름으로 검색"
           className="flex-1 bg-transparent focus:outline-none text-sm"
+          style={{ color: "var(--color-foreground)" }}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button className="p-2 rounded-md hover:bg-gray-100">
-          <ListFilter className="w-5 h-5 text-gray-500" />
+        <button
+          className="p-2 rounded-md transition-colors"
+          style={{ color: "var(--color-muted-foreground)" }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "var(--color-accent)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "transparent";
+          }}
+        >
+          <ListFilter className="w-5 h-5" />
         </button>
       </div>
 
@@ -57,7 +76,12 @@ export const AllRecordsContainer = ({ records }: AllRecordsContainerProps) => {
       ) : (
         <div className="pt-16">
           <EmptyState
-            icon={<FileText className="w-12 h-12 text-gray-400" />}
+            icon={
+              <FileText
+                className="w-12 h-12"
+                style={{ color: "var(--color-muted-foreground)" }}
+              />
+            }
             title="검색 결과가 없습니다"
             description="다른 검색어로 다시 시도해보세요."
           />
