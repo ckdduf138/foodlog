@@ -159,13 +159,37 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
         const bounds = new window.kakao.maps.LatLngBounds();
         data.forEach((place: any) => {
           const position = new window.kakao.maps.LatLng(place.y, place.x);
+
+          // 커스텀 마커 이미지 생성
+          const markerImageSrc =
+            "data:image/svg+xml;base64," +
+            btoa(`
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32">
+              <path d="M12 0C5.373 0 0 5.373 0 12c0 12 12 20 12 20s12-8 12-20C24 5.373 18.627 0 12 0z" fill="#22c55e"/>
+              <circle cx="12" cy="12" r="6" fill="white"/>
+            </svg>
+          `);
+
+          const markerImageSize = new window.kakao.maps.Size(24, 32);
+          const markerImageOption = {
+            offset: new window.kakao.maps.Point(12, 32),
+          };
+
+          const markerImage = new window.kakao.maps.MarkerImage(
+            markerImageSrc,
+            markerImageSize,
+            markerImageOption
+          );
+
           const marker = new window.kakao.maps.Marker({
             map: map,
             position: position,
+            image: markerImage,
           });
 
           const infowindow = new window.kakao.maps.InfoWindow({
-            content: `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`,
+            content: place.place_name,
+            removable: false,
           });
 
           window.kakao.maps.event.addListener(marker, "mouseover", () => {
