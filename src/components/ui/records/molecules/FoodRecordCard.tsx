@@ -2,6 +2,7 @@ import { MapPin } from "lucide-react";
 import { StarRating } from "@/components/ui/common/atoms";
 import { FoodRecord } from "@/types";
 import { useRouter } from "next/navigation";
+import { cn, getRelativeTime, truncate } from "@/utils/common";
 
 interface FoodRecordCardProps {
   record: FoodRecord;
@@ -27,9 +28,10 @@ export const FoodRecordCard = ({
 
   return (
     <div
-      className={`bg-[var(--color-background)] rounded-2xl shadow-sm border border-[var(--color-border)] hover:shadow-lg transition-all duration-300 cursor-pointer ${
+      className={cn(
+        "bg-[var(--color-background)] rounded-2xl shadow-sm border border-[var(--color-border)] hover:shadow-lg transition-all duration-300 cursor-pointer",
         isCompact ? "p-3" : "p-4"
-      }`}
+      )}
       onClick={handleClick}
     >
       {/* 상단: 음식명, 식당명 + 우측 별점, 사진 */}
@@ -48,6 +50,9 @@ export const FoodRecordCard = ({
             }`}
           >
             {record.restaurantName}
+          </p>
+          <p className={`text-[var(--color-muted-foreground)] text-xs mt-1`}>
+            {getRelativeTime(record.createdAt || record.date)}
           </p>
         </div>
 
@@ -76,12 +81,8 @@ export const FoodRecordCard = ({
           style={{ color: "var(--color-muted-foreground)" }}
         >
           <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-          <span
-            className={`truncate font-medium ${
-              isCompact ? "text-xs" : "text-xs"
-            }`}
-          >
-            {record.location.address}
+          <span className={`font-medium ${isCompact ? "text-xs" : "text-xs"}`}>
+            {truncate(record.location.address || "", 30)}
           </span>
         </div>
         <div

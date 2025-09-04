@@ -17,7 +17,7 @@ export const getRatingColor = (rating: number): string => {
   return "text-red-600";
 };
 
-// 검색 관련 유틸리티
+// 검색 관련 유틸리티 (추후 검색 기능 구현 시 사용 예정)
 export const highlightSearchTerm = (
   text: string,
   searchTerm: string
@@ -63,8 +63,10 @@ export const createSearchIndex = (
         if (!index.has(word)) {
           index.set(word, []);
         }
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        index.get(word)!.push(record);
+        const wordRecords = index.get(word);
+        if (wordRecords) {
+          wordRecords.push(record);
+        }
       }
     });
   });

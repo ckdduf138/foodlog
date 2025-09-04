@@ -4,15 +4,13 @@ import { useState } from "react";
 import { FoodRecord } from "@/types";
 import {
   Calendar,
-  Clock,
-  MapPin,
   Utensils,
   Star,
-  CreditCard,
   MoreHorizontal,
   Edit,
   Trash2,
 } from "lucide-react";
+import { formatDate } from "@/utils/common";
 
 interface RecordDetailContentProps {
   record: FoodRecord;
@@ -213,13 +211,7 @@ export const RecordDetailContent = ({
         >
           <Calendar className="w-4 h-4 mr-2" />
           <span>
-            {new Date(record.date).toLocaleDateString("ko-KR", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-              weekday: "short",
-            })}{" "}
-            {record.time}
+            {formatDate(record.date)} {record.time}
           </span>
         </div>
 

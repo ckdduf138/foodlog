@@ -4,6 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import { PlaceSelect } from "./PlaceSearch";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 declare global {
   interface Window {
     kakao: any;

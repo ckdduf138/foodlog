@@ -162,6 +162,8 @@ const NewRecordPageContent = () => {
             placeId: formData.location.placeId || "",
             placeName: formData.location.placeName || "",
           },
+          createdAt: new Date(),
+          updatedAt: new Date(),
         };
 
         console.log("Saving record with photo:", !!recordData.photo);
@@ -169,7 +171,7 @@ const NewRecordPageContent = () => {
         if (isEditMode && editRecordId) {
           await db.foodRecords.update(parseInt(editRecordId), recordData);
         } else {
-          await db.foodRecords.add(recordData as any);
+          await db.foodRecords.add(recordData);
         }
 
         router.push("/records");

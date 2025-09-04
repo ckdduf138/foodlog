@@ -187,3 +187,5 @@ const PlaceSearch = ({
     </div>
   );
 };
+
+export default PlaceSearch;

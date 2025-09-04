@@ -1,4 +1,5 @@
 import { Star } from "lucide-react";
+import { getRatingText } from "@/utils/records";
 
 interface StarRatingProps {
   rating: number;
@@ -22,7 +23,7 @@ export const StarRating = ({
   };
 
   return (
-    <div className="flex gap-0.5">
+    <div className="flex gap-0.5" title={getRatingText(Math.round(rating))}>
       {[...Array(maxRating)].map((_, i) => (
         <Star
           key={i}

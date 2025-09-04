@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { db } from "@/lib/db";
 import { FoodRecord } from "@/types";
+import { calculateAverage } from "@/utils/home";
 
 // 음식 기록 관리 훅
 export const useFoodRecords = () => {
@@ -82,11 +83,7 @@ export const useFoodRecords = () => {
       (record) => new Date(record.date).getMonth() === currentMonth
     );
 
-    const averageRating =
-      records.length > 0
-        ? records.reduce((sum, record) => sum + record.rating, 0) /
-          records.length
-        : 0;
+    const averageRating = calculateAverage(records.map(record => record.rating));
 
     // 가장 자주 방문한 레스토랑
     const restaurantCounts = records.reduce((acc, record) => {

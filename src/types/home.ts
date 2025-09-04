@@ -1,17 +1,4 @@
-// UI 컴포넌트 관련 타입들
-export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
-export type Size = "sm" | "md" | "lg";
-export type BadgeVariant = "default" | "success" | "warning" | "error";
-
-// 네비게이션 관련 타입들
-export interface NavigationTab {
-  id: string;
-  label: string;
-  icon: React.ReactNode;
-  href?: string;
-}
-
-// 통계 관련 타입들
+// 통계 관련 타입들 (현재 hooks에서 사용 중)
 export interface Statistics {
   totalRecords: number;
   monthlyRecords: number;
@@ -25,4 +12,12 @@ export interface Statistics {
     rating: number;
     count: number;
   }>;
+}
+
+// 네비게이션 관련 타입들 (추후 네비게이션 컴포넌트에서 사용 예정)
+export interface NavigationTab {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  href?: string;
 }

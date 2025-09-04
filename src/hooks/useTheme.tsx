@@ -43,3 +43,5 @@ const useTheme = (initial?: Theme) => {
 
   return { theme, setTheme } as const;
 };
+
+export default useTheme;

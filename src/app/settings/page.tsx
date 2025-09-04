@@ -41,7 +41,7 @@ const SettingsPage = () => {
                   버전
                 </span>
                 <span className="text-[var(--color-green-600)] font-medium bg-[var(--color-green-100)] px-3 py-1 rounded-full">
-                  1.0.0
+                  Beta
                 </span>
               </div>
             </div>
