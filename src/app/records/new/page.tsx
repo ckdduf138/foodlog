@@ -16,7 +16,7 @@ import { Header } from "@/components/ui/common/molecules/Header";
 import { useNavigation } from "@/hooks/useNavigation";
 import { FilePlus, Edit } from "lucide-react";
 import { RecordForm } from "@/components/ui/records/organisms/RecordForm";
-import { PlaceSelect } from "@/components/ui/records/places/PlaceSearch";
+import { PlaceSelect } from "@/components/ui/records/organisms/places/PlaceSearch";
 
 const NewRecordPageContent = () => {
   const { activeTab, changeTab } = useNavigation("records");

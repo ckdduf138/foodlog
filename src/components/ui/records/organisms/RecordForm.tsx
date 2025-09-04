@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { FoodRecordFormData } from "@/types";
-import { PlaceSelect } from "@/components/ui/records/places/PlaceSearch";
+import { PlaceSelect } from "@/components/ui/records/organisms/places/PlaceSearch";
 import {
   Step1Location,
   Step2FoodInfo,

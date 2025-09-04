@@ -1,7 +1,7 @@
 import React from "react";
 import { FoodRecordFormData } from "@/types";
-import MapSearch from "@/components/ui/records/places/MapSearch";
-import { PlaceSelect } from "@/components/ui/records/places/PlaceSearch";
+import MapSearch from "@/components/ui/records/organisms/places/MapSearch";
+import { PlaceSelect } from "@/components/ui/records/organisms/places/PlaceSearch";
 import { MapPin } from "lucide-react";
 
 interface Step1LocationProps {
