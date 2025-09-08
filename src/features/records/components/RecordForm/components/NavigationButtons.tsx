@@ -23,11 +23,10 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
       : "var(--color-accent)",
     color: isEnabled ? "white" : "var(--color-accent-foreground)",
     opacity: !isEnabled ? 0.7 : 1,
-    border: !isEnabled ? "1px solid var(--color-border)" : "none",
   });
 
   return (
-    <div className="mt-3">
+    <div>
       {currentStep < STEPS.length ? (
         <button
           type="button"

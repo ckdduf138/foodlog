@@ -32,7 +32,7 @@ export const Step2FoodInfo: React.FC<Step2FoodInfoProps> = ({
             name="foodName"
             value={formData.foodName}
             onChange={onFormChange}
-            placeholder="예: 김치찌개, 아메리카노..."
+            placeholder="삼겹살"
             className="w-full p-4 text-base border-2 rounded-2xl transition-all duration-200 focus:outline-none focus:ring-2"
             style={{
               backgroundColor: "var(--color-background)",

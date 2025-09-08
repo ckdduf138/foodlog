@@ -53,7 +53,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           value={keyword}
           onChange={handleInputChange}
           placeholder="장소를 검색하세요 (예: 스타벅스)"
-          className="w-full p-3 pr-10 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2"
+          className="w-full p-3 pr-10 border-2 rounded-2xl transition-all duration-200 focus:outline-none focus:ring-2"
           style={{
             backgroundColor: "var(--color-background)",
             borderColor: "var(--color-border)",

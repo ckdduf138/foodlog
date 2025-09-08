@@ -43,24 +43,26 @@ export const BottomNavigation = ({
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-[var(--color-background)] border-t border-[var(--color-border)] px-2 sm:px-4 py-2 z-50 safe-area-inset-bottom">
-      <div className="flex justify-around max-w-md mx-auto">
-        {navigationItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => onTabChange(item.id)}
-            className={`flex flex-col items-center py-1.5 sm:py-2 px-2 sm:px-4 transition-colors rounded-lg min-w-0 ${
-              activeTab === item.id
-                ? "text-[var(--color-primary)] bg-[var(--color-secondary)]"
-                : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] hover:bg-[var(--color-muted)]"
-            }`}
-          >
-            <div className="mb-0.5 sm:mb-1">{item.icon}</div>
-            <span className="text-xs font-medium truncate max-w-full">
-              {item.label}
-            </span>
-          </button>
-        ))}
+    <nav className="fixed bottom-0 left-0 right-0 bg-[var(--color-background)] border-t border-[var(--color-border)] z-50">
+      <div className="px-2 sm:px-4 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+        <div className="flex justify-around max-w-md mx-auto">
+          {navigationItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => onTabChange(item.id)}
+              className={`flex flex-col items-center py-1.5 sm:py-2 px-2 sm:px-4 transition-colors rounded-lg min-w-0 ${
+                activeTab === item.id
+                  ? "text-[var(--color-primary)] bg-[var(--color-secondary)]"
+                  : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] hover:bg-[var(--color-muted)]"
+              }`}
+            >
+              <div className="mb-0.5 sm:mb-1">{item.icon}</div>
+              <span className="text-xs font-medium truncate max-w-full">
+                {item.label}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
     </nav>
   );

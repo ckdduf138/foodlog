@@ -82,25 +82,24 @@ export const RecordForm = ({
   };
 
   return (
-    <div className="max-w-md mx-auto relative">
+    <div className="max-w-md mx-auto relative min-h-[calc(100vh-10rem)] flex flex-col">
       <StepProgress currentStep={currentStep} onStepClick={setCurrentStep} />
 
       {/* Step Content */}
-      <div
-        className={`${
-          currentStep === 1 ? "min-h-[50vh]" : "min-h-[400px]"
-        } flex items-start`}
-      >
+      <div className="flex-1 py-4">
         <div className="w-full">{renderStepContent()}</div>
       </div>
 
-      <NavigationButtons
-        currentStep={currentStep}
-        canProceed={canProceedFromCurrentStep(formData)}
-        isSubmitting={isSubmitting}
-        onNext={nextStep}
-        onSubmit={onSubmit}
-      />
+      {/* Fixed Navigation Buttons */}
+      <div className="bg-[var(--color-background)] border-t border-[var(--color-border)] p-4 -mx-4 mt-auto">
+        <NavigationButtons
+          currentStep={currentStep}
+          canProceed={canProceedFromCurrentStep(formData)}
+          isSubmitting={isSubmitting}
+          onNext={nextStep}
+          onSubmit={onSubmit}
+        />
+      </div>
     </div>
   );
 };
