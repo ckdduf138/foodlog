@@ -38,6 +38,7 @@ export interface PlaceSearchResult {
   place_url: string;
   x: string; // longitude
   y: string; // latitude
+  calculatedDistance?: number; // 계산된 거리 (km)
 }
 
 export interface MapSearchState {
@@ -49,6 +50,10 @@ export interface MapSearchState {
   showDropdown: boolean;
   isMapLoaded: boolean;
   scriptLoaded: boolean;
+  currentLocation: MapCoordinates | null;
+  currentLocationMarker: any;
+  isLoadingLocation: boolean;
+  locationError: string | null;
 }
 
 export interface MapCoordinates {

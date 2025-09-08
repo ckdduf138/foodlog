@@ -91,7 +91,6 @@ export const useRecordForm = () => {
   }, []);
 
   const handlePlaceSelect = useCallback((place: PlaceSelect) => {
-    console.log("handlePlaceSelect called with:", place);
     setFormData((prev) => {
       const newFormData = {
         ...prev,
@@ -104,7 +103,6 @@ export const useRecordForm = () => {
           placeName: place.placeName,
         },
       };
-      console.log("Updated formData.location:", newFormData.location);
       return newFormData;
     });
   }, []);
@@ -120,18 +118,13 @@ export const useRecordForm = () => {
 
         // Convert File to base64 if photo is a File object
         if (formData.photo && typeof formData.photo !== "string") {
-          console.log("Converting File to base64:", formData.photo);
           const reader = new FileReader();
           photoData = await new Promise<string>((resolve) => {
             reader.onloadend = () => resolve(reader.result as string);
             reader.readAsDataURL(formData.photo as File);
           });
-          console.log("Photo converted to base64, length:", photoData.length);
         } else if (typeof formData.photo === "string") {
           photoData = formData.photo;
-          console.log("Using existing photo string, length:", photoData.length);
-        } else {
-          console.log("No photo to save");
         }
 
         const recordData = {
@@ -147,8 +140,6 @@ export const useRecordForm = () => {
           createdAt: new Date(),
           updatedAt: new Date(),
         };
-
-        console.log("Saving record with photo:", !!recordData.photo);
 
         if (isEditMode && editRecordId) {
           await db.foodRecords.update(parseInt(editRecordId), recordData);

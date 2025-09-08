@@ -82,11 +82,7 @@ export const RecordForm = ({
 
   return (
     <div className="max-w-md mx-auto relative min-h-[calc(100vh-10rem)] flex flex-col">
-      <StepProgress
-        currentStep={currentStep}
-        canProceed={canProceedFromCurrentStep(formData)}
-        setStep={setStep}
-      />
+      <StepProgress currentStep={currentStep} setStep={setStep} />
 
       {/* Step Content */}
       <div className="flex-1 py-4">

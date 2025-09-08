@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { Search } from "lucide-react";
+import { Search, MapPin } from "lucide-react";
 import { PlaceSearchResult } from "../types";
+import { formatDistance } from "../utils";
 
 interface SearchInputProps {
   keyword: string;
@@ -40,7 +41,6 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   };
 
   const handlePlaceClick = (place: PlaceSearchResult) => {
-    console.log("SearchInput - handlePlaceClick called with:", place);
     onPlaceSelect(place);
     onDropdownToggle(false);
   };
@@ -52,7 +52,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           type="text"
           value={keyword}
           onChange={handleInputChange}
-          placeholder="장소를 검색하세요 (예: 스타벅스)"
+          placeholder="삼겹살 전문점"
           className="w-full p-3 pr-10 border-2 rounded-2xl transition-all duration-200 focus:outline-none focus:ring-2"
           style={{
             backgroundColor: "var(--color-background)",
@@ -102,26 +102,36 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                 e.currentTarget.style.backgroundColor = "transparent";
               }}
             >
-              <div
-                className="font-semibold"
-                style={{ color: "var(--color-foreground)" }}
-              >
-                {place.place_name}
-              </div>
-              <div
-                className="text-sm"
-                style={{ color: "var(--color-muted-foreground)" }}
-              >
-                {place.address_name}
-              </div>
-              {place.category_name && (
-                <div
-                  className="text-xs mt-1"
-                  style={{ color: "var(--color-muted-foreground)" }}
-                >
-                  {place.category_name}
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div
+                    className="font-semibold"
+                    style={{ color: "var(--color-foreground)" }}
+                  >
+                    {place.place_name}
+                  </div>
+                  <div
+                    className="text-sm"
+                    style={{ color: "var(--color-muted-foreground)" }}
+                  >
+                    {place.address_name}
+                  </div>
+                  {place.category_name && (
+                    <div
+                      className="text-xs mt-1"
+                      style={{ color: "var(--color-muted-foreground)" }}
+                    >
+                      {place.category_name}
+                    </div>
+                  )}
                 </div>
-              )}
+                {place.calculatedDistance && (
+                  <div className="flex items-center text-xs text-green-600 ml-2">
+                    <MapPin className="w-3 h-3 mr-1" />
+                    {formatDistance(place.calculatedDistance)}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>

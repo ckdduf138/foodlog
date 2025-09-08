@@ -3,7 +3,6 @@ import { STEPS } from "../constants/steps";
 
 interface StepProgressProps {
   currentStep: number;
-  canProceed: boolean;
   setStep: (step: number) => void;
 }
 
