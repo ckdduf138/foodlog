@@ -6,7 +6,7 @@ interface NavigationButtonsProps {
   currentStep: number;
   canProceed: boolean;
   isSubmitting: boolean;
-  onNext: () => void;
+  setStep: (step: number) => void;
   onSubmit: (e: React.FormEvent) => void;
 }
 
@@ -14,7 +14,7 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
   currentStep,
   canProceed,
   isSubmitting,
-  onNext,
+  setStep,
   onSubmit,
 }) => {
   const buttonStyle = (isEnabled: boolean) => ({
@@ -30,7 +30,7 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
       {currentStep < STEPS.length ? (
         <button
           type="button"
-          onClick={onNext}
+          onClick={() => setStep(currentStep + 1)}
           disabled={!canProceed}
           className="w-full py-3 px-6 rounded-xl font-semibold shadow-lg transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
           style={buttonStyle(canProceed)}

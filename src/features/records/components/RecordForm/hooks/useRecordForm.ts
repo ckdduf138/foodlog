@@ -5,15 +5,9 @@ import { STEPS } from "../constants/steps";
 export const useRecordForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
 
-  const nextStep = () => {
-    if (currentStep < STEPS.length) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const prevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
+  const setStep = (step: number) => {
+    if (step <= STEPS.length) {
+      setCurrentStep(step);
     }
   };
 
@@ -39,9 +33,7 @@ export const useRecordForm = () => {
 
   return {
     currentStep,
-    setCurrentStep,
-    nextStep,
-    prevStep,
+    setStep,
     canProceedFromCurrentStep,
   };
 };

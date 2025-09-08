@@ -36,8 +36,7 @@ export const RecordForm = ({
   isSubmitting,
   error,
 }: RecordFormProps) => {
-  const { currentStep, setCurrentStep, nextStep, canProceedFromCurrentStep } =
-    useRecordForm();
+  const { currentStep, setStep, canProceedFromCurrentStep } = useRecordForm();
 
   const { photoPreview, handlePhotoChange } = usePhotoHandler(
     formData.photo,
@@ -83,7 +82,11 @@ export const RecordForm = ({
 
   return (
     <div className="max-w-md mx-auto relative min-h-[calc(100vh-10rem)] flex flex-col">
-      <StepProgress currentStep={currentStep} onStepClick={setCurrentStep} />
+      <StepProgress
+        currentStep={currentStep}
+        canProceed={canProceedFromCurrentStep(formData)}
+        setStep={setStep}
+      />
 
       {/* Step Content */}
       <div className="flex-1 py-4">
@@ -96,7 +99,7 @@ export const RecordForm = ({
           currentStep={currentStep}
           canProceed={canProceedFromCurrentStep(formData)}
           isSubmitting={isSubmitting}
-          onNext={nextStep}
+          setStep={setStep}
           onSubmit={onSubmit}
         />
       </div>

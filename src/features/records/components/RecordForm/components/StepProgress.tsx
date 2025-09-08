@@ -3,13 +3,20 @@ import { STEPS } from "../constants/steps";
 
 interface StepProgressProps {
   currentStep: number;
-  onStepClick: (step: number) => void;
+  canProceed: boolean;
+  setStep: (step: number) => void;
 }
 
 export const StepProgress: React.FC<StepProgressProps> = ({
   currentStep,
-  onStepClick,
+  setStep,
 }) => {
+  const handleStepClick = (step: number) => {
+    if (step < currentStep) {
+      setStep(step);
+    }
+  };
+
   return (
     <div className="mb-4">
       <div className="flex justify-between items-center mb-2">
@@ -17,7 +24,7 @@ export const StepProgress: React.FC<StepProgressProps> = ({
           <div
             key={step.id}
             className="flex flex-col items-center cursor-pointer"
-            onClick={() => onStepClick(index + 1)}
+            onClick={() => handleStepClick(index + 1)}
           >
             <div
               className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300`}
