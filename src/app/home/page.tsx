@@ -3,7 +3,7 @@
 import { UtensilsCrossed } from "lucide-react";
 import { MainLayout, Header } from "@/shared/components";
 import { useNavigation } from "@/shared/hooks";
-import { Dashboard, QuickActions } from "@/features/home";
+import { Dashboard } from "@/features/home";
 import { RecordCard, useRecords } from "@/features/records";
 import { useRouter } from "next/navigation";
 
@@ -63,13 +63,6 @@ const HomePage = () => {
           weeklyRecords={weeklyRecords}
           averageRating={averageRating}
           streakDays={0}
-        />
-
-        {/* 빠른 실행 */}
-        <QuickActions
-          onAddRecord={handleAddRecord}
-          onSearch={handleSearch}
-          onViewStats={handleViewStats}
         />
 
         {/* 최근 기록 */}

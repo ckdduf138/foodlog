@@ -40,6 +40,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   };
 
   const handlePlaceClick = (place: PlaceSearchResult) => {
+    console.log("SearchInput - handlePlaceClick called with:", place);
     onPlaceSelect(place);
     onDropdownToggle(false);
   };

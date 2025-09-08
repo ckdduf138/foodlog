@@ -61,6 +61,7 @@ export function MapSearch({ onPlaceSelect, initialPlace }: MapSearchProps) {
         longitude: parseFloat(place.x),
         placeId: place.id,
       };
+
       handlePlaceSelect(placeData);
     },
     [selectPlace, handlePlaceSelect]

@@ -1,44 +1,45 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/shared/lib/db";
 import { FoodRecord } from "@/features/records/types";
 
-// 임시 데이터 (실제로는 IndexedDB에서 가져올 예정)
-const mockRecords: FoodRecord[] = [];
-
 export const useRecords = () => {
-  const [records, setRecords] = useState<FoodRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadRecords = async () => {
+  // Dexie의 useLiveQuery를 사용하여 실시간으로 데이터 가져오기
+  const records =
+    useLiveQuery(async () => {
       try {
         setLoading(true);
-        // TODO: 실제 데이터베이스에서 로드
-        setRecords(mockRecords);
+        const allRecords = await db.foodRecords
+          .orderBy("createdAt")
+          .reverse()
+          .toArray();
+        setError(null);
+        return allRecords;
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Unknown error");
+        setError(err instanceof Error ? err.message : "Failed to load records");
+        return [];
       } finally {
         setLoading(false);
       }
-    };
-
-    loadRecords();
-  }, []);
+    }, []) || [];
 
   const addRecord = async (
     record: Omit<FoodRecord, "id" | "createdAt" | "updatedAt">
   ) => {
     try {
-      const newRecord: FoodRecord = {
+      const newRecord = {
         ...record,
-        id: Date.now(),
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      setRecords((prev) => [newRecord, ...prev]);
-      return newRecord;
+
+      const id = await db.foodRecords.add(newRecord);
+      return { ...newRecord, id } as FoodRecord;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to add record");
       throw err;
@@ -47,13 +48,10 @@ export const useRecords = () => {
 
   const updateRecord = async (id: number, updates: Partial<FoodRecord>) => {
     try {
-      setRecords((prev) =>
-        prev.map((record) =>
-          record.id === id
-            ? { ...record, ...updates, updatedAt: new Date() }
-            : record
-        )
-      );
+      await db.foodRecords.update(id, {
+        ...updates,
+        updatedAt: new Date(),
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to update record");
       throw err;
@@ -62,7 +60,7 @@ export const useRecords = () => {
 
   const deleteRecord = async (id: number) => {
     try {
-      setRecords((prev) => prev.filter((record) => record.id !== id));
+      await db.foodRecords.delete(id);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to delete record");
       throw err;
