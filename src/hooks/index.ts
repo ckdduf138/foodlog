@@ -1,6 +1,8 @@
 // 커스텀 훅들 (비즈니스 로직 분리)
 import { useState, useEffect, useMemo } from "react";
-import { db, FoodRecord } from "@/lib/db";
+import { db } from "@/lib/db";
+import { FoodRecord } from "@/types";
+import { calculateAverage } from "@/utils/home";
 
 // 음식 기록 관리 훅
 export const useFoodRecords = () => {
@@ -81,11 +83,7 @@ export const useFoodRecords = () => {
       (record) => new Date(record.date).getMonth() === currentMonth
     );
 
-    const averageRating =
-      records.length > 0
-        ? records.reduce((sum, record) => sum + record.rating, 0) /
-          records.length
-        : 0;
+    const averageRating = calculateAverage(records.map(record => record.rating));
 
     // 가장 자주 방문한 레스토랑
     const restaurantCounts = records.reduce((acc, record) => {
@@ -100,8 +98,31 @@ export const useFoodRecords = () => {
     return {
       totalRecords: records.length,
       monthlyRecords: monthlyRecords.length,
+      weeklyRecords: records.filter((record) => {
+        const recordDate = new Date(record.date);
+        const diff =
+          (Date.now() - recordDate.getTime()) / (1000 * 60 * 60 * 24);
+        return diff <= 7;
+      }).length,
       averageRating,
       favoriteRestaurant,
+      streakDays: (() => {
+        // 연속 기록 계산 (오늘 포함)
+        const dateSet = new Set(records.map((r) => r.date));
+        const format = (d: Date) => d.toISOString().slice(0, 10);
+        let count = 0;
+        const cursor = new Date();
+        while (true) {
+          const key = format(cursor);
+          if (dateSet.has(key)) {
+            count += 1;
+            cursor.setDate(cursor.getDate() - 1);
+          } else {
+            break;
+          }
+        }
+        return count;
+      })(),
     };
   }, [records]);
 
@@ -119,20 +140,8 @@ export const useFoodRecords = () => {
   };
 };
 
-// 네비게이션 상태 관리 훅
-export const useNavigation = (initialTab = "home") => {
-  const [activeTab, setActiveTab] = useState(initialTab);
-
-  const changeTab = (tabId: string) => {
-    setActiveTab(tabId);
-    // 여기에 라우팅 로직 추가 가능
-  };
-
-  return {
-    activeTab,
-    changeTab,
-  };
-};
+// Note: client-only navigation hook lives in src/hooks/useNavigation.tsx
+// Do not re-export it here to avoid importing a client module from a server module.
 
 // 로컬 스토리지 훅 (설정 등)
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
