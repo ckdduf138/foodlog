@@ -1,27 +1,50 @@
 "use client";
 
 import { UtensilsCrossed } from "lucide-react";
-import { MainLayout } from "@/components/layout/MainLayout";
-import { Header } from "@/components/ui/common/molecules/Header";
-import { useFoodRecords } from "@/hooks";
-import { useNavigation } from "@/hooks/useNavigation";
-import { FoodRecord } from "@/types";
-import { FoodRecordsList } from "@/components/ui/records/organisms";
-import { DashboardStats } from "@/components/ui/home/organisms";
+import { MainLayout, Header } from "@/shared/components";
+import { useNavigation } from "@/shared/hooks";
+import { Dashboard, QuickActions } from "@/features/home";
+import { RecordCard, useRecords } from "@/features/records";
 import { useRouter } from "next/navigation";
 
 const HomePage = () => {
-  const { records, loading, stats } = useFoodRecords();
+  const { records } = useRecords();
   const { activeTab, changeTab } = useNavigation("home");
   const router = useRouter();
+
+  // 간단한 통계 계산
+  const totalRecords = records.length;
+  const weeklyRecords = records.filter((record) => {
+    const recordDate = new Date(record.date);
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    return recordDate >= weekAgo;
+  }).length;
+  const averageRating =
+    records.length > 0
+      ? records.reduce((sum, record) => sum + record.rating, 0) / records.length
+      : 0;
 
   const handleAddRecord = () => {
     router.push("/records/new");
   };
 
-  const handleRecordClick = (record: FoodRecord) => {
+  const handleSearch = () => {
+    router.push("/records");
+  };
+
+  const handleViewStats = () => {
+    router.push("/stats");
+  };
+
+  const handleRecordClick = (
+    record: import("@/features/records/types").FoodRecord
+  ) => {
     router.push(`/records/${record.id}`);
   };
+
+  // 최근 3개 기록만 표시
+  const recentRecords = records.slice(0, 3);
 
   return (
     <MainLayout activeTab={activeTab} onTabChange={changeTab}>
@@ -35,21 +58,36 @@ const HomePage = () => {
       {/* 메인 컨텐츠 */}
       <div className="px-4 py-6 space-y-3 sm:space-y-6 w-full flex flex-col items-stretch">
         {/* 통계 대시보드 */}
-        <DashboardStats
-          totalRecords={stats.totalRecords}
-          weeklyRecords={stats.weeklyRecords}
-          averageRating={stats.averageRating}
-          streakDays={stats.streakDays}
+        <Dashboard
+          totalRecords={totalRecords}
+          weeklyRecords={weeklyRecords}
+          averageRating={averageRating}
+          streakDays={0}
+        />
+
+        {/* 빠른 실행 */}
+        <QuickActions
+          onAddRecord={handleAddRecord}
+          onSearch={handleSearch}
+          onViewStats={handleViewStats}
         />
 
         {/* 최근 기록 */}
-        <FoodRecordsList
-          records={records}
-          loading={loading}
-          onRecordClick={handleRecordClick}
-          onAddRecord={handleAddRecord}
-          title="최근 기록"
-        />
+        {recentRecords.length > 0 && (
+          <div className="space-y-3">
+            <h3 className="text-lg font-semibold text-[var(--color-foreground)]">
+              최근 기록
+            </h3>
+            {recentRecords.map((record) => (
+              <RecordCard
+                key={record.id}
+                record={record}
+                onClick={handleRecordClick}
+                variant="compact"
+              />
+            ))}
+          </div>
+        )}
       </div>
     </MainLayout>
   );

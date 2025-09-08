@@ -1,8 +1,7 @@
 "use client";
 
-import { MainLayout } from "@/components/layout/MainLayout";
-import { useNavigation } from "@/hooks/useNavigation";
-import { Header } from "@/components/ui/common/molecules/Header";
+import { MainLayout, Header } from "@/shared/components";
+import { useNavigation } from "@/shared/hooks";
 import { BarChart3 } from "lucide-react";
 
 const StatsPage = () => {

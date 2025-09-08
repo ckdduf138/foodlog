@@ -1,10 +1,9 @@
 "use client";
 
-import { MainLayout } from "@/components/layout/MainLayout";
-import { useNavigation } from "@/hooks/useNavigation";
-import { Header } from "@/components/ui/common/molecules/Header";
+import { MainLayout, Header } from "@/shared/components";
+import { useNavigation } from "@/shared/hooks";
 import { Settings } from "lucide-react";
-import { ThemeSelector } from "@/components/ui/settings";
+import { ThemeSelector } from "@/features/settings";
 
 const SettingsPage = () => {
   const { activeTab, changeTab } = useNavigation("settings");
