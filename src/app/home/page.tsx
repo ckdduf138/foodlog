@@ -25,18 +25,6 @@ const HomePage = () => {
       ? records.reduce((sum, record) => sum + record.rating, 0) / records.length
       : 0;
 
-  const handleAddRecord = () => {
-    router.push("/records/new");
-  };
-
-  const handleSearch = () => {
-    router.push("/records");
-  };
-
-  const handleViewStats = () => {
-    router.push("/stats");
-  };
-
   const handleRecordClick = (
     record: import("@/features/records/types").FoodRecord
   ) => {

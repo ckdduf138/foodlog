@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { ChevronDown, Calendar, Star } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { SortOption, SortConfig } from "../types";
 
 interface SortButtonProps {

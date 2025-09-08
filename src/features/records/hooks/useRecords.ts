@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/shared/lib/db";
 import { FoodRecord } from "@/features/records/types";

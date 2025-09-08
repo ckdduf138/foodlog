@@ -6,6 +6,7 @@ import { useKakaoMap } from "./hooks/useKakaoMap";
 import { SearchInput } from "./components/SearchInput";
 import { MapContainer } from "./components/MapContainer";
 import type { PlaceSelect } from "../../types";
+import type { PlaceSearchResult } from "./types";
 
 interface MapSearchProps {
   onPlaceSelect: (place: PlaceSelect) => void;
@@ -44,7 +45,7 @@ export function MapSearch({ onPlaceSelect }: MapSearchProps) {
   );
 
   const handleSearchResultSelect = useCallback(
-    (place: any) => {
+    (place: PlaceSearchResult) => {
       // 먼저 지도에 표시
       selectPlace(place);
 
