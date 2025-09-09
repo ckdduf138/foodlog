@@ -46,7 +46,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   };
 
   return (
-    <div className="relative mb-4">
+    <div className="relative">
       <form onSubmit={handleSubmit} className="relative">
         <input
           type="text"

@@ -90,7 +90,7 @@ export const RecordForm = ({
       </div>
 
       {/* Fixed Navigation Buttons */}
-      <div className="bg-[var(--color-background)] border-t border-[var(--color-border)] p-4 -mx-4 mt-auto">
+      <div className="bg-[var(--color-background)] border-t border-[var(--color-border)] p-2 -mx-4 mt-auto">
         <NavigationButtons
           currentStep={currentStep}
           canProceed={canProceedFromCurrentStep(formData)}

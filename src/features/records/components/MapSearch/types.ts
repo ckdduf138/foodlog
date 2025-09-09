@@ -54,6 +54,7 @@ export interface MapSearchState {
   currentLocationMarker: any;
   isLoadingLocation: boolean;
   locationError: string | null;
+  mapError: string | null;
 }
 
 export interface MapCoordinates {

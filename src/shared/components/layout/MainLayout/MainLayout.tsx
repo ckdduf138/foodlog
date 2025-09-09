@@ -30,7 +30,7 @@ export const MainLayout = ({
         {Array.isArray(children) ? children[0] : null}
       </div>
       <div className="w-full h-16"></div>
-      <main className="pb-20 w-full flex-1 flex flex-col items-stretch px-3">
+      <main className="pb-18 w-full flex-1 flex flex-col items-stretch px-3">
         {Array.isArray(children) ? children.slice(1) : children}
       </main>
 

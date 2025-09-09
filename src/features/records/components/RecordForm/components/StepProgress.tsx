@@ -17,8 +17,8 @@ export const StepProgress: React.FC<StepProgressProps> = ({
   };
 
   return (
-    <div className="mb-4">
-      <div className="flex justify-between items-center mb-2">
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between items-center">
         {STEPS.map((step, index) => (
           <div
             key={step.id}

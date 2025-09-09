@@ -32,6 +32,7 @@ export const useKakaoMap = (onPlaceSelect: (place: PlaceSelect) => void) => {
     currentLocationMarker: null,
     isLoadingLocation: false,
     locationError: null,
+    mapError: null,
   });
 
   const initializeMap = useCallback(
@@ -41,6 +42,11 @@ export const useKakaoMap = (onPlaceSelect: (place: PlaceSelect) => void) => {
       }
 
       try {
+        // 카카오 맵 API 사용 가능 여부 재확인
+        if (!isKakaoMapsAvailable()) {
+          throw new Error("Kakao Maps API not available");
+        }
+
         const coords = coordinates || DEFAULT_COORDINATES;
         const mapInstance = createMapInstance(mapContainer.current, coords);
 
@@ -60,9 +66,15 @@ export const useKakaoMap = (onPlaceSelect: (place: PlaceSelect) => void) => {
           isMapLoaded: true,
           currentLocation: coordinates || null,
           currentLocationMarker,
+          mapError: null, // 성공 시 에러 초기화
         }));
       } catch (error) {
         console.error("Error creating map instance:", error);
+        setState((prev) => ({
+          ...prev,
+          mapError: "지도를 초기화할 수 없습니다. 인터넷 연결을 확인해주세요.",
+          isLoadingLocation: false,
+        }));
       }
     },
     [state.isMapLoaded]
@@ -73,7 +85,8 @@ export const useKakaoMap = (onPlaceSelect: (place: PlaceSelect) => void) => {
       setState((prev) => ({
         ...prev,
         isLoadingLocation: false,
-        locationError: "카카오 맵을 불러올 수 없습니다",
+        mapError:
+          "카카오 맵 API를 불러올 수 없습니다. 네트워크 연결을 확인해주세요.",
       }));
       return;
     }
@@ -135,7 +148,7 @@ export const useKakaoMap = (onPlaceSelect: (place: PlaceSelect) => void) => {
               ...prev,
               isLoadingLocation: false,
               locationError:
-                "현재 위치를 확인할 수 없습니다. Navigation 버튼으로 다시 시도해주세요.",
+                "현재 위치를 확인할 수 없습니다. 다시 시도해주세요.",
             }));
           }
         }, 5000);
@@ -230,9 +243,20 @@ export const useKakaoMap = (onPlaceSelect: (place: PlaceSelect) => void) => {
       scriptLoaded: true,
       isLoadingLocation: true,
       locationError: null,
+      mapError: null, // 스크립트 로드 성공 시 에러 초기화
     }));
     loadMap();
   }, [loadMap]);
+
+  const onScriptError = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      scriptLoaded: false,
+      isLoadingLocation: false,
+      mapError:
+        "카카오 맵 스크립트를 불러올 수 없습니다. 네트워크 연결을 확인해주세요.",
+    }));
+  }, []);
 
   const setKeyword = useCallback((keyword: string) => {
     setState((prev) => ({ ...prev, keyword }));
@@ -307,6 +331,7 @@ export const useKakaoMap = (onPlaceSelect: (place: PlaceSelect) => void) => {
     searchPlaces,
     selectPlace,
     onScriptLoad,
+    onScriptError,
     setKeyword,
     setShowDropdown,
     refreshLocation,

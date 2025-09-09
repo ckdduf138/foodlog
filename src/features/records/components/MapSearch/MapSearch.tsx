@@ -26,6 +26,7 @@ export function MapSearch({ onPlaceSelect }: MapSearchProps) {
     searchPlaces,
     selectPlace,
     onScriptLoad,
+    onScriptError,
     setKeyword,
     setShowDropdown,
   } = useKakaoMap(handlePlaceSelect);
@@ -77,9 +78,32 @@ export function MapSearch({ onPlaceSelect }: MapSearchProps) {
       )}
 
       {!state.isLoadingLocation && state.locationError && (
-        <div className="flex items-center gap-2 p-3 rounded-lg bg-yellow-50 border border-yellow-200">
+        <div className="flex items-center gap-2 p-3 rounded-2xl bg-yellow-50 border border-yellow-200">
           <AlertCircle className="w-4 h-4 text-yellow-600" />
           <span className="text-sm text-yellow-800">{state.locationError}</span>
+        </div>
+      )}
+
+      {/* 지도 로딩 에러 표시 */}
+      {state.mapError && (
+        <div className="flex flex-col gap-3 p-4 rounded-lg bg-red-50 border border-red-200">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-5 h-5 text-red-600" />
+            <span className="text-sm font-semibold text-red-800">
+              지도를 불러올 수 없습니다
+            </span>
+          </div>
+          <div className="text-sm text-red-700">
+            <p>• 인터넷 연결을 확인해주세요</p>
+            <p>• HTTPS 환경에서 접속해주세요</p>
+            <p>• 잠시 후 다시 시도해주세요</p>
+          </div>
+          <button
+            onClick={() => window.location.reload()}
+            className="self-start px-3 py-1 text-sm bg-red-100 text-red-800 rounded-md hover:bg-red-200 transition-colors"
+          >
+            페이지 새로고침
+          </button>
         </div>
       )}
 
@@ -97,7 +121,11 @@ export function MapSearch({ onPlaceSelect }: MapSearchProps) {
         </div>
       </div>
 
-      <MapContainer mapContainer={mapContainer} onScriptLoad={onScriptLoad} />
+      <MapContainer
+        mapContainer={mapContainer}
+        onScriptLoad={onScriptLoad}
+        onScriptError={onScriptError}
+      />
     </div>
   );
 }
