@@ -1,6 +1,6 @@
 "use client";
 
-import React, { RefObject, useEffect, useState } from "react";
+import React, { RefObject, useEffect, useState, useCallback } from "react";
 import { KAKAO_SDK_URL, validateKakaoApiKey } from "../utils";
 
 interface MapContainerProps {
@@ -16,13 +16,13 @@ export const MapContainer: React.FC<MapContainerProps> = ({
 }) => {
   const [scriptLoaded, setScriptLoaded] = useState(false);
 
-  const handleScriptLoad = () => {
+  const handleScriptLoad = useCallback(() => {
     console.log("✅ Kakao Maps script loaded successfully");
     setScriptLoaded(true);
     onScriptLoad();
-  };
+  }, [onScriptLoad]);
 
-  const handleScriptError = (error: any) => {
+  const handleScriptError = useCallback((error: Event | string) => {
     console.error("❌ Failed to load Kakao Maps script", {
       url: KAKAO_SDK_URL,
       apiKeyValid: validateKakaoApiKey().isValid,
@@ -32,7 +32,7 @@ export const MapContainer: React.FC<MapContainerProps> = ({
       userAgent: navigator.userAgent,
     });
     onScriptError?.();
-  };
+  }, [onScriptError]);
 
   // API 키 검증
   const apiKeyValidation = validateKakaoApiKey();
@@ -40,7 +40,7 @@ export const MapContainer: React.FC<MapContainerProps> = ({
   // 동적 스크립트 로딩
   useEffect(() => {
     if (!apiKeyValidation.isValid) {
-      onScriptError?.();
+      handleScriptError("API key validation failed");
       return;
     }
 
@@ -68,14 +68,14 @@ export const MapContainer: React.FC<MapContainerProps> = ({
         script.parentNode.removeChild(script);
       }
     };
-  }, [apiKeyValidation.isValid, scriptLoaded, onScriptError]);
+  }, [apiKeyValidation.isValid, scriptLoaded, handleScriptError, handleScriptLoad]);
 
   // API 키가 없거나 유효하지 않으면 에러 콜백 실행
   useEffect(() => {
     if (!apiKeyValidation.isValid) {
-      onScriptError?.();
+      handleScriptError("API key validation failed");
     }
-  }, [apiKeyValidation.isValid, onScriptError]);
+  }, [apiKeyValidation.isValid, handleScriptError]);
 
   return (
     <div className="relative">
