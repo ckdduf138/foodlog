@@ -68,7 +68,7 @@ export function MapSearch({ onPlaceSelect }: MapSearchProps) {
     <div className="space-y-4">
       {/* 위치 상태 표시 */}
       {state.isLoadingLocation && (
-        <div className="flex items-center gap-2 p-3 rounded-lg bg-blue-50 border border-blue-200">
+        <div className="flex items-center gap-2 p-3 rounded-2xl bg-blue-50 border border-blue-200">
           <Loader2 className="w-4 h-4 text-blue-600 animate-spin" />
           <div className="text-sm text-blue-800">
             <span className="font-semibold">위치 확인 중...</span> GPS 권한을
@@ -86,11 +86,11 @@ export function MapSearch({ onPlaceSelect }: MapSearchProps) {
 
       {/* 지도 로딩 에러 표시 */}
       {state.mapError && (
-        <div className="flex flex-col gap-3 p-4 rounded-lg bg-red-50 border border-red-200">
+        <div className="flex flex-col gap-3 p-4 rounded-2xl bg-red-50 border border-red-200">
           <div className="flex items-center gap-2">
             <AlertCircle className="w-5 h-5 text-red-600" />
             <span className="text-sm font-semibold text-red-800">
-              지도를 불러올 수 없습니다
+              {state.mapError}
             </span>
           </div>
           <div className="text-sm text-red-700">
@@ -98,12 +98,6 @@ export function MapSearch({ onPlaceSelect }: MapSearchProps) {
             <p>• HTTPS 환경에서 접속해주세요</p>
             <p>• 잠시 후 다시 시도해주세요</p>
           </div>
-          <button
-            onClick={() => window.location.reload()}
-            className="self-start px-3 py-1 text-sm bg-red-100 text-red-800 rounded-md hover:bg-red-200 transition-colors"
-          >
-            페이지 새로고침
-          </button>
         </div>
       )}
 
