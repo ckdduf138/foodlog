@@ -1,7 +1,6 @@
 "use client";
 
-import React, { RefObject } from "react";
-import Script from "next/script";
+import React, { RefObject, useEffect, useState } from "react";
 import { KAKAO_SDK_URL, validateKakaoApiKey } from "../utils";
 
 interface MapContainerProps {
@@ -15,10 +14,22 @@ export const MapContainer: React.FC<MapContainerProps> = ({
   onScriptLoad,
   onScriptError,
 }) => {
-  const handleScriptError = () => {
-    console.error("Failed to load Kakao Maps script", {
+  const [scriptLoaded, setScriptLoaded] = useState(false);
+
+  const handleScriptLoad = () => {
+    console.log("✅ Kakao Maps script loaded successfully");
+    setScriptLoaded(true);
+    onScriptLoad();
+  };
+
+  const handleScriptError = (error: any) => {
+    console.error("❌ Failed to load Kakao Maps script", {
       url: KAKAO_SDK_URL,
       apiKeyValid: validateKakaoApiKey().isValid,
+      protocol: window.location.protocol,
+      hostname: window.location.hostname,
+      error: error,
+      userAgent: navigator.userAgent,
     });
     onScriptError?.();
   };
@@ -26,8 +37,41 @@ export const MapContainer: React.FC<MapContainerProps> = ({
   // API 키 검증
   const apiKeyValidation = validateKakaoApiKey();
 
+  // 동적 스크립트 로딩
+  useEffect(() => {
+    if (!apiKeyValidation.isValid) {
+      onScriptError?.();
+      return;
+    }
+
+    if (scriptLoaded || !KAKAO_SDK_URL) return;
+
+    // 이미 로드된 스크립트가 있는지 확인
+    const existingScript = document.querySelector(
+      `script[src*="dapi.kakao.com"]`
+    );
+    if (existingScript) {
+      handleScriptLoad();
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = KAKAO_SDK_URL;
+    script.async = true;
+    script.onload = handleScriptLoad;
+    script.onerror = handleScriptError;
+
+    document.head.appendChild(script);
+
+    return () => {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, [apiKeyValidation.isValid, scriptLoaded, onScriptError]);
+
   // API 키가 없거나 유효하지 않으면 에러 콜백 실행
-  React.useEffect(() => {
+  useEffect(() => {
     if (!apiKeyValidation.isValid) {
       onScriptError?.();
     }
@@ -35,15 +79,6 @@ export const MapContainer: React.FC<MapContainerProps> = ({
 
   return (
     <div className="relative">
-      {apiKeyValidation.isValid && KAKAO_SDK_URL && (
-        <Script
-          src={KAKAO_SDK_URL}
-          onLoad={onScriptLoad}
-          onError={handleScriptError}
-          strategy="afterInteractive"
-        />
-      )}
-
       <div
         ref={mapContainer}
         className="w-full h-[45vh] sm:h-[55vh] md:h-[65vh] lg:h-[70vh] xl:h-[75vh] rounded-xl overflow-hidden bg-gray-100"

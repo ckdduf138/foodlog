@@ -5,11 +5,17 @@ import { MapCoordinates, KakaoSearchResult, PlaceSearchResult } from "./types";
 const KAKAO_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
 
 export const KAKAO_SDK_URL = KAKAO_API_KEY
-  ? `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&libraries=services&autoload=false`
+  ? `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&libraries=services&autoload=false`
   : "";
 
 // API 키 검증 함수
 export const validateKakaoApiKey = (): { isValid: boolean; error?: string } => {
+  console.log("🔍 API Key validation:", {
+    hasKey: !!KAKAO_API_KEY,
+    keyLength: KAKAO_API_KEY?.length || 0,
+    keyPreview: KAKAO_API_KEY ? `${KAKAO_API_KEY.substring(0, 8)}...` : "none",
+  });
+
   if (!KAKAO_API_KEY) {
     return {
       isValid: false,
