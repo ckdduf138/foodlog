@@ -14,6 +14,7 @@ import {
   clearMarkersAndInfowindows,
   sortPlacesByDistance,
   DEFAULT_COORDINATES,
+  validateKakaoApiKey,
 } from "../utils";
 
 export const useKakaoMap = (onPlaceSelect: (place: PlaceSelect) => void) => {
@@ -81,6 +82,17 @@ export const useKakaoMap = (onPlaceSelect: (place: PlaceSelect) => void) => {
   );
 
   const loadMap = useCallback(() => {
+    // API 키 검증 먼저 수행
+    const apiKeyValidation = validateKakaoApiKey();
+    if (!apiKeyValidation.isValid) {
+      setState((prev) => ({
+        ...prev,
+        isLoadingLocation: false,
+        mapError: apiKeyValidation.error || "API 키 검증 실패",
+      }));
+      return;
+    }
+
     if (!isKakaoMapsAvailable()) {
       setState((prev) => ({
         ...prev,
@@ -249,12 +261,21 @@ export const useKakaoMap = (onPlaceSelect: (place: PlaceSelect) => void) => {
   }, [loadMap]);
 
   const onScriptError = useCallback(() => {
+    const apiKeyValidation = validateKakaoApiKey();
+    let errorMessage = "카카오 맵 스크립트를 불러올 수 없습니다.";
+
+    if (!apiKeyValidation.isValid) {
+      errorMessage = apiKeyValidation.error || "API 키 오류";
+    } else {
+      errorMessage =
+        "네트워크 연결을 확인하거나 카카오 개발자 콘솔에서 도메인 등록을 확인해주세요.";
+    }
+
     setState((prev) => ({
       ...prev,
       scriptLoaded: false,
       isLoadingLocation: false,
-      mapError:
-        "카카오 맵 스크립트를 불러올 수 없습니다. 네트워크 연결을 확인해주세요.",
+      mapError: errorMessage,
     }));
   }, []);
 

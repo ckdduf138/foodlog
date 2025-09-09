@@ -1,7 +1,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MapCoordinates, KakaoSearchResult, PlaceSearchResult } from "./types";
 
-export const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&libraries=services&autoload=false`;
+// API 키 확인
+const KAKAO_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+
+export const KAKAO_SDK_URL = KAKAO_API_KEY
+  ? `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&libraries=services&autoload=false`
+  : "";
+
+// API 키 검증 함수
+export const validateKakaoApiKey = (): { isValid: boolean; error?: string } => {
+  if (!KAKAO_API_KEY) {
+    return {
+      isValid: false,
+      error:
+        "카카오 API 키가 설정되지 않았습니다. 환경변수 NEXT_PUBLIC_KAKAO_REST_API_KEY를 확인해주세요.",
+    };
+  }
+
+  if (KAKAO_API_KEY.length < 10) {
+    return {
+      isValid: false,
+      error: "카카오 API 키가 올바르지 않습니다. 키 형식을 확인해주세요.",
+    };
+  }
+
+  return { isValid: true };
+};
 
 export const DEFAULT_COORDINATES: MapCoordinates = {
   latitude: 37.566826,
