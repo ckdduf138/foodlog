@@ -1,1 +1,0 @@
-export { useKakaoMap } from "./useKakaoMap";
