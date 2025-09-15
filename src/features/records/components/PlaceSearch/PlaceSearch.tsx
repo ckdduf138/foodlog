@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { SearchInput } from "./components/SearchInput";
 import type { PlaceSelect } from "../../types";
 import type { PlaceSearchResult } from "./types";
+import { haversineDistanceKm, Coords } from "./utils";
 
 interface PlaceSearchProps {
   onPlaceSelect: (place: PlaceSelect) => void;
@@ -65,19 +66,6 @@ export function PlaceSearch({ onPlaceSelect }: PlaceSearchProps) {
 
       const data = await response.json();
 
-      // Calculate distance from current location if available
-      // Note: kakao.maps.services.Distance.getDistance is not a provided API
-      // and attempting to call it will result in `undefined` errors.
-      //
-      // The Kakao Maps guidance: to measure the length of a path/route,
-      // use a Polyline (set its `path`) and call `polyline.getLength()`.
-      // That API is for path lengths, not point-to-point straight-line
-      // distances. In this component we only need a straight-line
-      // (crow-fly) distance from the user's current location to each
-      // place, so we compute that client-side using the Haversine formula.
-      // If you later need route/path lengths (with turn-by-turn routing),
-      // construct a Polyline with the route coordinates and use
-      // `polyline.getLength()` as the Kakao docs recommend.
       let currentCoords: { latitude: number; longitude: number } | null = null;
       try {
         if (typeof navigator !== "undefined" && navigator.geolocation) {
@@ -93,32 +81,60 @@ export function PlaceSearch({ onPlaceSelect }: PlaceSearchProps) {
             );
           });
         }
-      } catch (e) {
-        // ignore geolocation errors, just leave distances undefined
+      } catch (err) {
         currentCoords = null;
+        throw err;
       }
 
-      const withDistances = (data.documents || []).map((place: any) => {
-        const lat = parseFloat(place.y);
-        const lon = parseFloat(place.x);
+      type KakaoPlaceDocument = {
+        id: string;
+        place_name: string;
+        category_name: string;
+        address_name: string;
+        road_address_name: string;
+        phone: string;
+        place_url: string;
+        distance?: string;
+        x: string; // longitude
+        y: string; // latitude
+        [key: string]: unknown;
+      };
+
+      const docs: KakaoPlaceDocument[] = Array.isArray(data.documents)
+        ? data.documents
+        : [];
+
+      const withDistances: PlaceSearchResult[] = docs.map((place) => {
+        const lat = Number.parseFloat(place.y);
+        const lon = Number.parseFloat(place.x);
         let calculatedDistance: number | undefined;
-        if (currentCoords && !Number.isNaN(lat) && !Number.isNaN(lon)) {
-          const toRad = (v: number) => (v * Math.PI) / 180;
-          const R = 6371; // km
-          const dLat = toRad(lat - currentCoords.latitude);
-          const dLon = toRad(lon - currentCoords.longitude);
-          const a =
-            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(toRad(currentCoords.latitude)) *
-              Math.cos(toRad(lat)) *
-              Math.sin(dLon / 2) *
-              Math.sin(dLon / 2);
-          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-          calculatedDistance = R * c; // km
+
+        if (
+          currentCoords &&
+          !Number.isNaN(lat) &&
+          !Number.isNaN(lon) &&
+          typeof currentCoords.latitude === "number" &&
+          typeof currentCoords.longitude === "number"
+        ) {
+          const aCoords: Coords = {
+            latitude: currentCoords.latitude,
+            longitude: currentCoords.longitude,
+          };
+          const bCoords: Coords = { latitude: lat, longitude: lon };
+          calculatedDistance = haversineDistanceKm(aCoords, bCoords);
         }
 
         return {
-          ...place,
+          id: place.id,
+          place_name: place.place_name,
+          category_name: place.category_name,
+          address_name: place.address_name,
+          road_address_name: place.road_address_name,
+          phone: place.phone,
+          place_url: place.place_url,
+          distance: place.distance,
+          x: place.x,
+          y: place.y,
           calculatedDistance,
         } as PlaceSearchResult;
       });

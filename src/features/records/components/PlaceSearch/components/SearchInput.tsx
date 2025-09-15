@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Search, MapPin, Loader2, Phone } from "lucide-react";
+import { Search, MapPin, Loader2 } from "lucide-react";
 import { PlaceSearchResult } from "../types";
 import { formatDistance } from "../utils";
 
