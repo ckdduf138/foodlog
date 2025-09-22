@@ -43,9 +43,9 @@ export const BottomNavigation = ({
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-[var(--color-background)] border-t border-[var(--color-border)] z-50">
-      <div className="px-4 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
-        <div className="flex justify-around max-w-md mx-auto">
+    <nav className="bottom-nav">
+      <div className="px-4 py-2">
+        <div className="bottom-nav__inner">
           {navigationItems.map((item) => (
             <button
               key={item.id}

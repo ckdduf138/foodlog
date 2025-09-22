@@ -30,7 +30,7 @@ export const MainLayout = ({
         {Array.isArray(children) ? children[0] : null}
       </div>
       <div className="w-full h-16"></div>
-      <main className="pb-18 w-full flex-1 flex flex-col items-stretch px-3">
+      <main className="w-full flex-1 flex flex-col items-stretch px-3 content-with-bottom-nav">
         {Array.isArray(children) ? children.slice(1) : children}
       </main>
 
@@ -39,7 +39,7 @@ export const MainLayout = ({
         <button
           onClick={handleAddRecord}
           aria-label="기록 추가"
-          className="fixed bottom-20 right-4 sm:right-8 z-50 bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-[var(--color-primary-foreground)] rounded-full p-3 shadow-lg flex items-center justify-center transition-colors"
+          className="fab--above-bottom-nav bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-[var(--color-primary-foreground)] rounded-full p-3 shadow-lg flex items-center justify-center transition-colors"
         >
           <Plus className="h-5 w-5" />
         </button>
