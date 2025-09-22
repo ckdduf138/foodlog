@@ -44,7 +44,7 @@ export const BottomNavigation = ({
 
   return (
     <nav className="bottom-nav">
-      <div className="px-4 py-2">
+      <div className="px-4">
         <div className="bottom-nav__inner">
           {navigationItems.map((item) => (
             <button

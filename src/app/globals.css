@@ -233,7 +233,7 @@ body {
   justify-content: space-around;
   max-width: 48rem; /* match existing max-w-md (approx) */
   margin: 0 auto;
-  height: var(--bottom-nav-height);
+  height: 100%; /* fill nav parent which already encodes base height + safe-area */
   padding-left: 1rem;
   padding-right: 1rem;
 }
