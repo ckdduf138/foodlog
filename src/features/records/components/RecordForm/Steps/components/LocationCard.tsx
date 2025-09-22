@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MapPin } from "lucide-react";
 import { FoodRecordFormData } from "@/features/records/types";
+import { useReverseGeocode } from "../../hooks/useReverseGeocode";
 
 interface LocationCardProps {
   formData: FoodRecordFormData;
 }
 
 export const LocationCard: React.FC<LocationCardProps> = ({ formData }) => {
+  const { address, loading, error, fetchAddress } = useReverseGeocode();
+
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        fetchAddress(pos.coords.latitude, pos.coords.longitude);
+      },
+      () => {
+        // fetchAddress를 호출하지 않고 에러 상태는 훅의 error가 아닌 로컬에서 처리
+      }
+    );
+  }, [fetchAddress]);
+
+  if (loading) return <div>주소 확인 중...</div>;
+  if (error) return <div className="text-red-500">{error}</div>;
+  if (!address) return <div>주소를 찾을 수 없습니다.</div>;
+  
   const hasLocation = formData.location.placeName;
 
   return (
@@ -65,6 +84,12 @@ export const LocationCard: React.FC<LocationCardProps> = ({ formData }) => {
                 style={{ color: "var(--color-muted-foreground)" }}
               >
                 서울특별시 구로구 고척동 123-45
+              </p>
+              <p
+                className="text-sm font-semibold"
+                style={{ color: "var(--color-green-500)" }}
+              >
+                현재 위치: {address}
               </p>
             </>
           )}

@@ -37,7 +37,7 @@ const NewRecordPageContent = () => {
         }
       />
 
-      <div className="w-full px-4 pt-6">
+      <div className="w-full px-4 pt-4">
         <RecordForm
           formData={formData}
           onFormChange={handleFormChange}

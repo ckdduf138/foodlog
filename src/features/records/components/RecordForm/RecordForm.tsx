@@ -85,7 +85,7 @@ export const RecordForm = ({
       <StepProgress currentStep={currentStep} setStep={setStep} />
 
       {/* Step Content */}
-      <div className="flex-1 py-4">
+      <div className="flex-1 py-2">
         <div className="w-full">{renderStepContent()}</div>
       </div>
 
