@@ -39,7 +39,7 @@ export const useRecord = (id: number | null | undefined) => {
     try {
       await db.foodRecords.delete(recordId);
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   }, []);

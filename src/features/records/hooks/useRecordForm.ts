@@ -136,8 +136,7 @@ export const useRecordForm = (overrideEditId?: string) => {
           placeName: formData.location.placeName || "",
         };
 
-        const existingCreatedAt =
-          (editRecord && (editRecord as any).createdAt) || new Date();
+        const existingCreatedAt = (editRecord?.createdAt as Date) || new Date();
 
         const recordData = {
           ...formData,
@@ -165,7 +164,7 @@ export const useRecordForm = (overrideEditId?: string) => {
         setSubmitting(false);
       }
     },
-    [formData, router, isEditMode, editIdNum]
+    [formData, router, isEditMode, editIdNum, editRecord]
   );
 
   return {
