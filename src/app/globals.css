@@ -226,14 +226,13 @@ body {
   height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-
 .bottom-nav__inner {
   display: flex;
   align-items: center;
   justify-content: space-around;
   max-width: 48rem; /* match existing max-w-md (approx) */
   margin: 0 auto;
-  height: var(--bottom-nav-height);
+  height: 100%; /* fill nav parent which already encodes base height + safe-area */
   padding-left: 1rem;
   padding-right: 1rem;
 }
