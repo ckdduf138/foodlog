@@ -211,7 +211,7 @@ body {
 /* Safe-area utilities for bottom navigation and content padding */
 /* Use CSS variables to keep values consistent and easily tunable */
 :root {
-  --bottom-nav-height: 56px; /* base height for bottom nav */
+  --bottom-nav-height: 60px; /* base height for bottom nav */
   --bottom-nav-gap: 12px; /* gap between fab and nav */
 }
 
