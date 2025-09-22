@@ -208,6 +208,48 @@ body {
   }
 }
 
+/* Safe-area utilities for bottom navigation and content padding */
+/* Use CSS variables to keep values consistent and easily tunable */
+:root {
+  --bottom-nav-height: 56px; /* base height for bottom nav */
+  --bottom-nav-gap: 12px; /* gap between fab and nav */
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  background: var(--color-background);
+  border-top: 1px solid var(--color-border);
+  height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.bottom-nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  max-width: 48rem; /* match existing max-w-md (approx) */
+  margin: 0 auto;
+  height: var(--bottom-nav-height);
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.content-with-bottom-nav {
+  /* ensure main content leaves space for bottom nav + safe-area */
+  padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
+}
+
+.fab--above-bottom-nav {
+  position: fixed;
+  right: 1rem;
+  z-index: 60;
+  bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px) + var(--bottom-nav-gap));
+}
+
 /* 텍스트 자르기 유틸리티 */
 .line-clamp-1 {
   overflow: hidden;
