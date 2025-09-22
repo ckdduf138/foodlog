@@ -1,10 +1,10 @@
 "use client";
 
-import { MainLayout } from "@/components/layout/MainLayout";
-import { useNavigation } from "@/hooks/useNavigation";
-import { Header } from "@/components/ui/common/molecules/Header";
+import { MainLayout, Header } from "@/shared/components";
+import { useNavigation } from "@/shared/hooks";
 import { Settings } from "lucide-react";
-import { ThemeSelector } from "@/components/ui/settings";
+import { ThemeSelector } from "@/features/settings";
+import CreatePwaButton from "@/features/settings/components/CreatePwaButton";
 
 const SettingsPage = () => {
   const { activeTab, changeTab } = useNavigation("settings");
@@ -18,14 +18,6 @@ const SettingsPage = () => {
       />
 
       <div className="w-full px-4 py-6 space-y-6">
-        <div className="max-w-md mx-auto text-center">
-          <h2 className="text-xl font-semibold text-[var(--color-foreground)]">
-            설정
-          </h2>
-          <p className="mt-2 text-sm text-[var(--color-muted-foreground)]">
-            앱 설정을 조정하세요.
-          </p>
-        </div>
 
         <ThemeSelector />
 
@@ -58,6 +50,8 @@ const SettingsPage = () => {
               피드백 보내기
             </button>
           </div>
+
+          <CreatePwaButton />
         </div>
       </div>
     </MainLayout>

@@ -1,13 +1,13 @@
 "use client";
 
-import { MainLayout } from "@/components/layout/MainLayout";
-import { Header } from "@/components/ui/common/molecules/Header";
+import { MainLayout, Header, LoadingSpinner } from "@/shared/components";
 import { FileText } from "lucide-react";
-import { useNavigation } from "@/hooks/useNavigation";
-import { RecordsPageContent } from "@/components/ui/records/organisms";
+import { useNavigation } from "@/shared/hooks";
+import { RecordList, useRecords } from "@/features/records";
 
-export default function RecordsPage() {
+const RecordsPage = () => {
   const { activeTab, changeTab } = useNavigation("records");
+  const { records, loading } = useRecords();
 
   return (
     <MainLayout activeTab={activeTab} onTabChange={changeTab}>
@@ -18,8 +18,16 @@ export default function RecordsPage() {
       />
 
       <div className="w-full py-4">
-        <RecordsPageContent />
+        {loading ? (
+          <div className="flex justify-center items-center py-8">
+            <LoadingSpinner message="기록 불러오는 중..." />
+          </div>
+        ) : (
+          <RecordList records={records} />
+        )}
       </div>
     </MainLayout>
   );
-}
+};
+
+export default RecordsPage;

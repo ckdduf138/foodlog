@@ -22,6 +22,15 @@ export const StarRating = ({
     lg: "w-5 h-5",
   };
 
+  // 임시로 간단한 평점 텍스트 함수
+  const getRatingText = (rating: number) => {
+    if (rating >= 4.5) return "최고예요!";
+    if (rating >= 4) return "좋아요!";
+    if (rating >= 3) return "괜찮아요";
+    if (rating >= 2) return "별로예요";
+    return "최악이에요";
+  };
+
   return (
     <div className="flex gap-0.5" title={getRatingText(Math.round(rating))}>
       {[...Array(maxRating)].map((_, i) => (
