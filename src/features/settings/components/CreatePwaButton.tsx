@@ -47,7 +47,7 @@ const CreatePwaButton: React.FC<Props> = ({ className }) => {
           installing ? "bg-[var(--color-green-500)] opacity-80 cursor-wait" : "bg-[var(--color-green-600)] hover:bg-[var(--color-green-700)]"
         }`}
       >
-        {installing ? "설치 중..." : "PWA 만들기"}
+        {installing ? "설치 중..." : "앱으로 다운받기"}
       </button>
       {message && <p className="text-sm text-[var(--color-muted-foreground)] mt-2">{message}</p>}
     </div>
