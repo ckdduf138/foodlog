@@ -6,6 +6,7 @@ import { FileText } from "lucide-react";
 import { EmptyState } from "@/shared/components";
 import { useRouter } from "next/navigation";
 import { SearchBar } from "./components";
+import SortButton from "./components/SortButton";
 import { useRecordFilter } from "./hooks/useRecordFilter";
 
 interface RecordListProps {
@@ -22,14 +23,29 @@ export const RecordList = ({ records }: RecordListProps) => {
   };
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full space-y-2">
       {/* 검색 및 정렬 바 */}
       <SearchBar
         searchTerm={filterState.searchTerm}
         onSearchChange={setSearchTerm}
-        currentSort={filterState.sortBy}
-        onSortChange={setSortBy}
       />
+
+      {/* 정렬 토글 (우측) */}
+      <div className="flex px-2 justify-end">
+        <div className="inline-flex space-x-2">
+          <SortButton
+            label="최신순"
+            active={filterState.sortBy === "latest"}
+            onClick={() => setSortBy("latest")}
+          />
+
+          <SortButton
+            label="별점 높은순"
+            active={filterState.sortBy === "rating-high"}
+            onClick={() => setSortBy("rating-high")}
+          />
+        </div>
+      </div>
 
       {/* 기록 목록 */}
       {filteredAndSortedRecords.length > 0 ? (

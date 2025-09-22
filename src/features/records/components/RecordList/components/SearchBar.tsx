@@ -1,20 +1,14 @@
 import React from "react";
-import { Search } from "lucide-react";
-import { SortButton } from "./SortButton";
-import { SortOption } from "../types";
+import { Search, X } from "lucide-react";
 
 interface SearchBarProps {
   searchTerm: string;
   onSearchChange: (term: string) => void;
-  currentSort: SortOption;
-  onSortChange: (sort: SortOption) => void;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
   searchTerm,
   onSearchChange,
-  currentSort,
-  onSortChange,
 }) => {
   return (
     <div
@@ -36,7 +30,16 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         value={searchTerm}
         onChange={(e) => onSearchChange(e.target.value)}
       />
-      <SortButton currentSort={currentSort} onSortChange={onSortChange} />
+      {searchTerm ? (
+        <button
+          type="button"
+          onClick={() => onSearchChange("")}
+          className="p-1 rounded-full hover:bg-[rgba(0,0,0,0.04)]"
+          aria-label="검색어 지우기"
+        >
+          <X className="w-4 h-4" style={{ color: "var(--color-muted-foreground)" }} />
+        </button>
+      ) : null}
     </div>
   );
 };

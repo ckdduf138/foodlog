@@ -1,6 +1,6 @@
 "use client";
 
-import { MainLayout, Header } from "@/shared/components";
+import { MainLayout, Header, LoadingSpinner } from "@/shared/components";
 import { FileText } from "lucide-react";
 import { useNavigation } from "@/shared/hooks";
 import { RecordList, useRecords } from "@/features/records";
@@ -20,9 +20,7 @@ const RecordsPage = () => {
       <div className="w-full py-4">
         {loading ? (
           <div className="flex justify-center items-center py-8">
-            <div className="text-[var(--color-muted-foreground)]">
-              로딩 중...
-            </div>
+            <LoadingSpinner message="기록 불러오는 중..." />
           </div>
         ) : (
           <RecordList records={records} />

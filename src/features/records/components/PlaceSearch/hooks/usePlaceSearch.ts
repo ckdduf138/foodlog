@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import type { PlaceSelect } from "@/features/records/types";
 import type { PlaceSearchResult } from "../types";
-import { haversineDistanceKm, Coords } from "../utils";
 
 interface UsePlaceSearchProps {
   onPlaceSelect: (place: PlaceSelect) => void;

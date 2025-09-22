@@ -2,7 +2,6 @@
 
 import { SearchInput } from "./components/SearchInput";
 import type { PlaceSelect } from "@/features/records/types";
-import type { PlaceSearchResult } from "./types";
 import usePlaceSearch from "./hooks/usePlaceSearch";
 
 interface PlaceSearchProps {
@@ -12,7 +11,6 @@ interface PlaceSearchProps {
 export function PlaceSearch({ onPlaceSelect }: PlaceSearchProps) {
   const {
     keyword,
-    setKeyword,
     showDropdown,
     setShowDropdown,
     places,

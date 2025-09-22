@@ -4,17 +4,18 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/shared/lib/db";
 import { FoodRecordFormData, PlaceSelect } from "@/features/records/types";
 
-export const useRecordForm = () => {
+export const useRecordForm = (overrideEditId?: string) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const isEditMode = searchParams.get("edit") === "true";
-  const editRecordId = searchParams.get("id");
+  // Parse a single numeric edit id from either override or ?edit=<id>
+  const rawEdit = overrideEditId ?? searchParams.get("edit");
+  const editIdNum = rawEdit ? Number(rawEdit) : undefined;
+  const isEditMode = typeof editIdNum === "number" && Number.isFinite(editIdNum);
 
   const editRecord = useLiveQuery(
-    () =>
-      editRecordId ? db.foodRecords.get(parseInt(editRecordId)) : undefined,
-    [editRecordId]
+    () => (isEditMode && editIdNum ? db.foodRecords.get(editIdNum) : undefined),
+    [editIdNum, isEditMode]
   );
 
   const today = useMemo(() => new Date(), []);
@@ -127,22 +128,27 @@ export const useRecordForm = () => {
           photoData = formData.photo;
         }
 
+        const baseLocation = {
+          address: formData.location.address || "",
+          latitude: formData.location.latitude || 0,
+          longitude: formData.location.longitude || 0,
+          placeId: formData.location.placeId || "",
+          placeName: formData.location.placeName || "",
+        };
+
+        const existingCreatedAt =
+          (editRecord && (editRecord as any).createdAt) || new Date();
+
         const recordData = {
           ...formData,
           photo: photoData,
-          location: {
-            address: formData.location.address || "",
-            latitude: formData.location.latitude || 0,
-            longitude: formData.location.longitude || 0,
-            placeId: formData.location.placeId || "",
-            placeName: formData.location.placeName || "",
-          },
-          createdAt: new Date(),
+          location: baseLocation,
+          createdAt: isEditMode ? existingCreatedAt : new Date(),
           updatedAt: new Date(),
         };
 
-        if (isEditMode && editRecordId) {
-          await db.foodRecords.update(parseInt(editRecordId), recordData);
+        if (isEditMode && editIdNum) {
+          await db.foodRecords.update(editIdNum, recordData);
         } else {
           await db.foodRecords.add(recordData);
         }
@@ -159,7 +165,7 @@ export const useRecordForm = () => {
         setSubmitting(false);
       }
     },
-    [formData, router, isEditMode, editRecordId]
+    [formData, router, isEditMode, editIdNum]
   );
 
   return {

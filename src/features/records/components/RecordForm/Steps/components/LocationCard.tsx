@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { MapPin } from "lucide-react";
 import { FoodRecordFormData } from "@/features/records/types";
 import { useReverseGeocode } from "../../hooks/useReverseGeocode";
+import { LoadingSpinner } from "@/shared/components/ui/LoadingSpinner/LoadingSpinner";
 
 interface LocationCardProps {
   formData: FoodRecordFormData;
@@ -22,10 +23,9 @@ export const LocationCard: React.FC<LocationCardProps> = ({ formData }) => {
     );
   }, [fetchAddress]);
 
-  if (loading) return <div>주소 확인 중...</div>;
+  if (loading) return <LoadingSpinner message="주소 확인 중..." />;
   if (error) return <div className="text-red-500">{error}</div>;
-  if (!address) return <div>주소를 찾을 수 없습니다.</div>;
-  
+
   const hasLocation = formData.location.placeName;
 
   return (
@@ -89,7 +89,7 @@ export const LocationCard: React.FC<LocationCardProps> = ({ formData }) => {
                 className="text-sm font-semibold"
                 style={{ color: "var(--color-green-500)" }}
               >
-                현재 위치: {address}
+                현재 위치: {address ? address : "위치 정보를 가져올 수 없음"}
               </p>
             </>
           )}
