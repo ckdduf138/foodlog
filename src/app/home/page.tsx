@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { UtensilsCrossed } from "lucide-react";
 import { MainLayout, Header } from "@/shared/components";
 import { useNavigation } from "@/shared/hooks";
@@ -70,8 +71,44 @@ const HomePage = () => {
           </div>
         )}
       </div>
+      {/* PWA safe-area debug — visible in standalone (home screen) */}
+      <div
+        id="__safearea_debug"
+        style={{
+          position: "fixed",
+          top: 12,
+          right: 12,
+          zIndex: 9999,
+          background: "rgba(0,0,0,0.6)",
+          color: "white",
+          padding: "6px 10px",
+          borderRadius: 6,
+          fontSize: 13,
+          pointerEvents: "none",
+        }}
+      >
+        {/* runtime values populated by effect below */}
+        <SafeAreaDebug />
+      </div>
     </MainLayout>
   );
 };
 
 export default HomePage;
+
+function SafeAreaDebug() {
+  const [val, setVal] = React.useState<string>("checking...");
+
+  React.useEffect(() => {
+    function update() {
+      const standalone = (window.navigator as any).standalone || window.matchMedia('(display-mode: standalone)').matches;
+      const css = getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom') || '';
+      setVal(`standalone:${standalone} • safe-area-bottom:${css.trim() || '0px'}`);
+    }
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  return <span>{val}</span>;
+}
