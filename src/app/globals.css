@@ -207,7 +207,7 @@ body {
   --bottom-nav-height: 60px; /* base height for bottom nav */
   --bottom-nav-gap: 12px; /* gap between fab and nav */
   /* expose safe-area as a CSS variable so we can reuse it across components */
-  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 30px);
 }
 
 .bottom-nav {
