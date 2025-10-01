@@ -63,12 +63,12 @@ export const RecordCard = ({
         <div className="flex flex-col items-end gap-2 flex-shrink-0">
           <StarRating rating={record.rating} size="sm" />
           {record.photo && (
-            <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm border border-gray-100">
+            <div className="w-16 h-16 rounded-xl overflow-hidden shadow-sm border border-[var(--color-border)]">
               <Image
                 src={record.photo}
                 alt="Food preview"
-                width={48}
-                height={48}
+                width={64}
+                height={64}
                 className="w-full h-full object-cover"
               />
             </div>
