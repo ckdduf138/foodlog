@@ -21,15 +21,6 @@ export const StarRating = ({
     lg: "w-6 h-6",
   };
 
-  // 임시로 간단한 평점 텍스트 함수
-  const getRatingText = (rating: number) => {
-    if (rating >= 4.5) return "최고예요!";
-    if (rating >= 4) return "좋아요!";
-    if (rating >= 3) return "괜찮아요";
-    if (rating >= 2) return "별로예요";
-    return "최악이에요";
-  };
-
   // 각 별의 채움 정도 계산 (0~1)
   const getStarFillPercentage = (index: number) => {
     const starRating = rating - index;
@@ -39,7 +30,7 @@ export const StarRating = ({
   };
 
   return (
-    <div className="flex gap-0.5" title={`${rating.toFixed(1)} - ${getRatingText(rating)}`}>
+    <div className="flex gap-0.5">
       {[...Array(maxRating)].map((_, i) => {
         const fillPercentage = getStarFillPercentage(i);
         const uniqueId = `star-gradient-${i}-${Math.random()}`;

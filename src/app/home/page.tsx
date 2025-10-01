@@ -2,14 +2,12 @@
 
 import { UtensilsCrossed } from "lucide-react";
 import { MainLayout, Header } from "@/shared/components";
-import { useNavigation } from "@/shared/hooks";
 import { Dashboard } from "@/features/home";
 import { RecordCard, useRecords } from "@/features/records";
 import { useRouter } from "next/navigation";
 
 const HomePage = () => {
   const { records } = useRecords();
-  const { activeTab, changeTab } = useNavigation("home");
   const router = useRouter();
 
   // 간단한 통계 계산
@@ -35,7 +33,7 @@ const HomePage = () => {
   const recentRecords = records.slice(0, 3);
 
   return (
-    <MainLayout activeTab={activeTab} onTabChange={changeTab}>
+    <MainLayout>
       {/* 헤더 */}
       <Header
         title="FoodLog"
@@ -44,7 +42,7 @@ const HomePage = () => {
       />
 
       {/* 메인 컨텐츠 */}
-      <div className="px-4 py-6 space-y-3 sm:space-y-6 w-full flex flex-col items-stretch">
+      <div className="space-y-3 sm:space-y-4 w-full flex flex-col items-stretch">
         {/* 통계 대시보드 */}
         <Dashboard
           totalRecords={totalRecords}

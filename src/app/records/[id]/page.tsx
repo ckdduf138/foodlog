@@ -2,19 +2,17 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { MainLayout, Header } from "@/shared/components";
-import { useNavigation } from "@/shared/hooks";
 import { FileText } from "lucide-react";
 import { LoadingSpinner } from "@/shared/components/ui/LoadingSpinner/LoadingSpinner";
 import useRecord from "@/features/records/hooks/useRecord";
 import RecordDetail from "@/features/records/components/RecordDetail/RecordDetail";
 
 const RecordDetailPage = () => {
-  const { activeTab, changeTab } = useNavigation("records");
   const params = useParams();
   const router = useRouter();
   const id = Number(params.id);
 
-  const { record, loading, error, deleteRecord } = useRecord(id);
+  const { record, loading, error, deleteRecord, reload } = useRecord(id);
 
   const handleEdit = () => {
     router.push(`/records/new?edit=${id}`);
@@ -28,27 +26,34 @@ const RecordDetailPage = () => {
   };
 
   return (
-    <MainLayout activeTab={activeTab} onTabChange={changeTab}>
+    <MainLayout>
       <Header
-        title="기록"
-        subtitle="음식 기록 상세 정보"
+        title="기록 상세"
+        subtitle="음식 기록 정보"
         icon={<FileText className="w-6 h-6" />}
       />
 
-      <div className="w-full py-4">
+      <div className="w-full">
         {loading ? (
-          <LoadingSpinner message="기록 불러오는 중..." />
+          <div className="flex justify-center items-center py-12">
+            <LoadingSpinner message="기록 불러오는 중..." />
+          </div>
         ) : error ? (
           <div className="text-center py-12">
-            <h2 className="text-xl font-semibold">오류</h2>
-            <p className="mt-2 text-sm text-red-500">{error}</p>
+            <h2 className="text-xl font-semibold text-[var(--color-destructive)]">오류 발생</h2>
+            <p className="mt-2 text-sm text-[var(--color-muted-foreground)]">{error}</p>
           </div>
         ) : record ? (
-          <RecordDetail record={record} onEdit={handleEdit} onDelete={handleDelete} />
+          <RecordDetail 
+            record={record} 
+            onEdit={handleEdit} 
+            onDelete={handleDelete}
+            onReload={reload}
+          />
         ) : (
           <div className="text-center py-12">
-            <h2 className="text-xl font-semibold">기록 없음</h2>
-            <p className="mt-2 text-sm text-muted-foreground">해당 기록을 찾을 수 없습니다.</p>
+            <h2 className="text-xl font-semibold text-[var(--color-foreground)]">기록 없음</h2>
+            <p className="mt-2 text-sm text-[var(--color-muted-foreground)]">해당 기록을 찾을 수 없습니다.</p>
           </div>
         )}
       </div>

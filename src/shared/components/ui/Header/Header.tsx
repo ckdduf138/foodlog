@@ -23,10 +23,13 @@ export const Header = ({
       style={{
         backgroundColor: "var(--color-background)",
         borderColor: "var(--color-border)",
-        paddingTop: "var(--safe-area-inset-top)",
+        paddingTop: "calc(var(--safe-area-inset-top) + 0.5rem)",
+        height: "var(--header-height)",
+        display: "flex",
+        alignItems: "center",
       }}
     >
-      <div className="px-4 py-2 w-full">
+      <div className="px-4 w-full">
         <div className="flex items-center justify-between w-full gap-2 min-w-0">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 max-w-full">
             {icon && (

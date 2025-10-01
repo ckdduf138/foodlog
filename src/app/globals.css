@@ -204,8 +204,9 @@ body {
 /* Safe-area utilities for bottom navigation and content padding */
 /* Use CSS variables to keep values consistent and easily tunable */
 :root {
-  --bottom-nav-height: 60px; /* base height for bottom nav */
-  --bottom-nav-gap: 12px; /* gap between fab and nav */
+  --bottom-nav-height: 56px; /* base height for bottom nav - 줄임 */
+  --bottom-nav-gap: 8px; /* gap between fab and nav - 줄임 */
+  --header-height: 64px; /* header 높이 */
   /* expose safe-area as a CSS variable so we can reuse it across components */
   --safe-area-inset-top: env(safe-area-inset-top, 0px);
   --safe-area-inset-right: env(safe-area-inset-right, 0px);
@@ -231,22 +232,24 @@ body {
   border-top: 1px solid var(--color-border);
   height: calc(var(--bottom-nav-height) + var(--safe-area-inset-bottom));
   padding-bottom: var(--safe-area-inset-bottom);
+  display: flex;
+  align-items: center;
 }
 
 .bottom-nav__inner {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  max-width: 48rem; /* match existing max-w-md (approx) */
+  justify-content: center; /* space-around → center로 변경 */
+  gap: 1rem; /* 버튼 간 간격 */
+  width: 100%;
+  max-width: 28rem; /* 48rem → 28rem로 줄여서 가운데 모이게 */
   margin: 0 auto;
-  height: 100%; /* fill nav parent which already encodes base height + safe-area */
-  padding-left: 1rem;
-  padding-right: 1rem;
+  height: var(--bottom-nav-height);
 }
 
 .content-with-bottom-nav {
   /* ensure main content leaves space for bottom nav + safe-area */
-  padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-inset-bottom));
+  padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-inset-bottom) + 0.75rem);
 }
 
 .fab--above-bottom-nav {

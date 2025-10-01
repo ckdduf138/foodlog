@@ -1,23 +1,20 @@
 "use client";
 
 import { MainLayout, Header } from "@/shared/components";
-import { useNavigation } from "@/shared/hooks";
 import { Settings } from "lucide-react";
 import { ThemeSelector } from "@/features/settings";
 import CreatePwaButton from "@/features/settings/components/CreatePwaButton";
 
 const SettingsPage = () => {
-  const { activeTab, changeTab } = useNavigation("settings");
-
   return (
-    <MainLayout activeTab={activeTab} onTabChange={changeTab}>
+    <MainLayout>
       <Header
         title="설정"
         subtitle="앱 설정을 조정하세요"
         icon={<Settings className="w-6 h-6" />}
       />
 
-      <div className="w-full px-4 py-6 space-y-6">
+      <div className="w-full space-y-6">
 
         <ThemeSelector />
 
