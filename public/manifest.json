@@ -14,7 +14,7 @@
       "src": "/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "/next.svg",
@@ -23,5 +23,20 @@
       "purpose": "any"
     }
   ],
-  "categories": ["food", "lifestyle", "productivity"]
+  "categories": ["food", "lifestyle", "productivity"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "새 기록 추가",
+      "short_name": "새 기록",
+      "description": "음식 기록을 빠르게 추가합니다",
+      "url": "/records/new",
+      "icons": [
+        {
+          "src": "/icon.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
 }
