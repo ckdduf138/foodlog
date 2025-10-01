@@ -23,6 +23,7 @@ export const Header = ({
       style={{
         backgroundColor: "var(--color-background)",
         borderColor: "var(--color-border)",
+        paddingTop: "var(--safe-area-inset-top)",
       }}
     >
       <div className="px-4 py-2 w-full">
