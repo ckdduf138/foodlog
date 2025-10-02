@@ -23,7 +23,6 @@ export const Header = ({
       style={{
         backgroundColor: "var(--color-background)",
         borderColor: "var(--color-border)",
-        paddingTop: "calc(var(--safe-area-inset-top) + 0.5rem)",
         height: "var(--header-height)",
         display: "flex",
         alignItems: "center",
