@@ -102,6 +102,7 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
         loadMap();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 컴포넌트 언마운트 시 정리
@@ -115,6 +116,7 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
         infowindows.forEach((infowindow) => infowindow.close());
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -133,6 +135,7 @@ const MapSearch = ({ onPlaceSelect }: MapSearchProps) => {
     return () => {
       clearTimeout(debounce);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword, map]);
 
   const searchPlacesByKeyword = (searchKeyword: string) => {
