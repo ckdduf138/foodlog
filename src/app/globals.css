@@ -217,7 +217,7 @@ body {
 /* iOS PWA full screen support */
 @supports (padding: max(0px)) {
   body {
-    padding-top: env(safe-area-inset-top, 0px);
+    /* padding-top은 MainLayout의 헤더에서 처리 */
     padding-right: max(0px, env(safe-area-inset-right));
     padding-left: max(0px, env(safe-area-inset-left));
   }
