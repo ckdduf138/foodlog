@@ -81,23 +81,31 @@ export const RecordForm = ({
   };
 
   return (
-    <div className="max-w-md mx-auto relative min-h-[calc(100vh-10rem)] flex flex-col">
+    <div className="max-w-md mx-auto relative">
       <StepProgress currentStep={currentStep} setStep={setStep} />
 
-      {/* Step Content */}
-      <div className="flex-1 py-2">
+      {/* Step Content - 하단 버튼 공간 확보 */}
+      <div className="py-2" style={{ paddingBottom: 'calc(80px + var(--safe-area-inset-bottom))' }}>
         <div className="w-full">{renderStepContent()}</div>
       </div>
 
-      {/* Fixed Navigation Buttons */}
-      <div className="bg-[var(--color-background)] border-t border-[var(--color-border)] p-2 -mx-4 mt-auto">
-        <NavigationButtons
-          currentStep={currentStep}
-          canProceed={canProceedFromCurrentStep(formData)}
-          isSubmitting={isSubmitting}
-          setStep={setStep}
-          onSubmit={onSubmit}
-        />
+      {/* Fixed Bottom Navigation Buttons - BottomNavigation 위에 위치 */}
+      <div 
+        className="fixed left-0 right-0 bg-[var(--color-background)] border-t border-[var(--color-border)] shadow-lg z-40"
+        style={{
+          bottom: 'calc(var(--bottom-nav-height) + var(--safe-area-inset-bottom))',
+          padding: '1rem',
+        }}
+      >
+        <div className="max-w-md mx-auto">
+          <NavigationButtons
+            currentStep={currentStep}
+            canProceed={canProceedFromCurrentStep(formData)}
+            isSubmitting={isSubmitting}
+            setStep={setStep}
+            onSubmit={onSubmit}
+          />
+        </div>
       </div>
     </div>
   );

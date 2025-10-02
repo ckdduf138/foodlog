@@ -1,7 +1,7 @@
 "use client";
 
-import { UtensilsCrossed } from "lucide-react";
-import { MainLayout, Header } from "@/shared/components";
+import { UtensilsCrossed, Plus } from "lucide-react";
+import { MainLayout, Header, EmptyState } from "@/shared/components";
 import { Dashboard } from "@/features/home";
 import { RecordCard, useRecords } from "@/features/records";
 import { useRouter } from "next/navigation";
@@ -52,21 +52,33 @@ const HomePage = () => {
         />
 
         {/* 최근 기록 */}
-        {recentRecords.length > 0 && (
-          <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-[var(--color-foreground)]">
-              최근 기록
-            </h3>
-            {recentRecords.map((record) => (
+        <div className="space-y-3">
+          <h3 className="text-lg font-semibold text-[var(--color-foreground)]">
+            최근 기록
+          </h3>
+          {recentRecords.length > 0 ? (
+            recentRecords.map((record) => (
               <RecordCard
                 key={record.id}
                 record={record}
                 onClick={handleRecordClick}
                 variant="compact"
               />
-            ))}
-          </div>
-        )}
+            ))
+          ) : (
+            <EmptyState
+              icon={
+                <UtensilsCrossed className="w-16 h-16 text-[var(--color-muted-foreground)]" />
+              }
+              title="아직 기록이 없어요"
+              description=""
+              action={{
+                label: "첫 기록 추가하기",
+                onClick: () => router.push("/records/new"),
+              }}
+            />
+          )}
+        </div>
       </div>
     </MainLayout>
   );
