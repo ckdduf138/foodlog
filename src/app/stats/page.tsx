@@ -1,14 +1,11 @@
 "use client";
 
 import { MainLayout, Header } from "@/shared/components";
-import { useNavigation } from "@/shared/hooks";
 import { BarChart3 } from "lucide-react";
 
 const StatsPage = () => {
-  const { activeTab, changeTab } = useNavigation("stats");
-
   return (
-    <MainLayout activeTab={activeTab} onTabChange={changeTab}>
+    <MainLayout>
       <Header
         title="통계"
         subtitle="식습관 통계와 인사이트"

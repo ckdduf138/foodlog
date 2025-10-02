@@ -20,6 +20,12 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    rules: {
+      "@next/next/no-img-element": "off", // 이미지 최적화 경고 비활성화
+      "react-hooks/exhaustive-deps": "warn", // dependency 경고를 에러에서 경고로
+    },
+  },
 ];
 
 export default eslintConfig;

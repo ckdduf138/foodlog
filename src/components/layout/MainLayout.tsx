@@ -7,15 +7,9 @@ import { useRouter, usePathname } from "next/navigation";
 
 interface MainLayoutProps {
   children: ReactNode;
-  activeTab: string;
-  onTabChange: (tabId: string) => void;
 }
 
-export const MainLayout = ({
-  children,
-  activeTab,
-  onTabChange,
-}: MainLayoutProps) => {
+export const MainLayout = ({ children }: MainLayoutProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -24,6 +18,7 @@ export const MainLayout = ({
   };
 
   const showFab = !(pathname && pathname.startsWith("/records/new"));
+  
   return (
     <div className="min-h-screen w-full bg-[var(--color-background)] overflow-x-hidden flex flex-col items-center">
       <div className="w-full fixed top-0 left-0 right-0 z-40">
@@ -46,7 +41,7 @@ export const MainLayout = ({
       )}
 
       {/* 하단 네비게이션 */}
-      <BottomNavigation activeTab={activeTab} onTabChange={onTabChange} />
+      <BottomNavigation />
     </div>
   );
 };
