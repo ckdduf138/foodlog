@@ -5,7 +5,7 @@ import { MainLayout, Header } from "@/shared/components";
 import { FileText } from "lucide-react";
 import { LoadingSpinner } from "@/shared/components/ui/LoadingSpinner/LoadingSpinner";
 import useRecord from "@/features/records/hooks/useRecord";
-import RecordDetail from "@/features/records/components/RecordDetail/RecordDetail";
+import { RecordDetail } from "@/features/records/components/RecordDetail/RecordDetail";
 
 const RecordDetailPage = () => {
   const params = useParams();

@@ -1,50 +1,63 @@
 "use client";
 import React from "react";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit3, Trash2 } from "lucide-react";
 
-const RecordActions: React.FC<{ onEdit: () => void; onDelete: () => void }> = ({ onEdit, onDelete }) => {
+export const RecordActions: React.FC<{ onEdit: () => void; onDelete: () => void }> = ({ onEdit, onDelete }) => {
   return (
     <div className="flex items-center gap-2 flex-shrink-0">
+      {/* 편집 버튼 */}
       <button
         type="button"
-        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all hover:shadow-sm active:scale-95"
+        className="group relative p-2.5 rounded-xl transition-all hover:scale-105 active:scale-95"
         onClick={onEdit}
         style={{ 
-          backgroundColor: 'var(--color-green-100)', 
-          color: 'var(--color-green-800)', 
-          border: '1px solid var(--color-green-200)' 
+          backgroundColor: 'var(--color-muted)',
+          border: '1px solid var(--color-border)',
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = 'var(--color-green-200)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = 'var(--color-green-100)';
-        }}
+        title="편집"
       >
-        <Edit className="w-4 h-4" />
-        <span className="hidden sm:inline">편집</span>
+        <Edit3 
+          className="w-5 h-5 transition-colors" 
+          style={{ color: 'var(--color-foreground)' }}
+        />
+        {/* 툴팁 */}
+        <span 
+          className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+          style={{
+            backgroundColor: 'var(--color-foreground)',
+            color: 'var(--color-background)',
+          }}
+        >
+          편집
+        </span>
       </button>
       
+      {/* 삭제 버튼 */}
       <button
         type="button"
-        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all hover:shadow-md active:scale-95"
+        className="group relative p-2.5 rounded-xl transition-all hover:scale-105 active:scale-95"
         onClick={onDelete}
         style={{ 
-          backgroundColor: 'var(--color-destructive)', 
-          color: 'var(--color-destructive-foreground)' 
+          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+          border: '1px solid rgba(239, 68, 68, 0.2)',
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.opacity = '0.9';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.opacity = '1';
-        }}
+        title="삭제"
       >
-        <Trash2 className="w-4 h-4" />
-        <span className="hidden sm:inline">삭제</span>
+        <Trash2 
+          className="w-5 h-5 transition-colors" 
+          style={{ color: '#EF4444' }}
+        />
+        {/* 툴팁 */}
+        <span 
+          className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+          style={{
+            backgroundColor: '#EF4444',
+            color: 'white',
+          }}
+        >
+          삭제
+        </span>
       </button>
     </div>
   );
 };
-
-export default RecordActions;

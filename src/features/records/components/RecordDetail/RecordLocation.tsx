@@ -6,7 +6,7 @@ interface RecordLocationProps {
   record: FoodRecord;
 }
 
-const RecordLocation: React.FC<RecordLocationProps> = ({ record }) => {
+export const RecordLocation: React.FC<RecordLocationProps> = ({ record }) => {
   const hasLocation = record.location.placeName || record.location.address;
   const hasCoordinates = record.location.latitude && record.location.longitude;
 
@@ -50,5 +50,3 @@ const RecordLocation: React.FC<RecordLocationProps> = ({ record }) => {
     </div>
   );
 };
-
-export default RecordLocation;

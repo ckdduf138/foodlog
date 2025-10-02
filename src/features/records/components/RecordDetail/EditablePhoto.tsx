@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Camera, Upload, X, ImageIcon } from "lucide-react";
+import { Camera, Upload, X } from "lucide-react";
 import type { FoodRecord } from "@/features/records/types";
 
 interface EditablePhotoProps {
@@ -138,7 +138,6 @@ export const EditablePhoto: React.FC<EditablePhotoProps> = ({ record, onSave }) 
       />
       
       {/* 이미지 */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
         alt={record.foodName}

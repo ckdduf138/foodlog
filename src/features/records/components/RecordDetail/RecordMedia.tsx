@@ -7,8 +7,6 @@ interface RecordMediaProps {
   onUpdatePhoto: (photo: string | File | undefined) => Promise<void>;
 }
 
-const RecordMedia: React.FC<RecordMediaProps> = ({ record, onUpdatePhoto }) => {
+export const RecordMedia: React.FC<RecordMediaProps> = ({ record, onUpdatePhoto }) => {
   return <EditablePhoto record={record} onSave={onUpdatePhoto} />;
 };
-
-export default RecordMedia;

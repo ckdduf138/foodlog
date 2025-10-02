@@ -3,11 +3,11 @@
 import React from "react";
 import type { FoodRecord } from "@/features/records/types";
 import { useRecordUpdate } from "@/features/records/hooks/useRecordUpdate";
-import RecordHeader from "@/features/records/components/RecordDetail/RecordHeader";
-import RecordMedia from "@/features/records/components/RecordDetail/RecordMedia";
-import RecordReview from "@/features/records/components/RecordDetail/RecordReview";
-import RecordLocation from "@/features/records/components/RecordDetail/RecordLocation";
-import RecordActions from "@/features/records/components/RecordDetail/RecordActions";
+import { RecordHeader } from "@/features/records/components/RecordDetail/RecordHeader";
+import { RecordMedia } from "@/features/records/components/RecordDetail/RecordMedia";
+import { RecordReview } from "@/features/records/components/RecordDetail/RecordReview";
+import { RecordLocation } from "@/features/records/components/RecordDetail/RecordLocation";
+import { RecordActions } from "@/features/records/components/RecordDetail/RecordActions";
 
 interface RecordDetailProps {
   record: FoodRecord;
@@ -16,16 +16,8 @@ interface RecordDetailProps {
   onReload?: () => void;
 }
 
-const RecordDetail: React.FC<RecordDetailProps> = ({ record, onEdit, onDelete, onReload }) => {
-  const {
-    updateRestaurantName,
-    updateFoodName,
-    updateReview,
-    updateRating,
-    updatePhoto,
-    updateCategory,
-    updatePrice,
-  } = useRecordUpdate(record, onReload);
+export const RecordDetail: React.FC<RecordDetailProps> = ({ record, onEdit, onDelete, onReload }) => {
+  const { updatePhoto } = useRecordUpdate(record, onReload);
 
   return (
     <div className="max-w-4xl mx-auto space-y-4">
@@ -39,11 +31,7 @@ const RecordDetail: React.FC<RecordDetailProps> = ({ record, onEdit, onDelete, o
       >
         {/* 헤더와 액션 버튼 */}
         <div className="flex items-start justify-between mb-6">
-          <RecordHeader 
-            record={record} 
-            onUpdateRestaurantName={updateRestaurantName}
-            onUpdateRating={updateRating}
-          />
+          <RecordHeader record={record} />
           <RecordActions onEdit={onEdit} onDelete={onDelete} />
         </div>
 
@@ -56,13 +44,7 @@ const RecordDetail: React.FC<RecordDetailProps> = ({ record, onEdit, onDelete, o
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* 리뷰 섹션 */}
           <div className="md:col-span-2">
-            <RecordReview 
-              record={record}
-              onUpdateFoodName={updateFoodName}
-              onUpdateCategory={updateCategory}
-              onUpdateReview={updateReview}
-              onUpdatePrice={updatePrice}
-            />
+            <RecordReview record={record} />
           </div>
 
           {/* 사이드바 - 위치 및 가격 */}
@@ -74,5 +56,3 @@ const RecordDetail: React.FC<RecordDetailProps> = ({ record, onEdit, onDelete, o
     </div>
   );
 };
-
-export default RecordDetail;

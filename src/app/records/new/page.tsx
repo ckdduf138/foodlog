@@ -2,14 +2,12 @@
 
 import React, { Suspense } from "react";
 import { MainLayout, Header, LoadingSpinner } from "@/shared/components";
-import { useNavigation } from "@/shared/hooks";
 import { FilePlus, Edit } from "lucide-react";
 import { RecordForm } from "@/features/records/components";
 import { useRecordForm } from "@/features/records/hooks";
 import { useSearchParams } from "next/navigation";
 
 const NewRecordPageContent = () => {
-  const { activeTab, changeTab } = useNavigation("records");
   const searchParams = useSearchParams();
   const editParam = searchParams.get("edit");
   const {
@@ -25,7 +23,7 @@ const NewRecordPageContent = () => {
   } = useRecordForm(editParam ?? undefined);
 
   return (
-    <MainLayout activeTab={activeTab} onTabChange={changeTab}>
+    <MainLayout>
       <Header
         title={isEditMode ? "기록 수정" : "기록 추가"}
         subtitle={

@@ -1,36 +1,29 @@
 import React from "react";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, Star } from "lucide-react";
 import type { FoodRecord } from "@/features/records/types";
-import { EditableField } from "./EditableField";
-import { EditableRating } from "./EditableRating";
 
 interface RecordHeaderProps {
   record: FoodRecord;
-  onUpdateRestaurantName: (name: string) => Promise<void>;
-  onUpdateRating: (rating: number) => Promise<void>;
 }
 
-const RecordHeader: React.FC<RecordHeaderProps> = ({ 
-  record, 
-  onUpdateRestaurantName,
-  onUpdateRating 
-}) => {
+export const RecordHeader: React.FC<RecordHeaderProps> = ({ record }) => {
   return (
     <div className="flex-1">
-      {/* 레스토랑 이름 - 편집 가능 */}
-      <div className="mb-3">
-        <EditableField
-          value={record.restaurantName}
-          onSave={onUpdateRestaurantName}
-          placeholder="레스토랑 이름"
-          className="text-2xl sm:text-3xl font-bold"
-          editClassName="text-2xl sm:text-3xl font-bold"
-        />
-      </div>
+      {/* 레스토랑 이름 */}
+      <h1 className="text-2xl sm:text-3xl font-bold mb-3" style={{ color: 'var(--color-foreground)' }}>
+        {record.restaurantName}
+      </h1>
       
-      {/* 별점 - 편집 가능 */}
-      <div className="mb-3">
-        <EditableRating rating={record.rating} onSave={onUpdateRating} />
+      {/* 별점 */}
+      <div className="flex items-center gap-1 mb-3">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star
+            key={star}
+            className="w-6 h-6"
+            fill={star <= record.rating ? "#FBBF24" : "none"}
+            style={{ color: star <= record.rating ? "#FBBF24" : 'var(--color-muted-foreground)' }}
+          />
+        ))}
       </div>
 
       {/* 날짜와 시간 */}
@@ -47,5 +40,3 @@ const RecordHeader: React.FC<RecordHeaderProps> = ({
     </div>
   );
 };
-
-export default RecordHeader;

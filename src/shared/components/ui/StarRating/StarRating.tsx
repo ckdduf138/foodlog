@@ -33,7 +33,6 @@ export const StarRating = ({
     <div className="flex gap-0.5">
       {[...Array(maxRating)].map((_, i) => {
         const fillPercentage = getStarFillPercentage(i);
-        const uniqueId = `star-gradient-${i}-${Math.random()}`;
         
         return (
           <div key={i} className="relative inline-block">
