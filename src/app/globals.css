@@ -214,9 +214,10 @@ body {
   --safe-area-inset-left: env(safe-area-inset-left, 0px);
 }
 
-/* iOS PWA full screen support - 좌우만 적용 */
+/* iOS PWA full screen support */
 @supports (padding: max(0px)) {
   body {
+    padding-top: env(safe-area-inset-top, 0px);
     padding-right: max(0px, env(safe-area-inset-right));
     padding-left: max(0px, env(safe-area-inset-left));
   }
