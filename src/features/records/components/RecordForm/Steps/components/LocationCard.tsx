@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { MapPin } from "lucide-react";
+import { MapPin, MapPinOff } from "lucide-react";
 import { FoodRecordFormData } from "@/features/records/types";
 import { useReverseGeocode } from "../../hooks/useReverseGeocode";
 import { LoadingSpinner } from "@/shared/components/ui/LoadingSpinner/LoadingSpinner";
@@ -46,14 +46,20 @@ export const LocationCard: React.FC<LocationCardProps> = ({ formData }) => {
           style={{
             backgroundColor: hasLocation
               ? "var(--color-green-500)"
-              : "var(--color-muted)",
+              : address
+              ? "var(--color-muted)"
+              : "var(--color-destructive)",
           }}
         >
-          <MapPin
-            className={`w-4 h-4 ${
-              hasLocation ? "text-black" : "text-muted-foreground"
-            }`}
-          />
+          {address ? (
+            <MapPin
+              className={`w-4 h-4 ${
+                hasLocation ? "text-black" : "text-muted-foreground"
+              }`}
+            />
+          ) : (
+            <MapPinOff className="w-4 h-4 text-white" />
+          )}
         </div>
         <div className="flex-1">
           {hasLocation ? (
@@ -87,7 +93,7 @@ export const LocationCard: React.FC<LocationCardProps> = ({ formData }) => {
               </p>
               <p
                 className="text-sm font-semibold"
-                style={{ color: "var(--color-green-500)" }}
+                style={{ color: address ? "var(--color-green-500)" : "var(--color-destructive)" }}
               >
                 현재 위치: {address ? address : "위치 정보를 가져올 수 없음"}
               </p>

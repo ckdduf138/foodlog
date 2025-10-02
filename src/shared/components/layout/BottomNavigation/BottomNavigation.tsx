@@ -27,12 +27,12 @@ export const BottomNavigation = () => {
       icon: <FileText className="w-4 h-4 sm:w-5 sm:h-5" />,
       href: "/records",
     },
-    {
-      id: "stats",
-      label: "통계",
-      icon: <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5" />,
-      href: "/stats",
-    },
+    // {
+    //   id: "stats",
+    //   label: "통계",
+    //   icon: <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5" />,
+    //   href: "/stats",
+    // },
     {
       id: "settings",
       label: "설정",
