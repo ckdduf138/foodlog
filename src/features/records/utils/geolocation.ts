@@ -84,11 +84,11 @@ export const calculateDistance = (
 };
 
 /**
- * 거리를 읽기 쉬운 형태로 포맷
+ * 거리를 읽기 쉬운 형태로 포맷 (미터 단위)
  * @param distance 거리 (미터)
  * @returns 포맷된 거리 문자열
  */
-export const formatDistance = (distance: number): string => {
+export const formatDistanceMeters = (distance: number): string => {
   if (distance < 1000) {
     return `${Math.round(distance)}m`;
   }
