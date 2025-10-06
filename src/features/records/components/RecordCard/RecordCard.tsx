@@ -45,14 +45,14 @@ export const RecordCard = ({
               isCompact ? "text-sm" : "text-base"
             }`}
           >
-            {record.foodName}
+            {record.restaurantName}
           </h3>
           <p
             className={`text-[var(--color-muted-foreground)] font-medium ${
               isCompact ? "text-xs" : "text-sm"
             }`}
           >
-            {record.restaurantName}
+            {record.foodName}
           </p>
           <p className={`text-[var(--color-muted-foreground)] text-xs mt-1`}>
             {getRelativeTime(record.createdAt || record.date)}

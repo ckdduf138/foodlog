@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback, memo } from "react";
 import { Camera, Upload, X } from "lucide-react";
 import type { FoodRecord } from "@/features/records/types";
 
@@ -13,14 +13,16 @@ const isFile = (x: unknown): x is File => {
   return typeof x === "object" && x instanceof File;
 };
 
-export const EditablePhoto: React.FC<EditablePhotoProps> = ({ record, onSave }) => {
+const EditablePhotoComponent: React.FC<EditablePhotoProps> = ({ record, onSave }) => {
   const [src, setSrc] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     let objUrl: string | null = null;
+    setImageLoaded(false);
 
     if (!record.photo) {
       setSrc(null);
@@ -41,7 +43,7 @@ export const EditablePhoto: React.FC<EditablePhotoProps> = ({ record, onSave }) 
     };
   }, [record.photo]);
 
-  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -69,9 +71,9 @@ export const EditablePhoto: React.FC<EditablePhotoProps> = ({ record, onSave }) 
       alert("사진 저장 실패: " + (error instanceof Error ? error.message : "알 수 없는 오류"));
       setIsSaving(false);
     }
-  };
+  }, [onSave]);
 
-  const handleRemovePhoto = async () => {
+  const handleRemovePhoto = useCallback(async () => {
     if (!confirm("사진을 삭제하시겠습니까?")) return;
 
     setIsSaving(true);
@@ -82,13 +84,17 @@ export const EditablePhoto: React.FC<EditablePhotoProps> = ({ record, onSave }) 
     } finally {
       setIsSaving(false);
     }
-  };
+  }, [onSave]);
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (!isSaving) {
       fileInputRef.current?.click();
     }
-  };
+  }, [isSaving]);
+
+  const handleImageLoad = useCallback(() => {
+    setImageLoaded(true);
+  }, []);
 
   if (!src) {
     return (
@@ -137,11 +143,22 @@ export const EditablePhoto: React.FC<EditablePhotoProps> = ({ record, onSave }) 
         className="hidden"
       />
       
+      {/* 이미지 로딩 플레이스홀더 */}
+      {!imageLoaded && (
+        <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+          <span className="text-gray-400 text-sm">로딩 중...</span>
+        </div>
+      )}
+
       {/* 이미지 */}
       <img
         src={src}
         alt={record.foodName}
-        className="w-full h-full object-cover"
+        className={`w-full h-full object-cover transition-opacity duration-300 ${
+          imageLoaded ? "opacity-100" : "opacity-0"
+        }`}
+        loading="lazy"
+        onLoad={handleImageLoad}
       />
 
       {/* 호버 오버레이 */}
@@ -185,3 +202,10 @@ export const EditablePhoto: React.FC<EditablePhotoProps> = ({ record, onSave }) 
     </div>
   );
 };
+
+EditablePhotoComponent.displayName = 'EditablePhoto';
+
+export const EditablePhoto = memo(EditablePhotoComponent, (prevProps, nextProps) => {
+  // 사진이 변경되지 않았다면 리렌더링하지 않음
+  return prevProps.record.photo === nextProps.record.photo;
+});

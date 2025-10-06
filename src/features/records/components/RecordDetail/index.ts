@@ -1,4 +1,5 @@
 export { EditablePhoto } from "./EditablePhoto";
+export { RatingDisplay } from "./RatingDisplay";
 export { RecordDetail } from "./RecordDetail";
 export { RecordHeader } from "./RecordHeader";
 export { RecordMedia } from "./RecordMedia";

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { memo } from "react";
 import type { FoodRecord } from "@/features/records/types";
 import { useRecordUpdate } from "@/features/records/hooks/useRecordUpdate";
 import { RecordHeader } from "@/features/records/components/RecordDetail/RecordHeader";
@@ -16,43 +16,73 @@ interface RecordDetailProps {
   onReload?: () => void;
 }
 
-export const RecordDetail: React.FC<RecordDetailProps> = ({ record, onEdit, onDelete, onReload }) => {
+const RecordDetailComponent: React.FC<RecordDetailProps> = ({ record, onEdit, onDelete, onReload }) => {
   const { updatePhoto } = useRecordUpdate(record, onReload);
 
   return (
-    <div className="max-w-4xl mx-auto space-y-4">
+    <div className="max-w-4xl mx-auto space-y-6 pb-8">
       {/* 메인 콘텐츠 카드 */}
       <div 
-        className="rounded-2xl p-5 shadow-sm"
+        className="rounded-3xl overflow-hidden shadow-lg"
         style={{ 
           backgroundColor: 'var(--color-background)', 
           border: '1px solid var(--color-border)' 
         }}
       >
-        {/* 헤더와 액션 버튼 */}
-        <div className="flex items-start justify-between mb-6">
-          <RecordHeader record={record} />
-          <RecordActions onEdit={onEdit} onDelete={onDelete} />
-        </div>
+        {/* 내용 섹션 */}
+        <div className="p-6 space-y-6">
+          {/* 헤더 섹션 */}
+          <div>
+            <RecordHeader record={record} />
+          </div>
 
-        {/* 사진 섹션 */}
-        <div className="mb-6">
-          <RecordMedia record={record} onUpdatePhoto={updatePhoto} />
-        </div>
+          {/* 구분선 */}
+          <div 
+            className="h-px" 
+            style={{ backgroundColor: 'var(--color-border)' }}
+          />
 
-        {/* 리뷰와 위치 정보 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* 사진 섹션 - 메뉴 위에 배치 */}
+          <div className="relative">
+            <RecordMedia record={record} onUpdatePhoto={updatePhoto} />
+          </div>
+
           {/* 리뷰 섹션 */}
-          <div className="md:col-span-2">
+          <div>
             <RecordReview record={record} />
           </div>
 
-          {/* 사이드바 - 위치 및 가격 */}
-          <aside className="md:col-span-1">
-            <RecordLocation record={record} />
-          </aside>
+          {/* 위치 정보 */}
+          {(record.location.placeName || record.location.address) && (
+            <>
+              <div 
+                className="h-px" 
+                style={{ backgroundColor: 'var(--color-border)' }}
+              />
+              <div>
+                <RecordLocation record={record} />
+              </div>
+            </>
+          )}
         </div>
+      </div>
+
+      {/* 하단 액션 버튼 - 고정 위치 */}
+      <div className="flex justify-center">
+        <RecordActions onEdit={onEdit} onDelete={onDelete} />
       </div>
     </div>
   );
 };
+
+RecordDetailComponent.displayName = 'RecordDetail';
+
+export const RecordDetail = memo(RecordDetailComponent, (prevProps, nextProps) => {
+  // 커스텀 비교 함수로 불필요한 리렌더링 방지
+  return (
+    prevProps.record.id === nextProps.record.id &&
+    prevProps.record.photo === nextProps.record.photo &&
+    prevProps.record.rating === nextProps.record.rating &&
+    prevProps.record.restaurantName === nextProps.record.restaurantName
+  );
+});
