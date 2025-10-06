@@ -27,7 +27,9 @@ const NewRecordPageContent = () => {
       <Header
         title={isEditMode ? "기록 수정" : "기록 추가"}
         subtitle={
-          isEditMode ? "기록을 수정하세요" : "새로운 음식 기록을 추가하세요"
+          isEditMode 
+            ? formData.location.placeName || "매장을 선택하세요"
+            : formData.location.placeName || "새로운 음식 기록을 추가하세요"
         }
         icon={
           isEditMode ? (

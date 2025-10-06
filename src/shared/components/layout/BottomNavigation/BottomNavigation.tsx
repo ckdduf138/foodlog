@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, FileText, BarChart3, Settings } from "lucide-react";
+import { Home, FileText, Settings } from "lucide-react";
 
 interface NavigationItem {
   id: string;

@@ -1,10 +1,11 @@
 "use client";
 
-import { UtensilsCrossed, Plus } from "lucide-react";
+import { UtensilsCrossed } from "lucide-react";
 import { MainLayout, Header, EmptyState } from "@/shared/components";
 import { Dashboard } from "@/features/home";
 import { RecordCard, useRecords } from "@/features/records";
 import { useRouter } from "next/navigation";
+import { calculateStreakDays } from "@/features/home/utils/statsHelpers";
 
 const HomePage = () => {
   const { records } = useRecords();
@@ -22,6 +23,7 @@ const HomePage = () => {
     records.length > 0
       ? records.reduce((sum, record) => sum + record.rating, 0) / records.length
       : 0;
+  const streakDays = calculateStreakDays(records.map((record) => record.date));
 
   const handleRecordClick = (
     record: import("@/features/records/types").FoodRecord
@@ -48,7 +50,7 @@ const HomePage = () => {
           totalRecords={totalRecords}
           weeklyRecords={weeklyRecords}
           averageRating={averageRating}
-          streakDays={0}
+          streakDays={streakDays}
         />
 
         {/* 최근 기록 */}

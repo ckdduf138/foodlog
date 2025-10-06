@@ -1,29 +1,23 @@
-import React from "react";
-import { Calendar, Clock, Star } from "lucide-react";
+import React, { memo } from "react";
+import { Calendar, Clock } from "lucide-react";
 import type { FoodRecord } from "@/features/records/types";
+import { RatingDisplay } from "./RatingDisplay";
 
 interface RecordHeaderProps {
   record: FoodRecord;
 }
 
-export const RecordHeader: React.FC<RecordHeaderProps> = ({ record }) => {
+const RecordHeaderComponent: React.FC<RecordHeaderProps> = ({ record }) => {
   return (
     <div className="flex-1">
       {/* 레스토랑 이름 */}
-      <h1 className="text-2xl sm:text-3xl font-bold mb-3" style={{ color: 'var(--color-foreground)' }}>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4" style={{ color: 'var(--color-foreground)' }}>
         {record.restaurantName}
       </h1>
       
-      {/* 별점 */}
-      <div className="flex items-center gap-1 mb-3">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <Star
-            key={star}
-            className="w-6 h-6"
-            fill={star <= record.rating ? "#FBBF24" : "none"}
-            style={{ color: star <= record.rating ? "#FBBF24" : 'var(--color-muted-foreground)' }}
-          />
-        ))}
+      {/* 별점 표시 */}
+      <div className="mb-4">
+        <RatingDisplay rating={record.rating} />
       </div>
 
       {/* 날짜와 시간 */}
@@ -40,3 +34,14 @@ export const RecordHeader: React.FC<RecordHeaderProps> = ({ record }) => {
     </div>
   );
 };
+
+RecordHeaderComponent.displayName = 'RecordHeader';
+
+export const RecordHeader = memo(RecordHeaderComponent, (prevProps, nextProps) => {
+  return (
+    prevProps.record.restaurantName === nextProps.record.restaurantName &&
+    prevProps.record.rating === nextProps.record.rating &&
+    prevProps.record.date === nextProps.record.date &&
+    prevProps.record.time === nextProps.record.time
+  );
+});
