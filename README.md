@@ -1,26 +1,38 @@
 # 🍽️ FoodLog - 푸드로그
 
-개인 음식 기록 PWA 앱 - 날짜, 위치, 음식, 사진, 별점, 한줄평을 기록하세요
+![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![PWA](https://img.shields.io/badge/PWA-Ready-brightgreen.svg)
+
+**나만의 음식 기록 다이어리** - 맛집을 기록하고 추억하세요
 
 ## 📋 프로젝트 개요
 
-FoodLog는 개인의 음식 경험을 체계적으로 기록하고 관리할 수 있는 Progressive Web App입니다.
+FoodLog는 개인의 음식 경험을 체계적으로 기록하고 관리할 수 있는 Progressive Web App입니다. 위치, 사진, 별점, 가격, 메모까지 한 곳에서 관리하며, 오프라인에서도 완벽하게 동작합니다.
 
 ### 🎯 주요 기능
 
-- ✅ **음식 기록 추가** - 날짜, 위치, 음식명, 사진, 별점, 한줄평
+- ✅ **음식 기록 CRUD** - 날짜, 위치, 음식명, 사진, 별점, 가격, 한줄평
 - ✅ **기록 목록/검색/필터** - 다양한 조건으로 기록 조회
-- 🔄 **현재 위치 기반 음식점 검색** - 카카오 지도 API 연동
+- ✅ **현재 위치 기반 음식점 검색** - 카카오 지도 API 연동
+- ✅ **통계 대시보드** - 전체 기록 수, 평균 별점, 총 지출 금액, 연속 기록 일수
+- ✅ **사진 촬영/갤러리** - 음식 사진 저장 및 관리
+- ✅ **피드백 시스템** - Discord Webhook 기반 피드백 전송
+- ✅ **다크 모드** - 라이트/다크/시스템 테마 지원
 - ✅ **PWA 기능** - 앱처럼 설치 및 오프라인 지원
-- ✅ **로컬 DB** - IndexedDB 기반 데이터 저장
+- ✅ **SEO 최적화** - Open Graph, Twitter Card, JSON-LD 구조화된 데이터
+- ✅ **로컬 DB** - IndexedDB 기반 데이터 저장 (Dexie.js)
 - 🔄 **클라우드 백업/동기화** - 유료 기능 (추후 개발)
 
 ## 🛠️ 기술 스택
 
-- **Frontend**: Next.js 14 + TypeScript + Tailwind CSS
+- **Frontend**: Next.js 15 + TypeScript + Tailwind CSS
 - **Database**: IndexedDB (Dexie.js)
 - **PWA**: next-pwa
-- **Maps**: Kakao Map API (추후 연동)
+- **Maps**: Kakao Map API
+- **Feedback**: Discord Webhook
+- **Theme**: next-themes
+- **Analytics**: Vercel Analytics + Speed Insights
 - **Deployment**: Vercel
 
 ## 🚀 시작하기
@@ -33,7 +45,29 @@ cd foodlog
 yarn install
 ```
 
-### 2. 개발 서버 실행
+### 2. 환경 변수 설정
+
+`.env.local` 파일 생성:
+
+```bash
+cp .env.local.example .env.local
+```
+
+필수 환경 변수 설정:
+
+```bash
+# Kakao Map API
+NEXT_PUBLIC_KAKAO_REST_API_KEY=your_kakao_rest_api_key_here
+
+# Discord Webhook for Feedback (선택사항)
+DISCORD_WEBHOOK_URL=your_discord_webhook_url_here
+
+# App Configuration
+NEXT_PUBLIC_APP_VERSION=1.0.0
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+### 3. 개발 서버 실행
 
 ```bash
 yarn dev
@@ -41,7 +75,7 @@ yarn dev
 
 브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 확인하세요.
 
-### 3. 빌드
+### 4. 빌드 및 배포
 
 ```bash
 yarn build
@@ -52,7 +86,22 @@ yarn start
 
 - **오프라인 지원**: 네트워크 연결 없이도 기본 기능 사용 가능
 - **앱 설치**: 홈 화면에 앱처럼 설치 가능
-- **푸시 알림**: 식사 시간 알림 (추후 개발)
+- **빠른 실행**: 바로가기로 새 기록 추가, 기록 보기, 통계 확인
+- **반응형 디자인**: 모바일, 태블릿, 데스크톱 모두 최적화
+
+## 🔍 SEO 최적화
+
+FoodLog는 검색 엔진 최적화를 위해 다음 기능을 구현했습니다:
+
+- ✅ **메타데이터**: Title, Description, Keywords
+- ✅ **Open Graph**: 소셜 미디어 공유 최적화
+- ✅ **Twitter Card**: 트위터 공유 최적화
+- ✅ **JSON-LD**: Schema.org WebApplication 구조화된 데이터
+- ✅ **Sitemap**: 동적 sitemap.xml 생성
+- ✅ **Robots.txt**: 크롤러 설정
+- ✅ **OG Image**: 자동 생성되는 Open Graph 이미지
+
+자세한 내용은 [SEO_OPTIMIZATION.md](./SEO_OPTIMIZATION.md)를 참고하세요.
 
 ## 💾 데이터 구조
 
@@ -71,6 +120,7 @@ interface FoodRecord {
   };
   foodName: string;
   rating: number; // 1-5 별점
+  price?: number; // 가격 (선택)
   review: string; // 한줄평
   photo?: string; // base64 이미지
   createdAt: Date;

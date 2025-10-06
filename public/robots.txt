@@ -1,0 +1,15 @@
+# FoodLog - robots.txt
+# https://www.robotstxt.org/
+
+User-agent: *
+Allow: /
+Allow: /home
+Allow: /records
+Allow: /stats
+Allow: /settings
+
+# API routes should not be indexed
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://foodlog.vercel.app/sitemap.xml
