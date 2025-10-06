@@ -26,45 +26,32 @@ export default async function Image() {
       >
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
+            fontSize: 120,
+            fontWeight: 'bold',
+            color: 'white',
+            marginBottom: 20,
+          }}
+        >
+          🍽️ FoodLog
+        </div>
+        <div
+          style={{
+            fontSize: 48,
+            color: 'rgba(255, 255, 255, 0.95)',
+            marginBottom: 30,
+            fontWeight: 600,
+          }}
+        >
+          나만의 음식 기록 다이어리
+        </div>
+        <div
+          style={{
+            fontSize: 32,
+            color: 'rgba(255, 255, 255, 0.85)',
             textAlign: 'center',
           }}
         >
-          <div
-            style={{
-              fontSize: 120,
-              fontWeight: 'bold',
-              color: 'white',
-              marginBottom: 20,
-            }}
-          >
-            🍽️ FoodLog
-          </div>
-          <div
-            style={{
-              fontSize: 48,
-              color: 'rgba(255, 255, 255, 0.95)',
-              marginBottom: 30,
-              fontWeight: 600,
-            }}
-          >
-            나만의 음식 기록 다이어리
-          </div>
-          <div
-            style={{
-              fontSize: 32,
-              color: 'rgba(255, 255, 255, 0.85)',
-              maxWidth: 900,
-              lineHeight: 1.4,
-            }}
-          >
-            맛집을 기록하고 추억하세요
-            <br />
-            위치 · 사진 · 별점 · 가격 · 메모
-          </div>
+          맛집을 기록하고 추억하세요
         </div>
       </div>
     ),
