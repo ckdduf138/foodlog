@@ -26,7 +26,6 @@ export const Step4Photo: React.FC<Step4PhotoProps> = ({
             type="file"
             name="photo"
             accept="image/*"
-            capture="environment"
             onChange={onFormChange}
             className="hidden"
             id="photo-upload"
