@@ -1,6 +1,8 @@
 import React from "react";
 import { FoodRecordFormData } from "@/features/records/types";
 import { ProgressStarRating, PriceInput } from "@/shared/components/ui";
+import { Utensils, Star, Receipt } from "lucide-react";
+import { cn } from "@/shared/utils";
 
 interface Step2FoodInfoProps {
   formData: FoodRecordFormData;
@@ -11,6 +13,33 @@ interface Step2FoodInfoProps {
   onPriceChange: (price: number | undefined) => void;
 }
 
+const FormSection = ({
+  icon,
+  label,
+  optional,
+  children,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  optional?: boolean;
+  children: React.ReactNode;
+}) => (
+  <div className="space-y-3">
+    <div className="flex items-center gap-2">
+      <span className="text-[var(--color-green-500)]">{icon}</span>
+      <label className="text-base font-semibold text-[var(--color-foreground)]">
+        {label}
+      </label>
+      {optional && (
+        <span className="text-xs font-normal text-[var(--color-muted-foreground)] ml-1">
+          (선택)
+        </span>
+      )}
+    </div>
+    {children}
+  </div>
+);
+
 export const Step2FoodInfo: React.FC<Step2FoodInfoProps> = ({
   formData,
   onFormChange,
@@ -20,74 +49,50 @@ export const Step2FoodInfo: React.FC<Step2FoodInfoProps> = ({
   return (
     <div className="space-y-6">
       {/* Food Name */}
-      <div className="space-y-3">
-        <label
-          className="block text-base font-semibold mb-2"
-          style={{ color: "var(--color-foreground)" }}
-        >
-          어떤 음식을 드셨나요?
-        </label>
-        <div className="relative">
-          <input
-            name="foodName"
-            value={formData.foodName}
-            onChange={onFormChange}
-            placeholder="삼겹살"
-            className="w-full p-4 text-base border-2 rounded-2xl transition-all duration-200 focus:outline-none focus:ring-2"
-            style={{
-              backgroundColor: "var(--color-background)",
-              borderColor: "var(--color-border)",
-              color: "var(--color-foreground)",
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = "var(--color-green-500)";
-              e.target.style.boxShadow = "0 0 0 3px rgba(34, 197, 94, 0.1)";
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = "var(--color-border)";
-              e.target.style.boxShadow = "none";
-            }}
-            autoFocus
-          />
-        </div>
-      </div>
+      <FormSection icon={<Utensils className="w-5 h-5" />} label="어떤 음식을 드셨나요?">
+        <input
+          name="foodName"
+          value={formData.foodName}
+          onChange={onFormChange}
+          placeholder="예: 삼겹살, 된장찌개, 파스타..."
+          className={cn(
+            "w-full p-4 text-base rounded-2xl",
+            "bg-[var(--color-background)]",
+            "border-2 border-[var(--color-border)]",
+            "text-[var(--color-foreground)]",
+            "placeholder:text-[var(--color-muted-foreground)]",
+            "focus:outline-none focus:border-[var(--color-green-500)]",
+            "focus:ring-2 focus:ring-[var(--color-green-500)]/20",
+            "transition-all duration-200"
+          )}
+          autoFocus
+        />
+      </FormSection>
 
       {/* Rating */}
-      <div className="space-y-3">
-        <label
-          className="block text-base font-semibold"
-          style={{ color: "var(--color-foreground)" }}
+      <FormSection icon={<Star className="w-5 h-5" />} label="평점을 남겨주세요">
+        <div
+          className={cn(
+            "rounded-2xl p-4",
+            "bg-[var(--color-muted)]",
+            "border border-[var(--color-border)]"
+          )}
         >
-          평점을 남겨주세요
-        </label>
-        <div className=" rounded-2xl p-2">
           <ProgressStarRating
             rating={formData.rating}
             onChange={onRatingChange}
           />
         </div>
-      </div>
+      </FormSection>
 
       {/* Price */}
-      <div className="space-y-3">
-        <label
-          className="block text-base font-semibold"
-          style={{ color: "var(--color-foreground)" }}
-        >
-          가격{" "}
-          <span
-            className="text-sm font-normal"
-            style={{ color: "var(--color-muted-foreground)" }}
-          >
-            (선택사항)
-          </span>
-        </label>
+      <FormSection icon={<Receipt className="w-5 h-5" />} label="가격" optional>
         <PriceInput
           value={formData.price}
           onChange={onPriceChange}
           placeholder="15,000"
         />
-      </div>
+      </FormSection>
     </div>
   );
 };

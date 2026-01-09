@@ -1,28 +1,35 @@
 "use client";
 
-import { MainLayout, Header, LoadingSpinner } from "@/shared/components";
+import { Suspense } from "react";
+import { MainLayout, Header, RecordListSkeleton } from "@/shared/components";
 import { FileText } from "lucide-react";
 import { RecordList, useRecords } from "@/features/records";
 
-const RecordsPage = () => {
+// 기록 목록 컴포넌트 분리
+const RecordListContent = () => {
   const { records, loading } = useRecords();
 
+  if (loading) {
+    return <RecordListSkeleton count={5} />;
+  }
+
+  return <RecordList records={records} />;
+};
+
+const RecordsPage = () => {
   return (
-    <MainLayout>
+    <MainLayout showFab={true}>
       <Header
         title="기록"
-        subtitle="모든 기록을 확인하고 관리하세요"
-        icon={<FileText className="w-6 h-6" />}
+        subtitle={`나의 맛있는 기억들`}
+        icon={<FileText className="w-5 h-5" />}
+        size="md"
       />
 
-      <div className="w-full">
-        {loading ? (
-          <div className="flex justify-center items-center py-8">
-            <LoadingSpinner message="기록 불러오는 중..." />
-          </div>
-        ) : (
-          <RecordList records={records} />
-        )}
+      <div className="w-full mt-2">
+        <Suspense fallback={<RecordListSkeleton count={5} />}>
+          <RecordListContent />
+        </Suspense>
       </div>
     </MainLayout>
   );

@@ -1,62 +1,94 @@
 "use client";
 
 import { MainLayout, Header } from "@/shared/components";
-import { Settings } from "lucide-react";
+import { Settings, Info, Smartphone, Palette, MessageSquare } from "lucide-react";
 import { ThemeSelector, FeedbackForm } from "@/features/settings";
 import CreatePwaButton from "@/features/settings/components/CreatePwaButton";
+import { cn } from "@/shared/utils";
+
+// 설정 섹션 컴포넌트
+const SettingSection = ({
+  icon,
+  title,
+  children,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <div
+    className={cn(
+      "p-4 rounded-2xl",
+      "bg-[var(--color-background)]",
+      "border border-[var(--color-border)]",
+      "shadow-sm"
+    )}
+  >
+    <div className="flex items-center gap-3 mb-4">
+      <div className="p-2 rounded-xl bg-[var(--color-green-100)] text-[var(--color-green-600)]">
+        {icon}
+      </div>
+      <h3 className="text-base font-bold text-[var(--color-foreground)]">
+        {title}
+      </h3>
+    </div>
+    {children}
+  </div>
+);
+
+// 설정 행 컴포넌트
+const SettingRow = ({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | React.ReactNode;
+}) => (
+  <div className="flex items-center justify-between py-2">
+    <span className="text-sm text-[var(--color-muted-foreground)]">{label}</span>
+    <span className="text-sm font-semibold text-[var(--color-foreground)]">
+      {value}
+    </span>
+  </div>
+);
 
 const SettingsPage = () => {
   return (
-    <MainLayout>
+    <MainLayout showFab={false}>
       <Header
         title="설정"
-        subtitle="앱 설정을 조정하세요"
-        icon={<Settings className="w-6 h-6" />}
+        subtitle="앱 환경을 설정하세요"
+        icon={<Settings className="w-5 h-5" />}
+        size="md"
       />
 
-      <div className="w-full space-y-6">
-        <ThemeSelector />
+      <div className="w-full space-y-4 mt-2">
+        {/* 테마 설정 */}
+        <SettingSection icon={<Palette className="w-5 h-5" />} title="테마">
+          <ThemeSelector />
+        </SettingSection>
 
-        {/* 피드백 폼 */}
-        <FeedbackForm />
+        {/* PWA 설치 */}
+        <SettingSection icon={<Smartphone className="w-5 h-5" />} title="앱 설치">
+          <div className="space-y-3">
+            <p className="text-sm text-[var(--color-muted-foreground)]">
+              홈 화면에 앱을 추가하면 더 빠르게 접근할 수 있어요.
+            </p>
+            <CreatePwaButton />
+          </div>
+        </SettingSection>
 
-        {/* 추가 설정 섹션들을 위한 공간 */}
-        <div className="space-y-4">
-      {/* App Info */}
-      <div
-        className="p-4 sm:p-6 rounded-2xl shadow-sm"
-        style={{
-          backgroundColor: 'var(--color-background)',
-          border: '1px solid var(--color-border)',
-        }}
-      >
-        <div className="flex items-start gap-3 mb-4">
-          <div
-            className="p-2 rounded-lg flex-shrink-0"
-            style={{ backgroundColor: 'var(--color-primary)' }}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="16" x2="12" y2="12"/>
-              <line x1="12" y1="8" x2="12.01" y2="8"/>
-            </svg>
+        {/* 피드백 */}
+        <SettingSection icon={<MessageSquare className="w-5 h-5" />} title="피드백">
+          <FeedbackForm />
+        </SettingSection>
+
+        {/* 앱 정보 */}
+        <SettingSection icon={<Info className="w-5 h-5" />} title="앱 정보">
+          <div className="space-y-1">
+            <SettingRow label="버전" value={process.env.NEXT_PUBLIC_APP_VERSION || "Beta"} />
           </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="text-base sm:text-lg font-bold" style={{ color: 'var(--color-foreground)' }}>
-              앱 정보
-            </h3>
-          </div>
-        </div>
-        <div className="flex items-center justify-between py-2">
-          <span className="text-sm sm:text-base" style={{ color: 'var(--color-muted-foreground)' }}>
-            버전
-          </span>
-          <span className="text-sm sm:text-base font-semibold" style={{ color: 'var(--color-foreground)' }}>
-            {process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0'}
-          </span>
-        </div>
-      </div>          <CreatePwaButton />
-        </div>
+        </SettingSection>
       </div>
     </MainLayout>
   );

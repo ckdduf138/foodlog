@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import { UploadCloud, CheckCircle2 } from "lucide-react";
+import { Camera, ImagePlus, CheckCircle2 } from "lucide-react";
+import { cn } from "@/shared/utils";
 
 interface Step4PhotoProps {
   onFormChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -13,96 +14,105 @@ export const Step4Photo: React.FC<Step4PhotoProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      <div className="space-y-3">
-        <label
-          className="block text-base font-semibold"
-          style={{ color: "var(--color-foreground)" }}
-        >
+      {/* Label */}
+      <div className="flex items-center gap-2">
+        <span className="text-[var(--color-green-500)]">
+          <Camera className="w-5 h-5" />
+        </span>
+        <label className="text-base font-semibold text-[var(--color-foreground)]">
           음식 사진을 추가해보세요
         </label>
-
-        <div className="relative group">
-          <input
-            type="file"
-            name="photo"
-            accept="image/*"
-            onChange={onFormChange}
-            className="hidden"
-            id="photo-upload"
-          />
-          <label
-            htmlFor="photo-upload"
-            className="cursor-pointer block border-2 border-dashed rounded-3xl text-center transition-all duration-300 group-hover:scale-[1.02] overflow-hidden"
-            style={{ borderColor: "var(--color-border)" }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "var(--color-green-500)";
-              e.currentTarget.style.backgroundColor = "rgba(34, 197, 94, 0.05)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "var(--color-border)";
-              e.currentTarget.style.backgroundColor = "transparent";
-            }}
-          >
-            {photoPreview ? (
-              <div className="relative w-full aspect-square max-h-64">
-                <Image
-                  src={photoPreview}
-                  alt="Selected food"
-                  width={300}
-                  height={300}
-                  className="w-full h-full object-cover rounded-2xl"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl">
-                  <p className="text-white font-semibold">사진 변경하기</p>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-3 py-8">
-                <div
-                  className="w-10 h-10 mx-auto rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                  style={{ backgroundColor: "var(--color-green-500)" }}
-                >
-                  <UploadCloud className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <p
-                    className="text-sm font-semibold transition-colors"
-                    style={{ color: "var(--color-foreground)" }}
-                  >
-                    사진 추가하기
-                  </p>
-                  <p
-                    className="text-xs mt-1"
-                    style={{ color: "var(--color-muted-foreground)" }}
-                  >
-                    클릭하여 사진을 선택하세요
-                  </p>
-                </div>
-              </div>
-            )}
-          </label>
-        </div>
+        <span className="text-xs font-normal text-[var(--color-muted-foreground)] ml-1">
+          (선택)
+        </span>
       </div>
 
+      {/* Upload Area */}
+      <div className="relative">
+        <input
+          type="file"
+          name="photo"
+          accept="image/*"
+          onChange={onFormChange}
+          className="hidden"
+          id="photo-upload"
+        />
+        <label
+          htmlFor="photo-upload"
+          className={cn(
+            "cursor-pointer block overflow-hidden",
+            "border-2 border-dashed rounded-2xl",
+            "border-[var(--color-border)]",
+            "hover:border-[var(--color-green-500)]",
+            "hover:bg-[var(--color-green-50)]",
+            "transition-all duration-200",
+            "touch-manipulation"
+          )}
+        >
+          {photoPreview ? (
+            <div className="relative aspect-[4/3] w-full">
+              <Image
+                src={photoPreview}
+                alt="선택된 음식 사진"
+                fill
+                sizes="(max-width: 768px) 100vw, 400px"
+                className="object-cover"
+                priority
+              />
+              {/* Overlay on hover */}
+              <div
+                className={cn(
+                  "absolute inset-0 flex flex-col items-center justify-center",
+                  "bg-black/40 opacity-0 hover:opacity-100",
+                  "transition-opacity duration-200"
+                )}
+              >
+                <ImagePlus className="w-8 h-8 text-white mb-2" />
+                <p className="text-white font-medium text-sm">사진 변경하기</p>
+              </div>
+            </div>
+          ) : (
+            <div className="py-12 px-4 text-center">
+              <div
+                className={cn(
+                  "w-16 h-16 mx-auto rounded-2xl",
+                  "bg-[var(--color-green-100)]",
+                  "flex items-center justify-center",
+                  "mb-4"
+                )}
+              >
+                <ImagePlus className="w-8 h-8 text-[var(--color-green-500)]" />
+              </div>
+              <p className="text-base font-semibold text-[var(--color-foreground)] mb-1">
+                탭하여 사진 추가
+              </p>
+              <p className="text-sm text-[var(--color-muted-foreground)]">
+                JPG, PNG 형식 지원
+              </p>
+            </div>
+          )}
+        </label>
+      </div>
+
+      {/* Info card */}
       <div
-        className="rounded-2xl p-3"
-        style={{
-          backgroundColor: "var(--color-green-100)",
-          border: "1px solid var(--color-green-200)",
-        }}
+        className={cn(
+          "rounded-2xl p-4",
+          "bg-[var(--color-green-100)]",
+          "border border-[var(--color-green-200)]"
+        )}
       >
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-3">
           <div
-            className="w-6 h-6 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: "var(--color-green-500)" }}
+            className={cn(
+              "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
+              "bg-[var(--color-green-500)]"
+            )}
           >
-            <CheckCircle2 className="w-3 h-3 text-white" />
+            <CheckCircle2 className="w-4 h-4 text-white" />
           </div>
-          <p
-            className="text-sm font-medium"
-            style={{ color: "var(--color-green-700)" }}
-          >
-            사진은 나중에 추가하거나 변경할 수도 있어요
+          <p className="text-sm font-medium text-[var(--color-green-800)]">
+            사진은 언제든지 추가하거나 변경할 수 있어요
           </p>
         </div>
       </div>

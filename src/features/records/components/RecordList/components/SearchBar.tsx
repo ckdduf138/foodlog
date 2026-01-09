@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Search, X } from "lucide-react";
+import { cn } from "@/shared/utils";
 
 interface SearchBarProps {
   searchTerm: string;
@@ -10,36 +11,57 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   searchTerm,
   onSearchChange,
 }) => {
+  const handleClear = useCallback(() => {
+    onSearchChange("");
+  }, [onSearchChange]);
+
   return (
     <div
-      className="rounded-xl shadow-sm border px-2 flex items-center gap-2"
-      style={{
-        backgroundColor: "var(--color-background)",
-        borderColor: "var(--color-border)",
-      }}
+      className={cn(
+        "relative flex items-center gap-3",
+        "rounded-xl px-4 py-3",
+        "bg-[var(--color-muted)]",
+        "border border-transparent",
+        "focus-within:border-[var(--color-primary)]",
+        "focus-within:bg-[var(--color-background)]",
+        "focus-within:shadow-sm",
+        "transition-all duration-200"
+      )}
     >
-      <Search
-        className="w-5 h-5"
-        style={{ color: "var(--color-muted-foreground)" }}
-      />
+      <Search className="w-5 h-5 text-[var(--color-muted-foreground)] flex-shrink-0" />
+      
       <input
         type="text"
-        placeholder="음식 이름, 식당 이름으로 검색"
-        className="flex-1 bg-transparent focus:outline-none text-sm py-3"
-        style={{ color: "var(--color-foreground)" }}
+        placeholder="음식, 식당 이름으로 검색..."
+        className={cn(
+          "flex-1 bg-transparent",
+          "text-sm text-[var(--color-foreground)]",
+          "placeholder:text-[var(--color-muted-foreground)]",
+          "focus:outline-none",
+          "min-w-0" // 키보드 올라올 때 너비 방지
+        )}
         value={searchTerm}
         onChange={(e) => onSearchChange(e.target.value)}
       />
-      {searchTerm ? (
+
+      {searchTerm && (
         <button
           type="button"
-          onClick={() => onSearchChange("")}
-          className="p-1 rounded-full hover:bg-[rgba(0,0,0,0.04)]"
+          onClick={handleClear}
+          className={cn(
+            "flex-shrink-0",
+            "p-1.5 -mr-1.5 rounded-full",
+            "text-[var(--color-muted-foreground)]",
+            "hover:bg-[var(--color-border)]",
+            "active:scale-90",
+            "transition-all duration-150",
+            "touch-manipulation"
+          )}
           aria-label="검색어 지우기"
         >
-          <X className="w-4 h-4" style={{ color: "var(--color-muted-foreground)" }} />
+          <X className="w-4 h-4" />
         </button>
-      ) : null}
+      )}
     </div>
   );
 };
