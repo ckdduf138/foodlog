@@ -29,7 +29,7 @@ test.describe("음식 기록 목록 페이지", () => {
     await page.waitForLoadState("networkidle");
 
     // 빈 상태이거나 기록 목록이 있어야 함
-    await expect(page.locator("text=기록")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "기록", exact: true })).toBeVisible();
   });
 
   test("검색바가 렌더링된다", async ({ page }) => {
@@ -184,6 +184,6 @@ test.describe("오프라인 동작", () => {
     await page.waitForLoadState("networkidle");
 
     // 페이지가 정상 렌더링되는지 확인
-    await expect(page.locator("text=기록")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "기록", exact: true })).toBeVisible();
   });
 });
