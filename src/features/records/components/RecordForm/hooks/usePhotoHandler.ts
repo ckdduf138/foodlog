@@ -17,6 +17,7 @@ export const usePhotoHandler = (
       };
       reader.readAsDataURL(photo);
     } else if (typeof photo === "string") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPhotoPreview(photo);
     }
   }, [photo]);

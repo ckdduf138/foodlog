@@ -1,31 +1,28 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-export const useNavigation = (initialTab = "home") => {
-  const [activeTab, setActiveTab] = useState(initialTab);
+const getActiveTab = (pathname: string | null): string => {
+  if (!pathname) return "home";
+  if (pathname.startsWith("/records")) return "records";
+  if (pathname.startsWith("/stats")) return "stats";
+  if (pathname.startsWith("/settings")) return "settings";
+  return "home";
+};
+
+export const useNavigation = () => {
   const pathname = usePathname();
   const router = useRouter();
-
-  useEffect(() => {
-    if (!pathname) return;
-    if (pathname.startsWith("/records")) setActiveTab("records");
-    else if (pathname.startsWith("/stats")) setActiveTab("stats");
-    else if (pathname.startsWith("/settings")) setActiveTab("settings");
-    else setActiveTab("home");
-  }, [pathname]);
+  const activeTab = getActiveTab(pathname);
 
   const changeTab = (tabId: string) => {
-    setActiveTab(tabId);
     const routeMap: Record<string, string> = {
       home: "/home",
       records: "/records",
       stats: "/stats",
       settings: "/settings",
     };
-    const to = routeMap[tabId] || "/home";
-    router.push(to);
+    router.push(routeMap[tabId] || "/home");
   };
 
   return { activeTab, changeTab };

@@ -69,7 +69,7 @@ const RecordDetailComponent: React.FC<RecordDetailProps> = ({ record, onEdit, on
 
       {/* 하단 액션 버튼 - 고정 위치 */}
       <div className="flex justify-center">
-        <RecordActions onEdit={onEdit} onDelete={onDelete} />
+        <RecordActions record={record} onEdit={onEdit} onDelete={onDelete} />
       </div>
     </div>
   );

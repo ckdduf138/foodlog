@@ -152,6 +152,11 @@ export const useRecordForm = (overrideEditId?: string) => {
           await db.foodRecords.add(recordData);
         }
 
+        // 등록 완료 햅틱 피드백
+        if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+          navigator.vibrate(50);
+        }
+
         router.push("/records");
       } catch (err) {
         console.error(err);
