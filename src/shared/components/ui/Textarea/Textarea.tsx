@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, TextareaHTMLAttributes } from "react";
+import { forwardRef, TextareaHTMLAttributes, useId } from "react";
 import { cn } from "@/shared/utils";
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -26,7 +26,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     },
     ref
   ) => {
-    const textareaId = id || `textarea-${Math.random().toString(36).slice(2, 9)}`;
+    const generatedId = useId();
+    const textareaId = id || generatedId;
     const hasError = !!error;
     const currentLength = typeof value === "string" ? value.length : 0;
 

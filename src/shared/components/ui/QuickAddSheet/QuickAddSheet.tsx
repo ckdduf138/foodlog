@@ -37,11 +37,13 @@ export const QuickAddSheet = ({ open, onClose }: QuickAddSheetProps) => {
   // 시트가 열릴 때 초기화 및 포커스
   useEffect(() => {
     if (open) {
+      /* eslint-disable react-hooks/set-state-in-effect */
       setStep(1);
       setFoodName("");
       setRestaurantName("");
       setRating(0);
       setSuccess(false);
+      /* eslint-enable react-hooks/set-state-in-effect */
       setTimeout(() => inputRef.current?.focus(), 300);
     }
   }, [open]);

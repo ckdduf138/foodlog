@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, InputHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes, useId } from "react";
 import { cn } from "@/shared/utils";
 
 interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
@@ -35,7 +35,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const inputId = id || `input-${Math.random().toString(36).slice(2, 9)}`;
+    const generatedId = useId();
+    const inputId = id || generatedId;
     const hasError = !!error;
 
     return (

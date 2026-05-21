@@ -2,6 +2,7 @@
 
 import { ReactNode, useState } from "react";
 import { Plus, Zap } from "lucide-react";
+import Link from "next/link";
 import { BottomNavigation } from "@/shared/components";
 import { usePathname } from "next/navigation";
 import { QuickAddSheet } from "@/shared/components/ui/QuickAddSheet";
@@ -74,13 +75,13 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                 <span className="bg-[var(--color-background)] text-[var(--color-foreground)] text-xs font-medium px-3 py-1.5 rounded-full shadow-md border border-[var(--color-border)] whitespace-nowrap">
                   상세 등록
                 </span>
-                <a
+                <Link
                   href="/records/new"
                   aria-label="상세 기록 추가"
                   className="bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-[var(--color-primary-foreground)] rounded-full p-3 shadow-lg flex items-center justify-center transition-colors active:scale-95"
                 >
                   <Plus className="h-4 w-4" />
-                </a>
+                </Link>
               </div>
             </>
           )}

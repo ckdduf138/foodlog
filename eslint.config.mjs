@@ -1,32 +1,24 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-import js from "@eslint/js";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
+import coreWebVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...coreWebVitals,
+  ...nextTypescript,
   {
     ignores: [
       "node_modules/**",
       ".next/**",
       "out/**",
       "build/**",
+      "vercel/**",
       "next-env.d.ts",
+      "tsconfig.tsbuildinfo",
     ],
   },
   {
     rules: {
-      "@next/next/no-img-element": "off", // 이미지 최적화 경고 비활성화
-      "react-hooks/exhaustive-deps": "warn", // dependency 경고를 에러에서 경고로
+      "@next/next/no-img-element": "off",
+      "react-hooks/exhaustive-deps": "warn",
     },
   },
 ];
