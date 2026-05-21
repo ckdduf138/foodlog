@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { SearchBar } from "./components";
 import SortButton from "./components/SortButton";
 import { useRecordFilter } from "./hooks/useRecordFilter";
+import { useRecords } from "@/features/records/hooks/useRecords";
+import { SwipeableItem } from "@/shared/components/ui/SwipeableItem";
 import { cn } from "@/shared/utils";
 
 interface RecordListProps {
@@ -17,6 +19,7 @@ interface RecordListProps {
 
 export const RecordList = ({ records }: RecordListProps) => {
   const router = useRouter();
+  const { deleteRecord } = useRecords();
   const { filterState, setSearchTerm, setSortBy, filteredAndSortedRecords } =
     useRecordFilter(records);
 
@@ -25,6 +28,13 @@ export const RecordList = ({ records }: RecordListProps) => {
       router.push(`/records/${record.id}`);
     },
     [router]
+  );
+
+  const handleDelete = useCallback(
+    async (id: number) => {
+      await deleteRecord(id);
+    },
+    [deleteRecord]
   );
 
   const recordCount = useMemo(
@@ -86,7 +96,9 @@ export const RecordList = ({ records }: RecordListProps) => {
                 index < 10 && `[animation-delay:${index * 30}ms]`
               )}
             >
-              <RecordCard record={record} onClick={handleRecordClick} />
+              <SwipeableItem onDelete={() => handleDelete(record.id!)}>
+                <RecordCard record={record} onClick={handleRecordClick} />
+              </SwipeableItem>
             </div>
           ))}
         </div>
